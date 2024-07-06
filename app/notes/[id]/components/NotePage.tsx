@@ -17,7 +17,7 @@ import { NoteData } from "@/types/NoteData";
 export default function NotePage({ id }: { id: string }) {
   const user = useAuth();
   const router = useRouter();
-  const [note, setNote] = useState<DocumentData | null>(null);
+  const [note, setNote] = useState<NoteData | null>(null);
   const [focus, setFocus] = useState(false);
   const [open, setOpen] = useState(false);
 
@@ -25,7 +25,7 @@ export default function NotePage({ id }: { id: string }) {
     if (user === false) router.push("/auth");
     else if (user?.uid) {
       getData(user?.uid, id).then((data) => {
-        if (!data) setNote({ error: true });
+        if (!data) return <NotFoundError />;
         else setNote(data as NoteData);
       });
     }
@@ -57,7 +57,6 @@ export default function NotePage({ id }: { id: string }) {
   if (user == false) router.push("/auth");
 
   if (!note || !note.title) return <Loader />;
-  if (note.error) return <NotFoundError />;
 
   return (
     <motion.main
@@ -71,10 +70,23 @@ export default function NotePage({ id }: { id: string }) {
           title={note.title}
           createdAt={note.createdAt}
         />
-        <AudioPlayer src={note.audio} transcript={note.transcript} />
+        {note.src[0] && note.src[0].type === "audio" && (
+          <AudioPlayer
+            src={note.src[0].url}
+            transcript={note.transcript || ""}
+          />
+        )}
         <NoteSummary note={note} focus={focus} />
       </div>
-      {!focus && <NoteActions note={note} id={id} focus={focus} setFocus={setFocus} open={open} />}
+      {!focus && (
+        <NoteActions
+          note={note}
+          id={id}
+          focus={focus}
+          setFocus={setFocus}
+          open={open}
+        />
+      )}
       <FocusButton focus={focus} setFocus={setFocus} />
 
       <div className="fixed shadow-[0px_40px_60px_90px_var(--background)] flex left-0 bottom-6 items-center justify-center w-full">

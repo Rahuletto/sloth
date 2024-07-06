@@ -19,7 +19,6 @@ export default function NoteActions({
   setFocus: Dispatch<SetStateAction<boolean>>;
   open?: boolean;
 }) {
-  const topics: TopicData = JSON.parse(note.topics);
 
   return (
     <>
@@ -29,7 +28,7 @@ export default function NoteActions({
         transition={{ duration: 0.3 }}
         className="lg:flex w-[35%] flex-col gap-6 h-fit lg:sticky lg:top-12 hidden"
       >
-        <Actions topics={topics} focus={focus} id={id} />
+        <Actions topics={note.topics} focus={focus} id={id} />
         {!focus && (
           <button
             onClick={() => setFocus((prev) => !prev)}
@@ -47,7 +46,7 @@ export default function NoteActions({
       >
         <div className="flex flex-col gap-6 pb-24 bg-category rounded-t-3xl py-3 px-8 shadow-[0px_0px_40px_10px_var(--category)] h-fit md:max-w-[90vw] max-w-[100vw] mx-auto">
           <div className="bg-box w-[10%] p-0.5 rounded-xl mx-auto" />
-          <Actions topics={topics} focus={focus} id={id} />
+          <Actions topics={note.topics} focus={focus} id={id} />
         </div>
       </motion.div>
     </>

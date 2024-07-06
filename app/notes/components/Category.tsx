@@ -16,7 +16,7 @@ export const Category = ({
   categoryId: string;
   generating?: ReactNode
 }) => (
-  <div className="category bg-category rounded-3xl px-5 py-3 pb-5">
+  <div className="category bg-category rounded-3xl px-5 py-3 pb-5 w-full">
     <h2 className="text-accent mb-2 font-semibold flex justify-between items-center">{title}{title == 'Starred' ? <FaStar /> : ""}</h2>
     <StrictModeDroppable droppableId={categoryId}>
       {(provided, snapShot) => (

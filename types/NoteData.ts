@@ -10,8 +10,13 @@ export interface NoteData {
     topics: TopicData[] | any[];
     title: string;
     createdAt: number;
-    audio: string;
-    transcript: string;
+    src: SourceData[];
+    transcript?: string;
     summary?:string;
     category: string;
+}
+
+export interface SourceData {
+    type: 'audio' | 'pdf' | 'youtube'
+    url: string
 }

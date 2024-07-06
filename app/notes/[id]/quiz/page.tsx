@@ -76,7 +76,7 @@ export default function Quiz({ params }: { params: { id: string } }) {
             <div
               ref={container}
               id="quizContainer"
-              className="flex scrollbar-thin scrollbar-h-0 flex-row overflow-x-auto snap-x snap-center lg:h-auto h-[69vh] md:h-auto snap-mandatory items-center gap-8 lg:px-4 rounded-3xl"
+              className="flex scrollbar-thin scrollbar-h-0 flex-row overflow-x-auto snap-x snap-center lg:h-auto h-[69dvh] md:h-auto snap-mandatory items-center gap-8 lg:px-4 rounded-3xl"
             >
               <div className="md:min-w-[10vw] md:p-10 md:block hidden" />
               {quiz.map((q, i) => (
