@@ -9,6 +9,7 @@ export interface NoteData {
     id: string;
     topics: TopicData[] | any[];
     title: string;
+    description: string;
     createdAt: number;
     src: SourceData[];
     transcript?: string;

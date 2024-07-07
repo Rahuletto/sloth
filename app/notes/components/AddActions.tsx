@@ -4,6 +4,7 @@ import { MdFilePresent } from "react-icons/md";
 import { RiPresentationFill } from "react-icons/ri";
 import PdfToTextConverter from "./uploads/Pdf";
 import { Note } from "@/types/NoteData";
+import YoutubeLecture from "./uploads/YoutubeLecture";
 
 export function AddActions({
   restart,
@@ -11,7 +12,7 @@ export function AddActions({
   setGenerating,
   setNotes,
   generating,
-  genStatus
+  genStatus,
 }: {
   restart: boolean;
   setGenStatus: React.Dispatch<React.SetStateAction<string>>;
@@ -43,7 +44,13 @@ export function AddActions({
       ) : mode == "audio" ? (
         <></>
       ) : mode == "youtube" ? (
-        <></>
+        <YoutubeLecture
+          setGenStatus={setGenStatus}
+          setGenerating={setGenerating}
+          generating={generating}
+          genStatus={genStatus}
+          setNotes={setNotes}
+        />
       ) : (
         <>
           <button

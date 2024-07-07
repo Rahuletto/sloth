@@ -47,7 +47,7 @@ interface RecorderProps {
   setMessage: Dispatch<SetStateAction<string>>;
   setGenerating: Dispatch<SetStateAction<boolean>>;
   generating: boolean;
-  genStatus: string
+  genStatus: string;
   setGenStatus: Dispatch<SetStateAction<string>>;
   setNotes: Dispatch<
     SetStateAction<{
@@ -101,9 +101,12 @@ export default function Recorder({
         });
         const topics = await topicsRes.json();
         const title = topics.result.title;
+        const description = topics.result.description;
+
         const newNotes = await saveNote({
           user,
           title,
+          description,
           src: [{ type: "audio", url }],
           transcript: transcribe.data,
           topics: topics.result,
@@ -115,6 +118,8 @@ export default function Recorder({
           await saveNote({
             user,
             title: "New Note",
+            description:
+              "This is a new note with some errors? Can we try this again??",
             src: [{ type: "audio", url }],
             transcript: transcribe.data,
             topics: [],

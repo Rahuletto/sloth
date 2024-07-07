@@ -6,5 +6,6 @@ export interface Topics {
 
 export interface TopicData {
     title: string;
+    description: string;
     topics: Topics[];
 }

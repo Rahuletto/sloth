@@ -7,7 +7,7 @@ import { uploadFile } from "@/firebase/storage";
 import FileUploadArea from "./FileUploadArea";
 import { readFile } from "@/utils/readFile";
 
-export default function PdfToTextConverter({
+export default function Pdf({
   setGenerating,
   generating,
   genStatus,
@@ -35,10 +35,12 @@ export default function PdfToTextConverter({
       });
       const topics = await topicsRes.json();
       const title = topics.result.title;
+      const description = topics.result.description
 
       const newNotes = await saveNote({
         user,
         title,
+        description,
         src: saveSrc,
         transcript: saveText,
         topics: topics.result,

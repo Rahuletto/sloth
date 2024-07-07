@@ -24,11 +24,8 @@ export const NoteCard = ({ note, index }: { note: Note; index: number }) => {
             Recorded at {formatDate(note.data.createdAt)}
           </h3>
           <p className="text-sm">
-            <span className="bg-accent rounded-lg px-2 py-1 text-xs text-bg font-semibold mr-2">
-              Transcript
-            </span>
             <span className="opacity-50">
-              {note.data.transcript?.split(" ")?.slice(0, 32)?.join(" ")}...
+              {note.data.description?.split(" ")?.slice(0, 32)?.join(" ")}...
             </span>
           </p>
         </div>

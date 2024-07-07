@@ -20,6 +20,7 @@ export async function POST(request: Request) {
       const transformed = {
         result: {
           title: json.title,
+          description: json.description,
           topics: json.topics.map((item: Topics) => ({
             pageNo: item.pageNo,
             topic: item.topic,

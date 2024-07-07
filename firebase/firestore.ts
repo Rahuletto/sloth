@@ -78,12 +78,14 @@ export const saveNote = async ({
   src,
   transcript,
   topics,
+  description
 }: {
   user: User;
   title: string;
   src: { type: string; url: string }[];
   transcript: string;
   topics: TopicData[];
+  description: string;
 }): Promise<{
   [key: string]: Note[];
 }> => {
@@ -95,6 +97,7 @@ export const saveNote = async ({
     src,
     transcript,
     title: title,
+    description: description,
     topics: topics,
     category: "Uncategorized",
   });
