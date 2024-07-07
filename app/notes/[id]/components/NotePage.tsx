@@ -85,11 +85,16 @@ export default function NotePage({ id }: { id: string }) {
           focus={focus}
           setFocus={setFocus}
           open={open}
+          setOpen={setOpen}
         />
       )}
       <FocusButton focus={focus} setFocus={setFocus} />
 
-      <div className="fixed shadow-[0px_40px_60px_90px_var(--background)] flex left-0 bottom-6 items-center justify-center w-full">
+      <div
+        className={`z-20 fixed shadow-[${
+          open ? "none" : "0px_40px_60px_90px_var(--background)"
+        }] flex left-0 bottom-6 items-center justify-center w-full`}
+      >
         <button
           onClick={() => setOpen((prev) => !prev)}
           className={`lg:hidden mx-4 text-center text-xl font-semibold ${

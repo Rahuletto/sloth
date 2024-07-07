@@ -5,6 +5,7 @@ import NoteTopics from "./NoteTopics";
 import { TopicData } from "@/types/Topic";
 import { Dispatch, SetStateAction } from "react";
 import { Link } from "next-view-transitions";
+import SlidingShelf from "@/components/ui/SlidingShelf";
 
 export default function NoteActions({
   note,
@@ -12,16 +13,18 @@ export default function NoteActions({
   focus,
   setFocus,
   open,
+  setOpen,
 }: {
   id: string;
   note: any;
   focus: boolean;
   setFocus: Dispatch<SetStateAction<boolean>>;
   open?: boolean;
+  setOpen: Dispatch<SetStateAction<boolean>>;
 }) {
-
   return (
     <>
+      {/* PC */}
       <motion.div
         initial={{ x: 0 }}
         animate={{ x: focus ? 200 : 0 }}
@@ -38,22 +41,23 @@ export default function NoteActions({
           </button>
         )}
       </motion.div>
-      <motion.div
-        initial={{ y: 100, opacity: 0 }}
-        animate={{ y: open ? 0 : 100, opacity: open ? 1 : 0 }}
-        transition={{ duration: 0.3 }}
-        className="lg:hidden left-0 fixed w-[100vw] bottom-0 items-center flex"
-      >
-        <div className="flex flex-col gap-6 pb-24 bg-category rounded-t-3xl py-3 px-8 shadow-[0px_0px_40px_10px_var(--category)] h-fit md:max-w-[90vw] max-w-[100vw] mx-auto">
-          <div className="bg-box w-[10%] p-0.5 rounded-xl mx-auto" />
-          <Actions topics={note.topics} focus={focus} id={id} />
-        </div>
-      </motion.div>
+      {/* Mobile */}
+      <SlidingShelf open={open} setOpen={setOpen}>
+        <Actions topics={note.topics} focus={focus} id={id} />
+      </SlidingShelf>
     </>
   );
 }
 
-function Actions({ topics, focus, id }: { topics: TopicData; focus: boolean; id: string}) {
+function Actions({
+  topics,
+  focus,
+  id,
+}: {
+  topics: TopicData;
+  focus: boolean;
+  id: string;
+}) {
   return (
     <>
       <NoteTopics topics={topics} focus={focus} />
