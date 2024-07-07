@@ -11,6 +11,7 @@ import { RiLoaderLine } from "react-icons/ri";
 import { QuizData } from "@/types/Quiz";
 import QuizCard from "./components/QuizCard";
 import Back from "@/components/ui/Back";
+import { Link } from "next-view-transitions";
 
 export default function Quiz({ params }: { params: { id: string } }) {
   const id = params.id;
@@ -112,9 +113,17 @@ export default function Quiz({ params }: { params: { id: string } }) {
               </span>
             </h2>
             {grade.filter((g) => g === null).length <= 0 && (
-              <h3 className="text-2xl opacity-80 font-medium text-center w-full transition-all duration-300 animate-fade">
-                Final score
-              </h3>
+              <>
+                <h3 className="text-2xl opacity-80 font-medium text-center w-full transition-all duration-300 animate-fade">
+                  Final score
+                </h3>
+                <Link
+                  href={`/notes/${id}`}
+                  className="bg-accent w-fit mx-auto hover:px-8 active:scale-90 active:bg-bg active:border-accent active:text-accent border-2 border-transparent text-center transition-all duration-300 animate-fade rounded-full px-6 py-3 text-bg font-semibold text-lg"
+                >
+                  Return home
+                </Link>
+              </>
             )}
           </>
         ) : (

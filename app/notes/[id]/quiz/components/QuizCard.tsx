@@ -1,5 +1,7 @@
 import { generateId } from "@/utils/generateId";
 import { Dispatch, RefObject, SetStateAction, useEffect, useRef } from "react";
+import Markdown from "react-markdown";
+import Code from "../../components/Code";
 
 export default function QuizCard({
   question,
@@ -26,7 +28,7 @@ export default function QuizCard({
       if (entry.isIntersecting && entry.intersectionRatio >= 0.8) {
         card.current.style.opacity = "1";
         card.current.style.transform = "scale(1)";
-      } else if(!entry.isIntersecting || entry.intersectionRatio < 0.1) {
+      } else if (!entry.isIntersecting || entry.intersectionRatio < 0.1) {
         card.current.style.opacity = "0.3";
         card.current.style.transform = "scale(0.9)";
       }
@@ -70,15 +72,17 @@ export default function QuizCard({
       ref={card}
       className={`snap-center border-2 ${
         grade[num - 1] === "wrong"
-          ? "bg-hue border-accent"
+          ? "border-accent"
           : grade[num - 1] === "correct"
-          ? "bg-green-hue border-green"
-          : "bg-category border-bb"
-      } lg:px-12 lg:py-8 h-fit rounded-3xl lg:min-w-[70%] min-w-[96%] px-7 py-5 duration-300 transition-all delay-500`}
+          ? "border-green"
+          : "border-bb"
+      } bg-category lg:px-12 lg:py-8 h-fit rounded-3xl lg:min-w-[70%] min-w-[96%] px-7 py-5 duration-300 transition-all delay-500`}
     >
       <h1 className="text-2xl font-semibold md:block hidden">Question {num}</h1>
 
-      <h2 className="text-lg font-semibold">{question}</h2>
+      <h2 id="quiz" className="text-lg my-1">
+        <Markdown components={{ code: Code as any }}>{question}</Markdown>
+      </h2>
       <div className="flex flex-col gap-2 md:mt-8 mt-5">
         {options.map((option, i) => (
           <div
