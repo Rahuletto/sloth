@@ -13,6 +13,7 @@ import FocusButton from "./FocusButton";
 import { motion } from "framer-motion";
 import { NoteData } from "@/types/NoteData";
 import PDFPreview from "./PDFPreview";
+import YoutubePreview from './YoutubePreview'
 
 export default function NotePage({ id }: { id: string }) {
   const user = useAuth();
@@ -79,6 +80,11 @@ export default function NotePage({ id }: { id: string }) {
         {
           note.src[0] && note.src[0].type === "pdf" && (
             <PDFPreview src={note.src[0].url} />
+          )
+        }
+        {
+          note.src[0] && note.src[0].type === "youtube" && (
+            <YoutubePreview src={note.src[0].url} />
           )
         }
         <NoteSummary note={note} focus={focus} />

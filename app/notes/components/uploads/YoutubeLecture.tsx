@@ -76,6 +76,7 @@ export default function YoutubeLecture({
   ) : (
     <div className="flex gap-2 transition-all duration-200 animate-fade">
       <Input
+      pattern="/(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=))([^&?]+)/"
         placeholder="Youtube URL"
         type="text"
         onChange={(e) => setUrl(e.target.value)}
