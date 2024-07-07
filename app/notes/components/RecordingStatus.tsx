@@ -15,7 +15,7 @@ export const RecordingStatus = ({ status }: { status: string }) => (
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.3, delay: 1 }}
-          className="text-2xl font-semibold text-center"
+          className="md:text-2xl text-lg font-semibold text-center"
         >
           {status === "recording"
             ? "I'll transcribe it when the lecture ends."

@@ -12,7 +12,7 @@ export const NoteCard = ({ note, index }: { note: Note; index: number }) => {
       {(provided) => (
         <div
           onClick={() => router.push(`/notes/${note.id}`)}
-          className="w-[89vw] m-1 md:w-auto cursor-grab bg-box border-2 border-bb rounded-xl md:py-5 md:px-8 py-4 px-5"
+          className="md:w-fill m-1 md:w-auto cursor-grab bg-box border-2 border-bb rounded-xl md:py-5 md:px-8 py-4 px-5"
           ref={provided.innerRef}
           {...provided.draggableProps}
           {...provided.dragHandleProps}
@@ -24,11 +24,11 @@ export const NoteCard = ({ note, index }: { note: Note; index: number }) => {
             Recorded at {formatDate(note.data.createdAt)}
           </h3>
           <p className="text-sm">
-            <span className="bg-accent rounded-lg px-2 py-1 text-xs font-semibold mr-2">
+            <span className="bg-accent rounded-lg px-2 py-1 text-xs text-bg font-semibold mr-2">
               Transcript
             </span>
             <span className="opacity-50">
-              {note.data.transcript.split(" ").slice(0, 32).join(" ")}...
+              {note.data.transcript?.split(" ")?.slice(0, 32)?.join(" ")}...
             </span>
           </p>
         </div>

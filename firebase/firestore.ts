@@ -1,6 +1,18 @@
-import { collection, deleteDoc, doc, getDoc, getDocs, query, QueryDocumentSnapshot, setDoc } from "firebase/firestore";
+import {
+  collection,
+  deleteDoc,
+  doc,
+  getDoc,
+  getDocs,
+  query,
+  QueryDocumentSnapshot,
+  setDoc,
+} from "firebase/firestore";
 import { db } from "./config";
-
+import { NoteData } from "@/types/NoteData";
+import { TopicData } from "@/types/Topic";
+import { User } from "firebase/auth";
+import { generateId } from "@/utils/generateId";
 
 export async function setData(userId: string, noteId: string, data: any) {
   try {
@@ -44,10 +56,10 @@ export async function getData(userId: string, noteId: string) {
 
 export async function getAllNotes(userId: string) {
   try {
-    const userNotesRef = collection(db, 'users', userId, 'notes');
+    const userNotesRef = collection(db, "users", userId, "notes");
     const q = query(userNotesRef);
     const querySnapshot = await getDocs(q);
-    
+
     const notes: { id: string; data: any }[] = [];
     querySnapshot.forEach((doc: QueryDocumentSnapshot) => {
       notes.push({ id: doc.id, data: doc.data() });
@@ -59,3 +71,41 @@ export async function getAllNotes(userId: string) {
     throw error;
   }
 }
+
+export const saveNote = async ({
+  user,
+  dataUrl,
+  title,
+  src,
+  transcript,
+  topics,
+}: {
+  user: User;
+  dataUrl: string;
+  title: string;
+  src: { type: string; url: string }[];
+  transcript: string;
+  topics: TopicData[];
+}) => {
+  const id = generateId(dataUrl);
+  await setData(`${user.uid}`, id, {
+    id,
+    createdAt: Date.now(),
+    src,
+    transcript,
+    title: title,
+    topics: topics,
+    category: "Uncategorized",
+  });
+  const allNotes = await getAllNotes(`${user.uid}`);
+  const categorizedNotes = allNotes.reduce(
+    (acc: any, note: { id: string; data: NoteData }) => {
+      const category = note.data?.category || "computer";
+      if (!acc[category]) acc[category] = [];
+      acc[category].push(note);
+      return acc;
+    },
+    { Starred: [], Uncategorized: [] }
+  );
+  return categorizedNotes;
+};

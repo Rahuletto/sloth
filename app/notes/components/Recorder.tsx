@@ -9,10 +9,9 @@ import { useAuth } from "@/provider/UserProvider";
 import dynamic from "next/dynamic";
 import { uploadAudioFromDataURL } from "@/firebase/storage";
 import { getAudioLength } from "@/utils/audioLength";
-import { setData, getAllNotes } from "@/firebase/firestore";
-import { Note, NoteData } from "@/types/NoteData";
-import { TopicData } from "@/types/Topic";
-import { generateId } from "@/utils/generateId";
+import { Note } from "@/types/NoteData";
+import { AddActions } from "./AddActions";
+import { saveNote } from "@/firebase/firestore";
 
 const ReactMediaRecorder = dynamic(
   () => import("react-media-recorder-2").then((mod) => mod.ReactMediaRecorder),
@@ -61,45 +60,6 @@ export default function Recorder({
 }: RecorderProps) {
   const user = useAuth();
 
-  const saveNote = async (
-    user: User,
-    dataUrl: string,
-    title: string,
-    url: string,
-    transcript: string,
-    topics: TopicData[]
-  ) => {
-    const id = generateId(dataUrl);
-    await setData(`${user.uid}`, id, {
-      id,
-      createdAt: Date.now(),
-      src: [
-        {
-          type: "audio",
-          url,
-        },
-      ],
-      transcript,
-      title: title,
-      topics: topics,
-      category: "Uncategorized",
-    });
-    setGenerating(false);
-    setGenStatus("Notes generated.");
-    getAllNotes(`${user.uid}`).then((allNotes) => {
-      const categorizedNotes = allNotes.reduce(
-        (acc: any, note: { id: string; data: NoteData }) => {
-          const category = note.data?.category || "computer";
-          if (!acc[category]) acc[category] = [];
-          acc[category].push(note);
-          return acc;
-        },
-        { Starred: [], Uncategorized: [] }
-      );
-      setNotes(categorizedNotes);
-    });
-  };
-
   const handleRecordingStop = async (dataUrl: string, user: User) => {
     const length = await getAudioLength(dataUrl);
     if (length <= 120) {
@@ -129,17 +89,28 @@ export default function Recorder({
         });
         const topics = await topicsRes.json();
         const title = topics.result.title;
-        await saveNote(
-          user,
-          dataUrl,
-          title,
-          url,
-          transcribe.data,
-          topics.result
+        setNotes(
+          await saveNote({
+            user,
+            dataUrl,
+            title,
+            src: [{ type: "audio", url }],
+            transcript: transcribe.data,
+            topics: topics.result,
+          })
         );
       } catch (error) {
         console.error("Error getting topics:", error);
-        await saveNote(user, dataUrl, "New Note", url, transcribe.data, []);
+        setNotes(
+          await saveNote({
+            user,
+            dataUrl,
+            title: "New Note",
+            src: [{ type: "audio", url }],
+            transcript: transcribe.data,
+            topics: [],
+          })
+        );
       }
     }
   };
@@ -158,25 +129,41 @@ export default function Recorder({
 
         const startRecord = () => {
           try {
-            navigator.permissions
-              .query({ name: "microphone" as any })
-              .then((a) => {
-                if (a.state === "denied") {
-                  setMessage("Please allow microphone access to use record.");
-                  navigator.mediaDevices.getUserMedia({
-                    audio: true,
-                    video: false,
-                  });
-                }
-              });
-
+            navigator.permissions.query({ name: "microphone" as any });
             window.navigator.vibrate(10);
           } catch {}
           if (recording) {
             stopRecording();
           } else {
-            setRecording(true);
-            startRecording();
+            navigator.permissions
+              .query({ name: "microphone" as any })
+              .then((a) => {
+                console.log(a.state);
+                if (a.state === "prompt") {
+                  startRecording();
+                  setRecording(true);
+
+                  a.onchange = () => {
+                    if (a.state === "granted") {
+                      startRecording();
+                      setRecording(true);
+                    } else {
+                      setMessage(
+                        "Please allow microphone access to use record."
+                      );
+                    }
+                  };
+                } else if (a.state === "denied") {
+                  setMessage("Please allow microphone access to use record.");
+                  navigator.mediaDevices.getUserMedia({
+                    audio: true,
+                    video: false,
+                  });
+                } else if (a.state === "granted") {
+                  startRecording();
+                  setRecording(true);
+                }
+              });
           }
         };
 
@@ -208,7 +195,7 @@ export default function Recorder({
 
             <div
               className={`duration-300 transition-all max-h-[60px] fixed ${
-                recording ? "lg:bottom-16 bottom-12" : "lg:bottom-12 bottom-8"
+                recording ? "bottom-16" : "lg:bottom-12 bottom-8"
               } z-20 left-0 w-full flex justify-center items-center gap-6`}
             >
               <RecordButton
@@ -216,7 +203,9 @@ export default function Recorder({
                 onClick={() => startRecord()}
                 disabled={!!message}
               />
-              {!recording && <AddButton />}
+              {!recording && (
+                <AddButton />
+              )}
             </div>
           </>
         );

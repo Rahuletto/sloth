@@ -20,7 +20,7 @@ export const Category = ({
     <h2 className="text-accent mb-2 font-semibold flex justify-between items-center">{title}{title == 'Starred' ? <FaStar /> : ""}</h2>
     <StrictModeDroppable droppableId={categoryId}>
       {(provided, snapShot) => (
-        <div ref={provided.innerRef} {...provided.droppableProps} className={`min-h-12 flex flex-col transition-all duration-500 rounded-2xl max-h-[600px] border-2 overflow-y-auto ${snapShot.isDraggingOver ? "bg-hue border-accent" : "border-transparent"}`}>
+        <div ref={provided.innerRef} {...provided.droppableProps} className={`min-h-12 flex flex-col transition-all duration-500 rounded-2xl max-h-[600px] border-2 ${snapShot.isDraggingOver ? "bg-hue border-accent" : "border-transparent"}`}>
           {notes.map((note, index) => (
             <NoteCard key={note.id} note={note} index={index} />
           ))}
