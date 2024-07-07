@@ -9,8 +9,9 @@ export default function PDFPreview({ src }: { src: string }) {
 
   return (
     user && (
-      <motion.div
-        onClick={() => window.open(src, "_blank")}
+      <motion.a
+        href={src}
+        target="_blank"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.2 }}
@@ -27,7 +28,7 @@ export default function PDFPreview({ src }: { src: string }) {
             .pdf
           </h2>
         </div>
-      </motion.div>
+      </motion.a>
     )
   );
 }
