@@ -9,7 +9,7 @@ import {
   setDoc,
 } from "firebase/firestore";
 import { db } from "./config";
-import { NoteData } from "@/types/NoteData";
+import { Note, NoteData } from "@/types/NoteData";
 import { TopicData } from "@/types/Topic";
 import { User } from "firebase/auth";
 import { generateId } from "@/utils/generateId";
@@ -74,20 +74,21 @@ export async function getAllNotes(userId: string) {
 
 export const saveNote = async ({
   user,
-  dataUrl,
   title,
   src,
   transcript,
   topics,
 }: {
   user: User;
-  dataUrl: string;
   title: string;
   src: { type: string; url: string }[];
   transcript: string;
   topics: TopicData[];
-}) => {
-  const id = generateId(dataUrl);
+}): Promise<{
+  [key: string]: Note[];
+}> => {
+
+  const id = generateId(src[0].url);
   await setData(`${user.uid}`, id, {
     id,
     createdAt: Date.now(),

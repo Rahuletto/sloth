@@ -24,3 +24,22 @@ export async function uploadAudioFromDataURL(userId: string, audioDataURL: strin
         throw error;
     }
 }
+
+export async function uploadFile(userId: string, file: File) {
+    try {
+        const id = generateId(file.name);
+
+        const fileName = `${id}_${file.name}`;
+        const filePath = `pdf/${userId}/${fileName}`;
+
+        const fileRef = ref(storage, filePath);
+        const snapshot = await uploadBytesResumable(fileRef, file);
+
+        const downloadURL = await getDownloadURL(snapshot.ref);
+
+        return downloadURL;
+    } catch (error) {
+        console.error('Error uploading file:', error);
+        throw error;
+    }
+}
