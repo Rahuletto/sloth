@@ -34,7 +34,7 @@ export default function NoteHeader({
           <h1 className="lg:text-5xl md:text-4xl text-2xl text-color font-semibold transition-all duration-300">
             {title}
           </h1>
-          <p className="text-md opacity-40 font-medium">
+          <p className="text-md opacity-40 mt-3 font-medium">
             Recorded at {formatDate(createdAt)}
           </p>
         </div>

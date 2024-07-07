@@ -3,7 +3,6 @@ import NotFoundError from "@/app/not-found";
 import Loader from "@/components/ui/Loader";
 import { getData, setData } from "@/firebase/firestore";
 import { useAuth } from "@/provider/UserProvider";
-import { DocumentData } from "firebase/firestore";
 import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 import AudioPlayer from "./AudioPlayer";
@@ -13,6 +12,7 @@ import NoteActions from "./NoteActions";
 import FocusButton from "./FocusButton";
 import { motion } from "framer-motion";
 import { NoteData } from "@/types/NoteData";
+import PDFPreview from "./PDFPreview";
 
 export default function NotePage({ id }: { id: string }) {
   const user = useAuth();
@@ -76,6 +76,11 @@ export default function NotePage({ id }: { id: string }) {
             transcript={note.transcript || ""}
           />
         )}
+        {
+          note.src[0] && note.src[0].type === "pdf" && (
+            <PDFPreview src={note.src[0].url} />
+          )
+        }
         <NoteSummary note={note} focus={focus} />
       </div>
       {!focus && (

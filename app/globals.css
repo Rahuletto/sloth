@@ -69,7 +69,7 @@ button, a, h5, h6 {
 }
 
 ::-webkit-scrollbar-track {
-  background-color: var(--background);
+  background-color: transparent;
 }
 
 ::-webkit-scrollbar-thumb {
@@ -86,14 +86,28 @@ code span {
   background: linear-gradient(140deg, var(--box) 21%, var(--accent) 450%);
 }
 
-#summary pre {
+#summary pre, #quiz pre {
   border-radius: 12px;
   -webkit-border-radius: 12px;
   -moz-border-radius: 12px;
   -ms-border-radius: 12px;
   -o-border-radius: 12px;
 }
-#summary pre code {
+
+#quiz p {
+  font-size: 1.1rem;
+  color: var(--color);
+  font-weight: 500;
+}
+#quiz pre {
+  margin-top: 8px;
+}
+#quiz pre code { 
+  margin: 0px 12px;
+  font-size: 0.95rem;
+  display: block;
+}
+#summary pre code{
   margin: 6px 12px;
   display: block;
 }
@@ -153,7 +167,7 @@ code span {
   list-style: disc;
 }
 
-#summary li::marker {
+#summary li::marker, #summary a {
   color: var(--accent);
 }
 

@@ -15,7 +15,6 @@ const Recorder = dynamic(
   { ssr: false }
 );
 
-
 const Category = dynamic(
   () => import("./components/Category").then((mod) => mod.Category),
   { ssr: true }
@@ -138,6 +137,8 @@ export default function Notes() {
         </div>
       )}
       <Recorder
+        generating={generating}
+        genStatus={genStatus}
         message={message}
         canvasRef={canvasRef}
         recording={recording}

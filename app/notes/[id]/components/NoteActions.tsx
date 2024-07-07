@@ -35,7 +35,7 @@ export default function NoteActions({
         {!focus && (
           <button
             onClick={() => setFocus((prev) => !prev)}
-            className="text-xl w-full text-left px-3 py-2 rounded-xl hover:bg-bb font-semibold hidden lg:flex gap-2 items-center justify-start transition-all duration-300 font-mono"
+            className="text-lg w-full text-left px-5 py-2 rounded-xl hover:bg-bb font-semibold hidden lg:flex gap-2 items-center justify-start transition-all duration-300 font-mono"
           >
             Focus
           </button>
