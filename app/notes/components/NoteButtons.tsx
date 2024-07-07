@@ -1,8 +1,7 @@
 import SlidingShelf from "@/components/ui/SlidingShelf";
 import { motion } from "framer-motion";
-import { ReactNode, useState } from "react";
+import { Dispatch, ReactNode, SetStateAction } from "react";
 import { FaPlus } from "react-icons/fa6";
-import { AddActions } from "./AddActions";
 
 export const RecordButton = ({
   recording,
@@ -42,8 +41,15 @@ export const RecordButton = ({
   </motion.button>
 );
 
-export const AddButton = () => {
-  const [open, setOpen] = useState(false);
+export const AddButton = ({
+  open,
+  setOpen,
+  children
+}: {
+  open: boolean;
+  setOpen: Dispatch<SetStateAction<boolean>>;
+  children: ReactNode
+}) => {
   return (
     <>
       <motion.button
@@ -74,7 +80,7 @@ export const AddButton = () => {
         <FaPlus />
       </motion.button>
       <SlidingShelf open={open} enableDesktopMode setOpen={setOpen}>
-        <AddActions restart={!open} />
+        {children}
       </SlidingShelf>
     </>
   );

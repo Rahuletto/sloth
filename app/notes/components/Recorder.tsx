@@ -3,7 +3,13 @@ import useVisualizer from "@/hooks/useVisualizer";
 import { blobToDataURL } from "@/utils/blobToData";
 import { User } from "firebase/auth";
 import { motion } from "framer-motion";
-import React, { Dispatch, SetStateAction, useEffect, RefObject } from "react";
+import React, {
+  Dispatch,
+  SetStateAction,
+  useEffect,
+  RefObject,
+  useState,
+} from "react";
 
 import { useAuth } from "@/provider/UserProvider";
 import dynamic from "next/dynamic";
@@ -40,6 +46,8 @@ interface RecorderProps {
   message: string;
   setMessage: Dispatch<SetStateAction<string>>;
   setGenerating: Dispatch<SetStateAction<boolean>>;
+  generating: boolean;
+  genStatus: string
   setGenStatus: Dispatch<SetStateAction<string>>;
   setNotes: Dispatch<
     SetStateAction<{
@@ -54,10 +62,14 @@ export default function Recorder({
   canvasRef,
   message,
   setMessage,
+  genStatus,
   setGenerating,
+  generating,
   setGenStatus,
   setNotes,
 }: RecorderProps) {
+  const [open, setOpen] = useState(false);
+
   const user = useAuth();
 
   const handleRecordingStop = async (dataUrl: string, user: User) => {
@@ -89,22 +101,19 @@ export default function Recorder({
         });
         const topics = await topicsRes.json();
         const title = topics.result.title;
-        setNotes(
-          await saveNote({
-            user,
-            dataUrl,
-            title,
-            src: [{ type: "audio", url }],
-            transcript: transcribe.data,
-            topics: topics.result,
-          })
-        );
+        const newNotes = await saveNote({
+          user,
+          title,
+          src: [{ type: "audio", url }],
+          transcript: transcribe.data,
+          topics: topics.result,
+        });
+        setNotes(newNotes);
       } catch (error) {
         console.error("Error getting topics:", error);
         setNotes(
           await saveNote({
             user,
-            dataUrl,
             title: "New Note",
             src: [{ type: "audio", url }],
             transcript: transcribe.data,
@@ -204,7 +213,16 @@ export default function Recorder({
                 disabled={!!message}
               />
               {!recording && (
-                <AddButton />
+                <AddButton open={open} setOpen={setOpen}>
+                  <AddActions
+                    restart={!open}
+                    genStatus={genStatus}
+                    generating={generating}
+                    setGenStatus={setGenStatus}
+                    setGenerating={setGenerating}
+                    setNotes={setNotes}
+                  />
+                </AddButton>
               )}
             </div>
           </>

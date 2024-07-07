@@ -1,96 +1,88 @@
 "use client";
-import React, { useRef, useState } from "react";
-import { FaFire } from "react-icons/fa6";
-import { pdfjs } from "react-pdf";
+import React, { useState, useCallback } from "react";
+import { Note } from "@/types/NoteData";
+import { useAuth } from "@/provider/UserProvider";
+import { saveNote } from "@/firebase/firestore";
+import { uploadFile } from "@/firebase/storage";
+import FileUploadArea from "./FileUploadArea";
+import { readFile } from "@/utils/readFile";
 
-const workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`;
-pdfjs.GlobalWorkerOptions.workerSrc = workerSrc;
+export default function PdfToTextConverter({
+  setGenerating,
+  generating,
+  genStatus,
+  setGenStatus,
+  setNotes,
+}: {
+  setGenerating: React.Dispatch<React.SetStateAction<boolean>>;
+  generating: boolean;
+  genStatus: string;
+  setGenStatus: React.Dispatch<React.SetStateAction<string>>;
+  setNotes: React.Dispatch<React.SetStateAction<{ [key: string]: Note[] }>>;
+}) {
+  const user = useAuth();
+  const [text, setText] = useState("");
+  const [src, setSrc] = useState<{ url: string; type: "pdf" }[]>([]);
 
-export default function PdfToTextConverter() {
-  const hiddenFileInput = useRef<HTMLInputElement>(null);
-  const fire = useRef<HTMLSpanElement>(null);
-  const [dragging, setDragging] = useState(false);
+  const save = useCallback(
+    async (saveText: string, saveSrc: { url: string; type: "pdf" }[]) => {
+      if (!user || !saveText.trim()) return;
 
-  function addFile() {
-    if (hiddenFileInput.current) hiddenFileInput.current.click();
-  }
-
-  function dropHandler(ev: React.DragEvent<HTMLDivElement>) {
-    ev.preventDefault();
-
-    if (ev.dataTransfer.items) {
-      [...ev.dataTransfer.items].forEach((item, i) => {
-        if (item.kind === "file") {
-          const file = item.getAsFile();
-
-          if (file && file.name.endsWith(".pdf")) readFile(file);
-        }
+      setGenStatus("Gathering topics...");
+      const topicsRes = await fetch("/api/google/topics", {
+        method: "POST",
+        body: JSON.stringify({ prompt: saveText.trim() }),
       });
-    } else {
-      [...ev.dataTransfer.files].forEach((file, i) => {
-        if (file && file.name.endsWith(".pdf")) readFile(file);
+      const topics = await topicsRes.json();
+      const title = topics.result.title;
+
+      const newNotes = await saveNote({
+        user,
+        title,
+        src: saveSrc,
+        transcript: saveText,
+        topics: topics.result,
       });
+
+      setGenerating(false);
+      setGenStatus("Notes generated");
+      setText("");
+      setSrc([]);
+      setNotes(newNotes);
+    },
+    [user, setGenerating, setGenStatus, setNotes]
+  );
+
+  const handleFiles = async (files: File[]) => {
+    if (!user) return;
+
+    setGenerating(true);
+    setGenStatus("Processing files...");
+
+    let newText = text;
+    let newSrc = [...src];
+
+    for (const file of files) {
+      if (file.name.endsWith(".pdf")) {
+        const fileText = await readFile(file);
+        newText += fileText;
+
+        const uploadUrl = await uploadFile(user.uid, file);
+        newSrc.push({ url: uploadUrl, type: "pdf" });
+      }
     }
-  }
 
-  const onFileChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
-    const files = event.target.files;
-    if (files?.[0]) {
-      Array.from(files).forEach((file) => {
-        readFile(file);
-      });
-    }
+    setText(newText);
+    setSrc(newSrc);
+
+    await save(newText, newSrc);
   };
 
   return (
-    <div
-      onClick={addFile}
-      onDrop={dropHandler}
-      onDragLeave={() => setDragging(false)}
-      onDragOver={() => setDragging(true)}
-      className="my-2 font-medium font-mono cursor-pointer flex gap-4 rounded-2xl border-4 max-w-[450px] px-8 py-4 aspect-video border-alt text-light flex-col items-center justify-center border-dashed"
-    >
-      <span
-        ref={fire}
-        className={`transition-all duration-200 ${
-          dragging ? "text-5xl text-accent" : "text-3xl text-light"
-        }`}
-      >
-        <FaFire />
-      </span>
-      <p className="max-w-[350px] text-center">
-        Let{"'"}s upload the PDF file{"(s)"}. or just throw it to me like its a
-        hot cake.
-      </p>
-      <input
-        multiple
-        ref={hiddenFileInput}
-        className="hidden"
-        type="file"
-        accept=".pdf"
-        onChange={onFileChange}
-      />
-    </div>
+    <FileUploadArea
+      onFilesReceived={handleFiles}
+      generating={generating}
+      genStatus={genStatus}
+    />
   );
-}
-
-function readFile(file: Blob) {
-  const reader = new FileReader();
-  reader.onload = async (e) => {
-    const buffer = e.target?.result as ArrayBuffer;
-    if (buffer) {
-      const typedArray = new Uint8Array(buffer);
-      const pdf = await pdfjs.getDocument(typedArray).promise;
-      let extractedText = "";
-      for (let i = 1; i <= pdf.numPages; i++) {
-        const page = await pdf.getPage(i);
-        const pageText = await page.getTextContent();
-        extractedText += pageText.items
-          .map((item) => (item as any).str)
-          .join(" ");
-      }
-      console.log(extractedText);
-    }
-  };
-  reader.readAsArrayBuffer(file);
 }
