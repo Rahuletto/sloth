@@ -1,4 +1,5 @@
 "use client";
+
 import React, { useEffect, useRef, useState } from "react";
 import { getData } from "@/firebase/firestore";
 import { useAuth } from "@/provider/UserProvider";
@@ -9,13 +10,13 @@ import NotFoundError from "@/app/not-found";
 import Loader from "@/components/ui/Loader";
 
 import { QuizData } from "@/types/Quiz";
-import QuizCard from "./components/QuizCard";
 import Back from "@/components/ui/Back";
 import { Link } from "next-view-transitions";
 import Gemini from "@/components/ui/Gemini";
+import QuizCard from "./components/QuizCard";
 
 export default function Quiz({ params }: { params: { id: string } }) {
-  const id = params.id;
+  const {id} = params;
   const user = useAuth();
   const router = useRouter();
   const [note, setNote] = useState<DocumentData | null>(null);
@@ -60,7 +61,7 @@ export default function Quiz({ params }: { params: { id: string } }) {
     );
   }, [grade]);
 
-  if (user == false) router.push("/auth");
+  if (user === false) router.push("/auth");
 
   if (!note || !note.title) return <Loader />;
   if (note.error) return <NotFoundError />;
@@ -101,6 +102,7 @@ export default function Quiz({ params }: { params: { id: string } }) {
                   ? "text-7xl scale-110"
                   : "text-5xl scale-100"
               } mx-auto lg:mt-12 mt-4 ${
+                // eslint-disable-next-line no-nested-ternary
                 grade.filter((g) => g === null).length <= 0
                   ? percent >= 50
                     ? "text-green"

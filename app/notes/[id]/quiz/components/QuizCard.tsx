@@ -1,5 +1,11 @@
+import React, {
+  Dispatch,
+  RefObject,
+  SetStateAction,
+  useEffect,
+  useRef,
+} from "react";
 import { generateId } from "@/utils/generateId";
-import { Dispatch, RefObject, SetStateAction, useEffect, useRef } from "react";
 import Markdown from "react-markdown";
 import Code from "../../components/Code";
 
@@ -70,13 +76,8 @@ export default function QuizCard({
   return (
     <div
       ref={card}
-      className={`snap-center border-2 ${
-        grade[num - 1] === "wrong"
-          ? "border-accent"
-          : grade[num - 1] === "correct"
-          ? "border-green"
-          : "border-bb"
-      } bg-category lg:px-12 lg:py-8 h-fit rounded-3xl lg:min-w-[70%] min-w-[96%] px-7 py-5 duration-300 transition-all delay-500`}
+      // eslint-disable-next-line no-nested-ternary
+      className={`snap-center border-2 ${grade[num - 1] === "wrong" ? "border-accent" : grade[num - 1] === "correct" ? "border-green" : "border-bb"} bg-category lg:px-12 lg:py-8 h-fit rounded-3xl lg:min-w-[70%] min-w-[96%] px-7 py-5 duration-300 transition-all delay-500`}
     >
       <h1 className="text-2xl font-semibold md:block hidden">Question {num}</h1>
 
@@ -93,6 +94,7 @@ export default function QuizCard({
               {["A", "B", "C", "D"][i]}
             </p>{" "}
             <button
+              type="button"
               onClick={(e) => evaluateAns(e, option)}
               className="text-left flex items-center md:px-6 md:text-lg text-sm px-3 py-2 rounded-xl border-b-8 border-2 border-bb w-full"
             >

@@ -1,8 +1,6 @@
 import type { Config } from "tailwindcss";
-
-const {
-  default: flattenColorPalette,
-} = require("tailwindcss/lib/util/flattenColorPalette");
+// eslint-disable-next-line import/no-extraneous-dependencies
+import tailwindScrollbar from "tailwind-scrollbar";
 
 const config: Config = {
   content: [
@@ -26,19 +24,18 @@ const config: Config = {
       },
       keyframes: {
         spin: {
-          "to" :{rotate: "360deg"}
+          to: { rotate: "360deg" },
         },
         fadein: {
           "0%": { opacity: "0" },
           "100%": { opacity: "1" },
         },
         shake: {
-          "10%, 90%": { rotate: '-0.3deg' },
-          "20%, 80%": { rotate: '0.1deg' },
-          "30%, 50%, 70%": { rotate: '-0.5deg' },
-          "40%, 60%": { rotate: '0.2deg' },
+          "10%, 90%": { rotate: "-0.3deg" },
+          "20%, 80%": { rotate: "0.1deg" },
+          "30%, 50%, 70%": { rotate: "-0.5deg" },
+          "40%, 60%": { rotate: "0.2deg" },
         },
-        
       },
       colors: {
         gemini: {
@@ -66,17 +63,7 @@ const config: Config = {
       },
     },
   },
-  plugins: [addVariablesForColors, require('tailwind-scrollbar')],
+
+  plugins: [tailwindScrollbar],
 };
 export default config;
-
-function addVariablesForColors({ addBase, theme }: any) {
-  let allColors = flattenColorPalette(theme("colors"));
-  let newVars = Object.fromEntries(
-    Object.entries(allColors).map(([key, val]) => [`--${key}`, val])
-  );
-
-  addBase({
-    ":root": newVars,
-  });
-}

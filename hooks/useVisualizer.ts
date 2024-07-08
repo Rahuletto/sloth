@@ -1,4 +1,5 @@
 "use client";
+
 import { useEffect, useRef } from "react";
 
 interface Opts {
@@ -42,13 +43,14 @@ const opts: Opts = {
 const useVisualizer = (
   status: string,
   previewAudioStream: MediaStream | null,
-  canvasRef: React.RefObject<HTMLCanvasElement>
+  canvasRef: React.RefObject<HTMLCanvasElement>,
 ) => {
   const dataHistoryRef = useRef<number[][]>([]);
 
   useEffect(() => {
     if (status === "recording" && previewAudioStream) {
-      const audioCtx = new (window.AudioContext || (window as any).webkitAudioContext)();
+      const audioCtx = new (window.AudioContext ||
+        (window as any).webkitAudioContext)();
       const analyser = audioCtx.createAnalyser();
       const source = audioCtx.createMediaStreamSource(previewAudioStream);
       source.connect(analyser);
@@ -61,31 +63,33 @@ const useVisualizer = (
       const ctx = canvas.getContext("2d");
       if (!ctx) return;
 
-      analyser.fftSize = Math.pow(2, opts.fftSize);
+      analyser.fftSize = 2 ** opts.fftSize;
       const bufferLength = analyser.frequencyBinCount * 2;
       const dataArray = new Uint8Array(bufferLength);
 
-      const drawCurve = (points: [number, number][], ctx: CanvasRenderingContext2D) => {
-        ctx.beginPath();
-        ctx.moveTo(points[0][0], points[0][1]);
+      const drawCurve = (
+        points: [number, number][],
+        context: CanvasRenderingContext2D,
+      ) => {
+        context.beginPath();
+        context.moveTo(points[0][0], points[0][1]);
 
         for (let i = 1; i < points.length - 2; i++) {
           const xc = (points[i][0] + points[i + 1][0]) / 2;
           const yc = (points[i][1] + points[i + 1][1]) / 2;
-          ctx.quadraticCurveTo(points[i][0], points[i][1], xc, yc);
+          context.quadraticCurveTo(points[i][0], points[i][1], xc, yc);
         }
 
-        ctx.quadraticCurveTo(
+        context.quadraticCurveTo(
           points[points.length - 2][0],
           points[points.length - 2][1],
           points[points.length - 1][0],
-          points[points.length - 1][1]
+          points[points.length - 1][1],
         );
       };
 
-      const easeValue = (current: number, target: number, factor: number) => {
-        return current + (target - current) * factor;
-      };
+      const easeValue = (current: number, target: number, factor: number) =>
+        current + (target - current) * factor;
 
       const draw = () => {
         requestAnimationFrame(draw);
@@ -105,12 +109,19 @@ const useVisualizer = (
         }
 
         const easedData = currentData.map((value, index) => {
-          const history = dataHistoryRef.current.map(data => data[index]);
-          return history.reduce((acc, val) => easeValue(acc, val, opts.easeFactory), value);
+          const history = dataHistoryRef.current.map((data) => data[index]);
+          return history.reduce(
+            (acc, val) => easeValue(acc, val, opts.easeFactory),
+            value,
+          );
         });
 
         for (let channel = 0; channel < 3; channel++) {
-          const color = (opts as any)[`color${channel + 1}`] as [number, number, number];
+          const color = (opts as any)[`color${channel + 1}`] as [
+            number,
+            number,
+            number,
+          ];
 
           ctx.fillStyle = `rgba(${color.join(", ")}, ${opts.fillOpacity})`;
           ctx.strokeStyle = ctx.shadowColor = `rgb(${color.join(", ")})`;
@@ -124,7 +135,7 @@ const useVisualizer = (
 
           for (let i = 0; i < bufferLength; i++) {
             const v = easedData[i] / 128.0;
-            const y = (v * HEIGHT)/2;
+            const y = (v * HEIGHT) / 2;
             points.push([x, y]);
             x += sliceWidth;
           }

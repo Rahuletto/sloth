@@ -1,10 +1,11 @@
+import React from "react";
 import Gemini from "@/components/ui/Gemini";
 import { generateId } from "@/utils/generateId";
 import { Draggable } from "react-beautiful-dnd";
 
 
-export const GeneratingNote = ({ genStatus }: { genStatus: string }) => (
-  <Draggable draggableId={generateId("sloth.")} isDragDisabled index={0}>
+export function GeneratingNote({ genStatus }: { genStatus: string }) {
+  return <Draggable draggableId={generateId("sloth.")} isDragDisabled index={0}>
       {(provided) => (
 <div
 ref={provided.innerRef}
@@ -19,4 +20,4 @@ ref={provided.innerRef}
   </div>
       )}
       </Draggable>
-);
+}

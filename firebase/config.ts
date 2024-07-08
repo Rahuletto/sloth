@@ -1,5 +1,8 @@
 import { initializeApp, getApps } from "firebase/app";
-import { CACHE_SIZE_UNLIMITED, FirestoreSettings, initializeFirestore } from "firebase/firestore";
+import {
+  FirestoreSettings,
+  initializeFirestore,
+} from "firebase/firestore";
 import { getAnalytics } from "firebase/analytics";
 import { getAuth } from "firebase/auth";
 import { getInstallations } from "firebase/installations";
@@ -15,24 +18,23 @@ const firebaseConfig = {
   measurementId: process.env.NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID,
 };
 
-const firestoreSettings: FirestoreSettings & { useFetchStreams: boolean} ={
+const firestoreSettings: FirestoreSettings & { useFetchStreams: boolean } = {
   useFetchStreams: false,
   experimentalForceLongPolling: true,
   localCache: {
-    kind: 'persistent'
+    kind: "persistent",
   },
-}
+};
 
-let firebase_app =
+const firebaseApp =
   getApps().length === 0 ? initializeApp(firebaseConfig) : getApps()[0];
 export const analytics =
-  firebase_app.name && typeof window !== "undefined"
-    ? getAnalytics(firebase_app)
+  firebaseApp.name && typeof window !== "undefined"
+    ? getAnalytics(firebaseApp)
     : null;
-export const auth = getAuth(firebase_app);
-export const db = initializeFirestore(firebase_app, firestoreSettings)
+export const auth = getAuth(firebaseApp);
+export const db = initializeFirestore(firebaseApp, firestoreSettings);
 
-export const installations = getInstallations(firebase_app);
-export const storage = getStorage(firebase_app);
-export default firebase_app;
-
+export const installations = getInstallations(firebaseApp);
+export const storage = getStorage(firebaseApp);
+export default firebaseApp;

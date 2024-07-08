@@ -1,3 +1,20 @@
 {
-  "extends": "next/core-web-vitals"
+  "extends": ["next/core-web-vitals","airbnb", "airbnb-typescript", "prettier"],
+  "rules": {
+    "react/require-default-props": "off",
+    "react/jsx-props-no-spreading": "off",
+    "no-console":"off",
+    "no-plusplus": "warn",
+    "import/prefer-default-export": "off",
+    "no-restricted-syntax": "warn",
+    "no-loop-func": "warn",
+    "no-await-in-loop": "off",
+    "no-param-reassign": "off",
+    "react/no-array-index-key": "off",
+    "no-alert": "off",
+    "no-restricted-globals": "warn"
+  },
+  "parserOptions": {
+    "project": "./tsconfig.json"
+  }
 }

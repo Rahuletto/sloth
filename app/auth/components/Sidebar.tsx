@@ -1,7 +1,17 @@
-import { ReactNode } from "react";
+import React, { ReactNode } from "react";
 import { PiCardsThreeDuotone, PiVinylRecordBold } from "react-icons/pi";
 import { TbMessageQuestion } from "react-icons/tb";
 import { RiScissorsCutFill } from "react-icons/ri";
+
+
+function Feature({ text, children }: { text: string; children: ReactNode }) {
+  return (
+    <div className="items-center flex gap-2 opacity-60">
+      {children}
+      <h3 className="text-md font-mono">{text}</h3>
+    </div>
+  );
+}
 
 export default function Sidebar() {
   return (
@@ -27,17 +37,8 @@ export default function Sidebar() {
         </div>
       </div>
       <p className="opacity-40">
-        Forget the old grind, I{"'"}ll help you with this game.
+        Forget the old grind, I&apos;ll help you with this game.
       </p>
     </div>
   );
 }
-
-function Feature({ text, children }: { text: string; children: ReactNode }) {
-    return (
-      <div className="items-center flex gap-2 opacity-60">
-        {children}
-        <h3 className="text-md font-mono">{text}</h3>
-      </div>
-    );
-  }

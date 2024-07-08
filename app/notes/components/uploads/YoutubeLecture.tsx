@@ -1,4 +1,5 @@
 "use client";
+
 import React, { useState } from "react";
 import { Note } from "@/types/NoteData";
 import { useAuth } from "@/provider/UserProvider";
@@ -46,8 +47,8 @@ export default function YoutubeLecture({
           .then((res) => res.json())
           .then((topics) => {
             setGenStatus("Gathering topics...");
-            const title = topics.result.title;
-            const description = topics.result.description;
+            const { title } = topics.result;
+            const { description } = topics.result;
             saveNote({
               user,
               title,
@@ -80,6 +81,9 @@ export default function YoutubeLecture({
         value={url}
       />
       <button
+        type="button"
+        aria-label="Generate notes"
+        title="Generate Notes"
         className="px-5 hover:px-7 active:px-2 active:bg-hue active:text-accent active:scale-90 bg-accent text-bg transition-all duration-300 hover:bg-transparent text-xl py-2 hover:text-accent hover:border-accent rounded-full border-2 border-transparent"
         onClick={() => generateTranscript()}
       >

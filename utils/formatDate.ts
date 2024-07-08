@@ -9,8 +9,8 @@ export const formatDate = (ms: number) => {
     const minutes = date.getMinutes().toString().padStart(2, '0');
     const ampm = hours >= 12 ? 'PM' : 'AM';
     
-    hours = hours % 12;
-    hours = hours ? hours : 12;
+    hours %= 12;
+    hours = hours || 12;
     const h = hours.toString().padStart(2, '0');
 
     return `${day} ${month}, ${h}:${minutes}${ampm}`;

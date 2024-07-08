@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef } from "react";
+import React, { useState, useRef } from "react";
 import { signInWithGoogle, signInWithEmail, signUpWithEmail } from "@/firebase/auth";
 import LoginForm from "./forms/LoginForm";
 import SignupForm from "./forms/SignupForm";
@@ -46,34 +46,42 @@ export default function LoginSignup() {
       });
   };
 
+  let formComponent = null;
+  
+  if (mode === "login") {
+    formComponent = (
+      <LoginForm
+        email={email}
+        setEmail={setEmail}
+        password={password}
+        setPassword={setPassword}
+        error={error}
+        handleLogIn={handleLogIn}
+        signInWithGoogle={signInWithGoogle}
+        toggleMode={toggleMode}
+      />
+    );
+  } else if (mode === "signup") {
+    formComponent = (
+      <SignupForm
+        email={email}
+        setEmail={setEmail}
+        password={password}
+        setPassword={setPassword}
+        error={error}
+        handleSignUp={handleSignUp}
+        signInWithGoogle={signInWithGoogle}
+        toggleMode={toggleMode}
+      />
+    );
+  }
+  
   return (
     <div
       ref={containerRef}
       className="flex flex-col lg:w-[50%] w-full justify-center items-center mx-auto duration-300 transition-all animate-fade"
     >
-      {mode === "login" ? (
-        <LoginForm
-          email={email}
-          setEmail={setEmail}
-          password={password}
-          setPassword={setPassword}
-          error={error}
-          handleLogIn={handleLogIn}
-          signInWithGoogle={signInWithGoogle}
-          toggleMode={toggleMode}
-        />
-      ) : mode === "signup" ? (
-        <SignupForm
-          email={email}
-          setEmail={setEmail}
-          password={password}
-          setPassword={setPassword}
-          error={error}
-          handleSignUp={handleSignUp}
-          signInWithGoogle={signInWithGoogle}
-          toggleMode={toggleMode}
-        />
-      ) : null}
+      {formComponent}
     </div>
   );
 }

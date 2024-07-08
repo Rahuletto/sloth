@@ -1,4 +1,5 @@
 "use client";
+
 import React, { ReactElement, useEffect, useRef, useState } from "react";
 import { getData } from "@/firebase/firestore";
 import { useAuth } from "@/provider/UserProvider";
@@ -16,7 +17,7 @@ import { IoCaretBack, IoCaretForward } from "react-icons/io5";
 import Gemini from "@/components/ui/Gemini";
 
 export default function Flashcards({ params }: { params: { id: string } }) {
-  const id = params.id;
+  const { id } = params;
   const user = useAuth();
   const router = useRouter();
   const [currentCard, setCurrentCard] = useState<number>(0);
@@ -75,7 +76,7 @@ export default function Flashcards({ params }: { params: { id: string } }) {
         });
   }, [note]);
 
-  if (user == false) router.push("/auth");
+  if (user === false) router.push("/auth");
 
   if (!note || !note.title) return <Loader />;
   if (note.error) return <NotFoundError />;
@@ -93,6 +94,8 @@ export default function Flashcards({ params }: { params: { id: string } }) {
             <div className="flex items-center justify-center lg:h-[55%] md:h-[70%] h-[80%] gap-6">
               <div className="w-16 justify-center md:flex hidden">
                 <button
+                  type="button"
+                  aria-label="previous card"
                   disabled={currentCard === 1}
                   onClick={() => controlRef.current.prevCard()}
                   className={`${
@@ -106,7 +109,7 @@ export default function Flashcards({ params }: { params: { id: string } }) {
                 forwardRef={controlRef}
                 controls={false}
                 showCount={false}
-                onCardChange={(id, index) => {
+                onCardChange={(_id, index) => {
                   setCurrentCard(index);
                 }}
                 frontCardStyle={{
@@ -122,6 +125,8 @@ export default function Flashcards({ params }: { params: { id: string } }) {
               />
               <div className="w-16 justify-center md:flex hidden">
                 <button
+                  type="button"
+                  aria-label="next card"
                   disabled={currentCard === cards.length}
                   onClick={() => controlRef.current.nextCard()}
                   className={`${
@@ -136,6 +141,8 @@ export default function Flashcards({ params }: { params: { id: string } }) {
             <div className="z-10 md:hidden absolute bottom-16 left-0 w-full flex items-center justify-center gap-16">
               <div className="w-[90px] flex justify-center">
                 <button
+                  type="button"
+                  aria-label="previous card"
                   disabled={currentCard === 1}
                   onClick={() => controlRef.current.prevCard()}
                   className={`${
@@ -147,6 +154,8 @@ export default function Flashcards({ params }: { params: { id: string } }) {
               </div>
               <div className="w-[90px] flex justify-center">
                 <button
+                  type="button"
+                  aria-label="next card"
                   disabled={currentCard === cards.length}
                   onClick={() => controlRef.current.nextCard()}
                   className={`${

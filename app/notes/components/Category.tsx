@@ -1,11 +1,12 @@
 "use client";
-import React, { ReactNode } from "react";
-import { StrictModeDroppable } from "@/components/dnd/Droppable";
-import { Note } from "@/types/NoteData";
-import { NoteCard } from "./NoteCard";
-import { FaStar, FaTrashCan } from "react-icons/fa6";
 
-export const Category = ({
+import React, { ReactNode } from "react";
+import StrictModeDroppable from "@/components/dnd/Droppable";
+import { Note } from "@/types/NoteData";
+import { FaStar, FaTrashCan } from "react-icons/fa6";
+import { NoteCard } from "./NoteCard";
+
+export function Category({
   title,
   notes,
   editMode,
@@ -19,7 +20,7 @@ export const Category = ({
   categoryId: string;
   generating?: ReactNode;
   onDelete: () => void;
-}) => {
+}) {
   const isLarge = notes.length >= 4;
 
   return (
@@ -34,9 +35,14 @@ export const Category = ({
         }`}
       >
         {title}
-        {title == "Starred" ? <FaStar /> : ""}
+        {title === "Starred" ? <FaStar /> : ""}
         {editMode && title !== "Starred" && title !== "Uncategorized" && (
-          <button onClick={onDelete} className="text-accent">
+          <button
+            onClick={onDelete}
+            className="text-accent"
+            aria-label="Delete"
+            type="button"
+          >
             <FaTrashCan className="text-xl" />
           </button>
         )}
@@ -69,4 +75,4 @@ export const Category = ({
       </StrictModeDroppable>
     </div>
   );
-};
+}

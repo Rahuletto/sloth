@@ -1,4 +1,5 @@
 "use client";
+
 import React, { useCallback } from "react";
 import { Note } from "@/types/NoteData";
 import { useAuth } from "@/provider/UserProvider";
@@ -33,8 +34,8 @@ export default function Audio({
         body: JSON.stringify({ prompt: saveTranscript.trim() }),
       });
       const topics = await topicsRes.json();
-      const title = topics.result.title;
-      const description = topics.result.description;
+      const {title} = topics.result;
+      const {description} = topics.result;
       const newNotes = await saveNote({
         user,
         title,

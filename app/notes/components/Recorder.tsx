@@ -1,7 +1,6 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 import useVisualizer from "@/hooks/useVisualizer";
 import { blobToDataURL } from "@/utils/blobToData";
-import { User } from "firebase/auth";
 import { motion } from "framer-motion";
 import React, {
   Dispatch,
@@ -16,27 +15,27 @@ import dynamic from "next/dynamic";
 import { uploadAudioFromDataURL } from "@/firebase/storage";
 import { getAudioLength } from "@/utils/audioLength";
 import { Note } from "@/types/NoteData";
-import { AddActions } from "./AddActions";
 import { saveNote } from "@/firebase/firestore";
+import { AddActions } from "./AddActions";
 
 const ReactMediaRecorder = dynamic(
   () => import("react-media-recorder-2").then((mod) => mod.ReactMediaRecorder),
-  { ssr: false }
+  { ssr: false },
 );
 
 const RecordingStatus = dynamic(
   () => import("./RecordingStatus").then((mod) => mod.RecordingStatus),
-  { ssr: false }
+  { ssr: false },
 );
 
 const RecordButton = dynamic(
   () => import("./NoteButtons").then((mod) => mod.RecordButton),
-  { ssr: false }
+  { ssr: false },
 );
 
 const AddButton = dynamic(
   () => import("./NoteButtons").then((mod) => mod.AddButton),
-  { ssr: false }
+  { ssr: false },
 );
 
 interface RecorderProps {
@@ -72,11 +71,12 @@ export default function Recorder({
 
   const user = useAuth();
 
-  const handleRecordingStop = async (dataUrl: string, user: User) => {
+  const handleRecordingStop = async (dataUrl: string) => {
+    if (!user) return;
     const length = await getAudioLength(dataUrl);
     if (length <= 120) {
       setMessage(
-        "Audio is less than 5 minutes. Lectures typically goes more than that right?"
+        "Audio is less than 5 minutes. Lectures typically goes more than that right?",
       );
       return;
     }
@@ -100,8 +100,8 @@ export default function Recorder({
           body: JSON.stringify({ prompt: transcribe.data }),
         });
         const topics = await topicsRes.json();
-        const title = topics.result.title;
-        const description = topics.result.description;
+        const { title } = topics.result;
+        const { description } = topics.result;
 
         const newNotes = await saveNote({
           user,
@@ -123,7 +123,7 @@ export default function Recorder({
             src: [{ type: "audio", url }],
             transcript: transcribe.data,
             topics: [],
-          })
+          }),
         );
       }
     }
@@ -145,25 +145,26 @@ export default function Recorder({
           try {
             navigator.permissions.query({ name: "microphone" as any });
             window.navigator.vibrate(10);
-          } catch {}
+          } catch {
+            // Ignore the error silently.
+          }
           if (recording) {
             stopRecording();
           } else {
             navigator.permissions
               .query({ name: "microphone" as any })
               .then((a) => {
-                console.log(a.state);
                 if (a.state === "prompt") {
                   startRecording();
                   setRecording(true);
-
-                  a.onchange = () => {
+                  const perms = a;
+                  perms.onchange = () => {
                     if (a.state === "granted") {
                       startRecording();
                       setRecording(true);
                     } else {
                       setMessage(
-                        "Please allow microphone access to use record."
+                        "Please allow microphone access to use record.",
                       );
                     }
                   };
@@ -185,7 +186,7 @@ export default function Recorder({
           if (status === "stopped" && mediaBlobUrl) {
             blobToDataURL(mediaBlobUrl).then((dataUrl) => {
               setRecording(false);
-              handleRecordingStop(dataUrl, user as User);
+              handleRecordingStop(dataUrl);
             });
           }
         }, [status, mediaBlobUrl]);
@@ -202,7 +203,7 @@ export default function Recorder({
                   className="absolute bottom-0 w-full left-0 h-48"
                   ref={canvasRef}
                   id="canvas"
-                ></motion.canvas>
+                />
                 <div className="absolute bg-gradient-to-r bottom-0 w-full left-0 h-48 from-bg via-transparent to-bg z-10" />
               </>
             )}

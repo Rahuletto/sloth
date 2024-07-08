@@ -1,9 +1,9 @@
+import React, { Dispatch, ReactNode, SetStateAction } from "react";
 import SlidingShelf from "@/components/ui/SlidingShelf";
 import { motion } from "framer-motion";
-import { Dispatch, ReactNode, SetStateAction } from "react";
 import { FaPlus } from "react-icons/fa6";
 
-export const RecordButton = ({
+export function RecordButton({
   recording,
   onClick,
   disabled,
@@ -11,14 +11,14 @@ export const RecordButton = ({
   recording: boolean;
   onClick: () => void;
   disabled: boolean;
-}) => (
-  <motion.button
+}) {
+  return <motion.button
     initial={{
       opacity: 0,
       paddingLeft: "3rem",
       paddingRight: "3rem",
       backgroundColor: "var(--accent)",
-      color: "var(--bg)",
+      color: "var(--background)",
       borderWidth: 2,
       borderColor: "var(--accent)",
     }}
@@ -28,7 +28,7 @@ export const RecordButton = ({
       scale: 0.9,
       borderColor: "var(--accent)",
       backgroundColor: recording ? "var(--accent)" : "#00000000",
-      color: recording ? "var(--bg)" : "var(--accent)",
+      color: recording ? "var(--background)" : "var(--accent)",
     }}
     transition={{ duration: 0.3 }}
     disabled={disabled}
@@ -39,9 +39,9 @@ export const RecordButton = ({
   >
     {recording ? "Stop" : "Record"}
   </motion.button>
-);
+}
 
-export const AddButton = ({
+export function AddButton({
   open,
   setOpen,
   children
@@ -49,7 +49,7 @@ export const AddButton = ({
   open: boolean;
   setOpen: Dispatch<SetStateAction<boolean>>;
   children: ReactNode
-}) => {
+}) {
   return (
     <>
       <motion.button
@@ -84,4 +84,4 @@ export const AddButton = ({
       </SlidingShelf>
     </>
   );
-};
+}

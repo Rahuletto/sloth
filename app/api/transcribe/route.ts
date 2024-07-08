@@ -1,4 +1,4 @@
-import { AssemblyAI } from "assemblyai";
+import { AssemblyAI } from 'assemblyai';
 
 export async function POST(request: Request) {
   const client = new AssemblyAI({
@@ -11,14 +11,16 @@ export async function POST(request: Request) {
     const transcript = await client.transcripts.transcribe({
       audio: body.data,
       speaker_labels: true,
-      speech_model: "nano",
+      speech_model: 'nano',
     });
-    if (transcript.status === "error") {
+    if (transcript.status === 'error') {
       console.warn(transcript.error);
     }
 
     return new Response(JSON.stringify({ data: transcript.text }));
   } catch (error: any) {
-    console.log(error);
+    console.warn(error);
   }
 }
+
+export const runtime = 'edge';

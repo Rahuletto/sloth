@@ -1,4 +1,5 @@
 "use client";
+
 import { Input } from "@/components/ui/Input";
 import { forgotPassword } from "@/firebase/auth";
 import React, { useState } from "react";
@@ -13,7 +14,7 @@ export default function Forgot() {
     const mail = email.trim();
     setEmail('')
     forgotPassword(mail)
-      .then((a) => {
+      .then(() => {
         setEmail("");
         setError("success");
       })
@@ -24,7 +25,7 @@ export default function Forgot() {
   };
   return (
     <main className="w-screen h-screen flex items-center justify-center duration-300 transition-all animate-fade">
-      {error == "success" ? (
+      {error === "success" ? (
         <div
           id="forgot"
           className="flex flex-col lg:w-[50%] w-full justify-center items-center mx-auto duration-300 transition-all animate-fade"
@@ -42,7 +43,7 @@ export default function Forgot() {
         >
           <h1 className="text-2xl font-semibold">You forgot it?</h1>
           <p>
-            Don{"'"}t worry. Enter your email and we{"'"}ll send you a magic
+            Don&apos;t worry. Enter your email and we&apos;ll send you a magic
             link.
           </p>
           {error && (

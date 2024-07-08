@@ -1,4 +1,5 @@
 "use client";
+
 import { motion } from "framer-motion";
 import { Link } from "next-view-transitions";
 import React from "react";
@@ -33,7 +34,7 @@ export default function NotFoundError() {
         </motion.div>
       </h1>
       <h2 className="font-sans text-2xl font-semibold">
-        You <span className="text-accent">lost</span> track.. You aren{"'"}t supposed to be here
+        You <span className="text-accent">lost</span> track.. You aren&apos;t supposed to be here
       </h2>
       <Link href="/" className="font-sans text-xl font-semibold bg-accent text-bg rounded-full px-8 py-4">Step back</Link>
     </div>

@@ -1,12 +1,12 @@
 "use client";
 
-import { useEffect } from "react";
+import React, { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/provider/UserProvider";
 import Loader from "@/components/ui/Loader";
+import { User } from "firebase/auth";
 import LoginSignup from "./LoginSignup";
 import Sidebar from "./Sidebar";
-import { User } from "firebase/auth";
 
 export default function AuthWrapper() {
   const router = useRouter();

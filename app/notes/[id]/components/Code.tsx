@@ -7,7 +7,7 @@ interface CodeProps extends React.HTMLAttributes<HTMLElement> {
   className?: string;
 }
 
-const Code: React.ComponentType<CodeProps> = ({ children, className, ...rest }) => {
+export default function Code({ children, className, ...rest }: CodeProps) {
   const match = /language-(\w+)/.exec(className || '');
   
   if (match && typeof children === 'string') {
@@ -29,5 +29,3 @@ const Code: React.ComponentType<CodeProps> = ({ children, className, ...rest }) 
     </code>
   );
 };
-
-export default Code;

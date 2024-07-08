@@ -1,6 +1,5 @@
-import React from 'react'
-import { RiLoaderLine } from 'react-icons/ri'
-
+import React from 'react';
+import { RiLoaderLine } from 'react-icons/ri';
 
 export default function Loader() {
   return (
@@ -11,5 +10,5 @@ export default function Loader() {
       <RiLoaderLine className="text-accent opacity-90 animate-spin text-6xl transition-all" />
       <h1 className="text-2xl font-semibold">Loading..</h1>
     </div>
-  )
+  );
 }

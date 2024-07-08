@@ -1,15 +1,13 @@
 import React, { useRef, useState } from "react";
 import { FaFire } from "react-icons/fa6";
+import Gemini from "@/components/ui/Gemini";
 import { FileUploadAreaProps } from "./FileUploadArea";
 
-import Gemini from "@/components/ui/Gemini";
-
-
-const AudioUploadArea: React.FC<FileUploadAreaProps> = ({
+export default function AudioUploadArea({
   onFilesReceived,
   generating,
   genStatus,
-}) => {
+}: FileUploadAreaProps) {
   const hiddenFileInput = useRef<HTMLInputElement>(null);
   const [dragging, setDragging] = useState(false);
 
@@ -42,17 +40,26 @@ const AudioUploadArea: React.FC<FileUploadAreaProps> = ({
         e.preventDefault();
         setDragging(true);
       }}
-      className="my-2 font-medium font-mono cursor-pointer flex gap-4 rounded-2xl border-4 max-w-[450px] px-8 py-4 aspect-video border-alt text-light flex-col items-center justify-center border-dashed"
+      onKeyDown={(e) => {
+        if (e.key === "Enter") {
+          hiddenFileInput.current?.click();
+        }
+      }}
+      role="button"
+      tabIndex={0}
+      className="my-2 transform-all duration-300 active:bg-[rgba(0,0,0,0.3)] active:scale-95 font-medium font-mono cursor-pointer flex gap-4 rounded-2xl border-4 max-w-[450px] px-8 py-4 aspect-video border-alt text-light flex-col items-center justify-center border-dashed"
     >
       <span
         className={`${generating ? "animate-geminiSpin" : "duration-200"} transition-all ${
           dragging ? "text-5xl text-accent" : "text-3xl text-light"
         }`}
       >
-        {generating ? <Gemini/> : <FaFire />}
+        {generating ? <Gemini /> : <FaFire />}
       </span>
       <p className="font-mono max-w-[350px] text-center">
-        {generating ? genStatus : "Let's listen to the audio, You can throw it to me like its a hot cake."}
+        {generating
+          ? genStatus
+          : "Let's listen to the audio, You can throw it to me like its a hot cake."}
       </p>
       <input
         ref={hiddenFileInput}
@@ -63,6 +70,4 @@ const AudioUploadArea: React.FC<FileUploadAreaProps> = ({
       />
     </div>
   );
-};
-
-export default AudioUploadArea;
+}

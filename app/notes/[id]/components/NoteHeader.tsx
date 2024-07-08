@@ -1,19 +1,19 @@
 "use client";
+
+import React from "react";
 import Back from "@/components/ui/Back";
 import { formatDate } from "@/utils/formatDate";
 
 export default function NoteHeader({
-  id,
   title,
   createdAt,
 }: {
-  id: string;
   title: string;
   createdAt: number;
 }) {
-  return (
+return (
     <div className="flex justify-start gap-4 items-start">
-      <Back href={`/notes`} />
+      <Back href="/notes" />
       <div>
         <h1 className="lg:text-5xl md:text-4xl text-2xl text-color font-semibold transition-all duration-300">
           {title}

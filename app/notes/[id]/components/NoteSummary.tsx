@@ -1,14 +1,15 @@
+import React, { useEffect, useRef, useState } from "react";
+
 import Markdown from "react-markdown";
 import rehypeKatex from "rehype-katex";
 import remarkMath from "remark-math";
 import remarkBreaks from "remark-breaks";
-import Code from "./Code";
 
 import Gemini from "@/components/ui/Gemini";
 import { RiSpeakFill } from "react-icons/ri";
 import { NoteData } from "@/types/NoteData";
-import { useEffect, useRef, useState } from "react";
 import { FaPause, FaPlay } from "react-icons/fa6";
+import Code from "./Code";
 
 export default function NoteSummary({
   note,
@@ -71,7 +72,7 @@ export default function NoteSummary({
     let i = -1;
     const words = document.querySelectorAll<HTMLSpanElement>("#summary .word");
 
-    function onboundaryHandler(event: SpeechSynthesisEvent) {
+    function onboundaryHandler() {
       if (words[i - 1]) {
         words[i - 1].classList.remove("highlight");
       }
@@ -111,11 +112,17 @@ export default function NoteSummary({
             Summary
           </h2>
           <button
+            type="button"
+            // eslint-disable-next-line jsx-a11y/tabindex-no-positive
+            tabIndex={1}
             onClick={() => setSpeaking((prev) => !prev)}
             title="Speak summary"
             className="p-3 px-5 flex gap-3 text-xl h-fit dark:bg-[rgba(255,255,255,0.1)] font-medium bg-[rgba(0,0,0,0.1)] rounded-lg transition-all duration-300"
           >
-            {speaking || synthesisRef.current ? <RiSpeakFill className="opacity-40" /> : null}
+            {speaking || synthesisRef.current ? (
+              <RiSpeakFill className="opacity-40" />
+            ) : null}
+            {/* eslint-disable-next-line no-nested-ternary */}
             {speaking ? (
               <FaPause />
             ) : synthesisRef.current ? (

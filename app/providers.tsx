@@ -1,7 +1,9 @@
 "use client";
+
 import { ThemeProvider } from "@/provider/ThemeProvider";
 import { UserProvider } from "@/provider/UserProvider";
-import { ReactNode } from "react";
+import React, { ReactNode } from "react";
+// eslint-disable-next-line import/no-extraneous-dependencies
 import "regenerator-runtime/runtime";
 
 export default function Providers({ children }: { children: ReactNode }) {

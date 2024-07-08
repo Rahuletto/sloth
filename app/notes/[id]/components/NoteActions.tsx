@@ -1,16 +1,12 @@
+import React, { Dispatch, SetStateAction } from "react";
 import { motion } from "framer-motion";
-import { PiCardsThreeDuotone } from "react-icons/pi";
-import { TbMessageQuestion } from "react-icons/tb";
-import NoteTopics from "./NoteTopics";
-import { TopicData } from "@/types/Topic";
-import { Dispatch, SetStateAction } from "react";
-import { Link } from "next-view-transitions";
 import SlidingShelf from "@/components/ui/SlidingShelf";
 import { IoSparkles } from "react-icons/io5";
 import { FaTrashCan } from "react-icons/fa6";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/provider/UserProvider";
 import { deleteData } from "@/firebase/firestore";
+import Actions from "./subcomponents/Actions";
 
 export default function NoteActions({
   note,
@@ -50,67 +46,35 @@ export default function NoteActions({
       >
         <Actions topics={note.topics} focus={focus} id={id} />
         <div className="flex gap-2 flex-col">
-        {!focus && (
+          {!focus && (
+            <button
+              type="button"
+              onClick={() => setFocus((prev) => !prev)}
+              className="text-lg w-full text-left px-5 py-2 rounded-xl hover:bg-bb font-semibold hidden lg:flex gap-3 items-center justify-start transition-all duration-300"
+            >
+              <IoSparkles /> Focus
+            </button>
+          )}
           <button
-            onClick={() => setFocus((prev) => !prev)}
-            className="text-lg w-full text-left px-5 py-2 rounded-xl hover:bg-bb font-semibold hidden lg:flex gap-3 items-center justify-start transition-all duration-300"
+            type="button"
+            onClick={del}
+            className="hover:border-accent border-2 border-transparent text-accent text-lg w-full text-left px-5 py-2 rounded-xl bg-hue font-semibold flex gap-3 items-center justify-start transition-all duration-300"
           >
-            <IoSparkles /> Focus
+            <FaTrashCan className="text-xl" /> Delete
           </button>
-        )}
-        <button
-          onClick={del}
-          className="hover:border-accent border-2 border-transparent text-accent text-lg w-full text-left px-5 py-2 rounded-xl bg-hue font-semibold flex gap-3 items-center justify-start transition-all duration-300"
-        >
-          <FaTrashCan className="text-xl" /> Delete
-        </button>
         </div>
       </motion.div>
       {/* Mobile */}
       <SlidingShelf open={open} setOpen={setOpen}>
         <Actions topics={note.topics} focus={focus} id={id} />
         <button
+          type="button"
           onClick={del}
           className="hover:border-accent border-2 border-transparent text-accent text-lg w-full text-left px-5 py-2 rounded-xl bg-hue font-semibold flex gap-3 items-center justify-start transition-all duration-300"
         >
           <FaTrashCan className="text-xl" /> Delete
         </button>
       </SlidingShelf>
-    </>
-  );
-}
-
-function Actions({
-  topics,
-  focus,
-  id,
-}: {
-  topics: TopicData;
-  focus: boolean;
-  id: string;
-}) {
-  return (
-    <>
-      <NoteTopics topics={topics} focus={focus} />
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: focus ? 0 : 1 }}
-        transition={{ duration: 0.3 }}
-        className="bg-box border-2 border-bb flex flex-col gap-1 justify-start items-start rounded-2xl p-0.5"
-      >
-        <Link
-          href={`/notes/${id}/cards`}
-          className="w-full opacity-60 hover:opacity-95 text-left px-3 py-2 rounded-xl hover:bg-accent hover:text-bg font-semibold flex gap-2 items-center justify-start transition-all duration-300 font-mono"
-        >
-          <PiCardsThreeDuotone /> Flash cards
-        </Link>
-        <Link
-          href={`/notes/${id}/quiz`}
-          className="w-full text-left opacity-60 hover:opacity-95 px-3 py-2 rounded-xl hover:bg-accent hover:text-bg font-semibold flex gap-2 items-center justify-start transition-all duration-300 font-mono"
-        >
-          <TbMessageQuestion /> Quiz
-        </Link>
-      </motion.div>
     </>
   );
 }

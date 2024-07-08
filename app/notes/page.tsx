@@ -1,5 +1,7 @@
 /* eslint-disable react-hooks/rules-of-hooks */
+
 "use client";
+
 import Loader from "@/components/ui/Loader";
 import { getAllNotes, setData, deleteCategory } from "@/firebase/firestore";
 import { useAuth } from "@/provider/UserProvider";
@@ -17,25 +19,28 @@ import {
 } from "react-beautiful-dnd";
 import { BiPencil } from "react-icons/bi";
 import { GrPowerShutdown } from "react-icons/gr";
+import { useTheme } from "@/provider/ThemeProvider";
+import { FaRegMoon, FaRegSun } from "react-icons/fa";
 import { AddCategory } from "./components/AddCategory";
 
 const Recorder = dynamic(
   () => import("./components/Recorder").then((mod) => mod.default),
-  { ssr: false }
+  { ssr: false },
 );
 
 const Category = dynamic(
   () => import("./components/Category").then((mod) => mod.Category),
-  { ssr: true }
+  { ssr: true },
 );
 
 const GeneratingNote = dynamic(
   () => import("./components/GeneratingNote").then((mod) => mod.GeneratingNote),
-  { ssr: false }
+  { ssr: false },
 );
 
 export default function Notes() {
   const user = useAuth();
+  const { isDark, toggleTheme } = useTheme();
   const router = useRouter();
   const [message, setMessage] = useState("");
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -67,14 +72,14 @@ export default function Notes() {
               acc[category].push(note);
               return acc;
             },
-            { Starred: [], Uncategorized: [] }
+            { Starred: [], Uncategorized: [] },
           );
           setNotes(categorizedNotes);
           setCategoryOrder([
             "Starred",
             "Uncategorized",
             ...Object.keys(categorizedNotes).filter(
-              (cat) => cat !== "Starred" && cat !== "Uncategorized"
+              (cat) => cat !== "Starred" && cat !== "Uncategorized",
             ),
           ]);
         });
@@ -143,7 +148,7 @@ export default function Notes() {
     setNotes(newNotes);
 
     setCategoryOrder((prevOrder) =>
-      prevOrder.filter((cat) => cat !== categoryToDelete)
+      prevOrder.filter((cat) => cat !== categoryToDelete),
     );
 
     if (user) {
@@ -177,6 +182,22 @@ export default function Notes() {
             </h1>
             <div className="flex gap-2 rounded-full bg-box border-2 border-bb p-1 items-center justify-between">
               <button
+                aria-label="Edit library"
+                type="button"
+                className={`hover:bg-alt p-2 rounded-full duration-150 ${
+                  editMode ? "bg-alt" : ""
+                }`}
+                onClick={toggleTheme}
+              >
+                {isDark ? (
+                  <FaRegMoon className="text-2xl" />
+                ) : (
+                  <FaRegSun className="text-2xl" />
+                )}
+              </button>
+              <button
+                aria-label="Edit library"
+                type="button"
                 className={`hover:bg-alt p-2 rounded-full duration-150 ${
                   editMode ? "bg-alt" : ""
                 }`}
@@ -199,7 +220,7 @@ export default function Notes() {
                 {...provided.droppableProps}
                 ref={provided.innerRef}
                 className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-4 auto-rows-auto mt-8"
-                style={{ gridAutoFlow: 'dense' }}
+                style={{ gridAutoFlow: "dense" }}
               >
                 {categoryOrder.map((category, index) => (
                   <Draggable
@@ -212,11 +233,11 @@ export default function Notes() {
                       category === "Uncategorized"
                     }
                   >
-                    {(provided) => (
+                    {(dragProvider) => (
                       <div
-                        ref={provided.innerRef}
-                        {...provided.draggableProps}
-                        {...provided.dragHandleProps}
+                        ref={dragProvider.innerRef}
+                        {...dragProvider.draggableProps}
+                        {...dragProvider.dragHandleProps}
                         className={`
                           ${notes[category]?.length >= 4 ? "sm:col-span-2 sm:row-span-2" : ""}
                           ${notes[category]?.length >= 8 ? "lg:col-span-2 lg:row-span-2" : ""}

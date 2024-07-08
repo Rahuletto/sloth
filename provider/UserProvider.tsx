@@ -17,15 +17,15 @@ export function useAuth() {
   return user;
 }
 
-export const UserProvider = ({ children }: { children: ReactNode }) => {
+export function UserProvider({ children }: { children: ReactNode }) {
   const router = useRouter();
   const [user, setUser] = useState<User | null | false>(null);
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-      if (user) {
-        setUser(user);
-        if(!user.emailVerified) router.push("/auth/verify");
+    const unsubscribe = onAuthStateChanged(auth, (newUser) => {
+      if (newUser) {
+        setUser(newUser);
+        if(!newUser.emailVerified) router.push("/auth/verify");
       } else {
         setUser(false);
       }
@@ -35,4 +35,4 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
   }, []);
 
   return <UserContext.Provider value={user}>{children}</UserContext.Provider>;
-};
+}

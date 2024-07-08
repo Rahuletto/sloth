@@ -3,6 +3,7 @@ import React, {
   ReactNode,
   useContext,
   useEffect,
+  useMemo,
   useState,
 } from "react";
 
@@ -17,7 +18,7 @@ export function useTheme() {
   return { isDark, toggleTheme };
 }
 
-export const ThemeProvider = ({ children }: { children: ReactNode }) => {
+export function ThemeProvider({ children }: { children: ReactNode }) {
   const [isDark, setIsDark] = useState(initialTheme.isDark);
 
   useEffect(() => {
@@ -26,10 +27,10 @@ export const ThemeProvider = ({ children }: { children: ReactNode }) => {
       window.matchMedia("(prefers-color-scheme: dark)").matches
     ) {
       document.documentElement.classList.add("dark");
-        setIsDark(true);
+      setIsDark(true);
     } else {
       document.documentElement.classList.remove("dark");
-        setIsDark(false);
+      setIsDark(false);
     }
 
     window
@@ -41,21 +42,24 @@ export const ThemeProvider = ({ children }: { children: ReactNode }) => {
 
   useEffect(() => {
     if (isDark) {
+      document.documentElement.classList.remove("light");
       document.documentElement.classList.add("dark");
       localStorage.setItem("theme", "dark");
     } else {
       document.documentElement.classList.remove("dark");
+      document.documentElement.classList.add("light");
       localStorage.setItem("theme", "light");
     }
   }, [isDark]);
 
-  const toggleTheme = () => {
-    setIsDark(!isDark);
-  };
+  const props = useMemo(() => {
+    const toggleTheme = () => {
+      setIsDark(!isDark);
+    };
+    return { isDark, toggleTheme };
+  }, [isDark]);
 
   return (
-    <ThemeContext.Provider value={{ isDark, toggleTheme }}>
-      {children}
-    </ThemeContext.Provider>
+    <ThemeContext.Provider value={props}>{children}</ThemeContext.Provider>
   );
-};
+}

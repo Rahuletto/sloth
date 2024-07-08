@@ -1,5 +1,7 @@
 // Input component extends from shadcnui - https://ui.shadcn.com/docs/components/input
+
 "use client";
+
 import * as React from "react";
 import { cn } from "@/utils/cn";
 import { useMotionTemplate, useMotionValue, motion } from "framer-motion";
@@ -12,11 +14,11 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
     const radius = 300;
     const [visible, setVisible] = React.useState(false);
 
-    let mouseX = useMotionValue(0);
-    let mouseY = useMotionValue(0);
+    const mouseX = useMotionValue(0);
+    const mouseY = useMotionValue(0);
 
     function handleMouseMove({ currentTarget, clientX, clientY }: any) {
-      let { left, top } = currentTarget.getBoundingClientRect();
+      const { left, top } = currentTarget.getBoundingClientRect();
 
       mouseX.set(clientX - left);
       mouseY.set(clientY - top);
@@ -26,7 +28,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
         style={{
           background: useMotionTemplate`
         radial-gradient(
-          ${visible ? radius + "px" : "0px"} circle at ${mouseX}px ${mouseY}px,
+          ${visible ? `${radius  }px` : "0px"} circle at ${mouseX}px ${mouseY}px,
           var(--accent),
           transparent 80%
         )

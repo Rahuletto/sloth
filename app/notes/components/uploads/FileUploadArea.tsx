@@ -2,18 +2,17 @@ import Gemini from "@/components/ui/Gemini";
 import React, { useRef, useState } from "react";
 import { FaFire } from "react-icons/fa6";
 
-
 export interface FileUploadAreaProps {
   onFilesReceived: (files: File[]) => void;
   generating: boolean;
   genStatus: string;
 }
 
-const FileUploadArea: React.FC<FileUploadAreaProps> = ({
+export default function FileUploadArea({
   onFilesReceived,
   generating,
   genStatus,
-}) => {
+}: FileUploadAreaProps) {
   const hiddenFileInput = useRef<HTMLInputElement>(null);
   const [dragging, setDragging] = useState(false);
 
@@ -37,6 +36,7 @@ const FileUploadArea: React.FC<FileUploadAreaProps> = ({
   return (
     <div
       onClick={() => hiddenFileInput.current?.click()}
+      onKeyDown={() => {}}
       onDrop={onDrop}
       onDragLeave={(e) => {
         e.preventDefault();
@@ -46,7 +46,9 @@ const FileUploadArea: React.FC<FileUploadAreaProps> = ({
         e.preventDefault();
         setDragging(true);
       }}
-      className="my-2 font-medium font-mono cursor-pointer flex gap-4 rounded-2xl border-4 max-w-[450px] px-8 py-4 aspect-video border-alt text-light flex-col items-center justify-center border-dashed"
+      className="my-2 transform-all duration-300 active:bg-[rgba(0,0,0,0.3)] active:scale-95 font-medium font-mono cursor-pointer flex gap-4 rounded-2xl border-4 max-w-[450px] px-8 py-4 aspect-video border-alt text-light flex-col items-center justify-center border-dashed"
+      tabIndex={0}
+      role="button"
     >
       <span
         className={`${generating ? "animate-geminiSpin" : "duration-200"} transition-all ${
@@ -56,7 +58,9 @@ const FileUploadArea: React.FC<FileUploadAreaProps> = ({
         {generating ? <Gemini /> : <FaFire />}
       </span>
       <p className="font-mono max-w-[350px] text-center">
-        {generating ? genStatus : "Let's see those PDF file(s). You can throw it to me like its a hot cake."}
+        {generating
+          ? genStatus
+          : "Let's see those PDF file(s). You can throw it to me like its a hot cake."}
       </p>
       <input
         multiple
@@ -68,6 +72,4 @@ const FileUploadArea: React.FC<FileUploadAreaProps> = ({
       />
     </div>
   );
-};
-
-export default FileUploadArea;
+}

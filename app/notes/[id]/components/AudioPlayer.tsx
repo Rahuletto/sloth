@@ -1,4 +1,5 @@
 "use client";
+
 import { convertTime } from "@/utils/convertTime";
 import React, { useEffect, useRef, useState } from "react";
 import { FaPause, FaPlay, FaXmark } from "react-icons/fa6";
@@ -53,7 +54,7 @@ export default function AudioPlayer({
       initial={{ height: "80px" }}
       animate={{ height: transcriptToggle ? "100%" : "80px" }}
       transition={{ duration: 0.2 }}
-      className={`overflow-hidden min-h-[78px] max-w-[700px] bg-box border-2 border-bb rounded-2xl flex flex-col justify-start items-start px-6 py-3 mb-10`}
+      className="overflow-hidden min-h-[78px] max-w-[700px] bg-box border-2 border-bb rounded-2xl flex flex-col justify-start items-start px-6 py-3 mb-10"
     >
       <div className="items-center w-full h-[50px] flex justify-between">
         <audio
@@ -62,7 +63,9 @@ export default function AudioPlayer({
           src={src}
           controls
           className="hidden"
-        />
+        >
+          <track kind="captions" label="Captions" />
+        </audio>
         <div>
           <h2 className="text-md sm:text-xl font-semibold">Lecture</h2>
           <p className="font-mono text-xs sm:text-base">
@@ -76,12 +79,16 @@ export default function AudioPlayer({
         <div className="flex gap-4 items-center justify-center scale-75 sm:scale-100 origin-right transition-all duration-300">
           <div id="controls" className="flex gap-2 opacity-80">
             <button
+              type="button"
+              aria-label="rewind"
               className="p-2 hover:scale-105 active:scale-90 transition-all duration-300"
               onClick={handleRewind}
             >
               <TbRewindBackward15 className="text-xl" />
             </button>
             <button
+              type="button"
+              aria-label={playback ? "pause" : "play"}
               className="p-3 hover:scale-105 active:scale-90 transition-all duration-300"
               onClick={handlePlayback}
             >
@@ -92,6 +99,8 @@ export default function AudioPlayer({
               )}
             </button>
             <button
+              type="button"
+              aria-label="forward"
               className="p-2 hover:scale-105 active:scale-90 transition-all duration-300"
               onClick={handleForward}
             >
@@ -100,18 +109,12 @@ export default function AudioPlayer({
           </div>
           <div className="h-[30px] my-auto w-0.5 rounded-3xl bg-color opacity-70" />
           <button
+            type="button"
+            aria-label="transcript"
             onClick={() => setTranscriptToggle((prev) => !prev)}
             className="font-mono px-4 py-2 rounded-lg dark:bg-[rgba(255,255,255,0.1)] font-medium bg-[rgba(0,0,0,0.1)] opacity-90 flex gap-3 h-min items-center"
           >
-            {transcriptToggle ? (
-              <>
-                <FaXmark />
-              </>
-            ) : (
-              <>
-                <CgTranscript />
-              </>
-            )}
+            {transcriptToggle ? <FaXmark /> : <CgTranscript />}
           </button>
         </div>
       </div>

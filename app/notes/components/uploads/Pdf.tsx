@@ -1,11 +1,12 @@
 "use client";
+
 import React, { useState, useCallback } from "react";
 import { Note } from "@/types/NoteData";
 import { useAuth } from "@/provider/UserProvider";
 import { saveNote } from "@/firebase/firestore";
 import { uploadFile } from "@/firebase/storage";
-import FileUploadArea from "./FileUploadArea";
 import { readFile } from "@/utils/readFile";
+import FileUploadArea from "./FileUploadArea";
 
 export default function Pdf({
   setGenerating,
@@ -34,8 +35,8 @@ export default function Pdf({
         body: JSON.stringify({ prompt: saveText.trim() }),
       });
       const topics = await topicsRes.json();
-      const title = topics.result.title;
-      const description = topics.result.description
+      const {title} = topics.result;
+      const {description} = topics.result
 
       const newNotes = await saveNote({
         user,
@@ -62,7 +63,7 @@ export default function Pdf({
     setGenStatus("Processing files...");
 
     let newText = text;
-    let newSrc = [...src];
+    const newSrc = [...src];
 
     for (const file of files) {
       if (file.name.endsWith(".pdf")) {
