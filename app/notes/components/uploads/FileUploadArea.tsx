@@ -55,7 +55,7 @@ const FileUploadArea: React.FC<FileUploadAreaProps> = ({
       >
         {generating ? <Gemini /> : <FaFire />}
       </span>
-      <p className="max-w-[350px] text-center">
+      <p className="font-mono max-w-[350px] text-center">
         {generating ? genStatus : "Let's see those PDF file(s). You can throw it to me like its a hot cake."}
       </p>
       <input

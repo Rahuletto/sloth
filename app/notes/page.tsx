@@ -1,14 +1,23 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 "use client";
 import Loader from "@/components/ui/Loader";
-import { getAllNotes, setData } from "@/firebase/firestore";
+import { getAllNotes, setData, deleteCategory } from "@/firebase/firestore";
 import { useAuth } from "@/provider/UserProvider";
 import { Note, NoteData } from "@/types/NoteData";
 import { motion } from "framer-motion";
+import { Link } from "next-view-transitions";
 import dynamic from "next/dynamic";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useRef, useState } from "react";
-import { DragDropContext, DropResult } from "react-beautiful-dnd";
+import {
+  DragDropContext,
+  Droppable,
+  Draggable,
+  DropResult,
+} from "react-beautiful-dnd";
+import { BiPencil } from "react-icons/bi";
+import { GrPowerShutdown } from "react-icons/gr";
+import { AddCategory } from "./components/AddCategory";
 
 const Recorder = dynamic(
   () => import("./components/Recorder").then((mod) => mod.default),
@@ -37,6 +46,9 @@ export default function Notes() {
     Starred: [],
     Uncategorized: [],
   });
+  const [categoryOrder, setCategoryOrder] = useState<string[]>([]);
+  const [editMode, setEditMode] = useState(false);
+  const [newCategory, setNewCategory] = useState("");
 
   useEffect(() => {
     if (message) setTimeout(() => setMessage(""), 6000);
@@ -50,7 +62,7 @@ export default function Notes() {
         getAllNotes(`${user.uid}`).then((allNotes) => {
           const categorizedNotes = allNotes.reduce(
             (acc: any, note: { id: string; data: NoteData }) => {
-              const category = note.data?.category || "computer";
+              const category = note.data?.category || "Uncategorized";
               if (!acc[category]) acc[category] = [];
               acc[category].push(note);
               return acc;
@@ -58,20 +70,36 @@ export default function Notes() {
             { Starred: [], Uncategorized: [] }
           );
           setNotes(categorizedNotes);
+          setCategoryOrder([
+            "Starred",
+            "Uncategorized",
+            ...Object.keys(categorizedNotes).filter(
+              (cat) => cat !== "Starred" && cat !== "Uncategorized"
+            ),
+          ]);
         });
       }, 200);
   }, [user, router]);
 
   const onDragEnd = async (result: DropResult) => {
-    const { source, destination } = result;
-    if (!user) return;
-    if (!destination) return;
+    const { source, destination, type } = result;
+    if (!user || !destination) return;
+
+    if (type === "CATEGORY") {
+      if (source.index === 0 || destination.index === 0) return; // Prevent moving Starred
+      const newCategoryOrder = Array.from(categoryOrder);
+      const [reorderedItem] = newCategoryOrder.splice(source.index, 1);
+      newCategoryOrder.splice(destination.index, 0, reorderedItem);
+      setCategoryOrder(newCategoryOrder);
+      return;
+    }
 
     if (
       source.index === destination.index &&
       source.droppableId === destination.droppableId
     )
       return;
+
     const newNotes = { ...notes };
     const movedNote = newNotes[source.droppableId].splice(source.index, 1)[0];
     movedNote.data.category = destination.droppableId;
@@ -84,11 +112,51 @@ export default function Notes() {
     setNotes(newNotes);
 
     try {
-      if (source.droppableId === destination.droppableId) return;
-      await setData(user.uid, movedNote.data.id, movedNote.data);
+      if (source.droppableId !== destination.droppableId) {
+        await setData(user.uid, movedNote.data.id, movedNote.data);
+      }
     } catch (error) {
       console.error("Error updating note category: ", error);
     }
+  };
+
+  const handleAddCategory = () => {
+    if (newCategory && !notes[newCategory]) {
+      setNotes((prevNotes) => ({
+        ...prevNotes,
+        [newCategory]: [],
+      }));
+      setCategoryOrder((prevOrder) => [...prevOrder, newCategory]);
+      setNewCategory("");
+    }
+  };
+
+  const handleDeleteCategory = async (categoryToDelete: string) => {
+    if (categoryToDelete === "Starred" || categoryToDelete === "Uncategorized")
+      return;
+
+    const newNotes = { ...notes };
+    const notesToMove = newNotes[categoryToDelete] || [];
+    delete newNotes[categoryToDelete];
+
+    newNotes.Uncategorized = [...newNotes.Uncategorized, ...notesToMove];
+    setNotes(newNotes);
+
+    setCategoryOrder((prevOrder) =>
+      prevOrder.filter((cat) => cat !== categoryToDelete)
+    );
+
+    if (user) {
+      for (const note of notesToMove) {
+        note.data.category = "Uncategorized";
+        await setData(user.uid, note.data.id, note.data);
+      }
+      await deleteCategory(user.uid, categoryToDelete);
+    }
+  };
+
+  const toggleEditMode = () => {
+    setEditMode(!editMode);
   };
 
   if (user === null) return <Loader />;
@@ -98,29 +166,90 @@ export default function Notes() {
     <main className="overflow-hidden duration-300 transition-all animate-fade h-screen w-screen p-6">
       <DragDropContext onDragEnd={onDragEnd}>
         <motion.div
-          className="w-[89vw] md:w-[97vw] overflow-hidden px-0 py-4 md:px-12 md:py-8 overflow-y-auto fixed h-[85dvh] rounded-3xl"
+          className="scrollbar-none w-[92vw] md:w-[97vw] overflow-hidden px-0 py-4 md:px-12 md:py-8 overflow-y-auto fixed h-[85dvh] rounded-3xl"
           initial={{ opacity: 1 }}
           animate={{ opacity: recording || message ? 0 : 1 }}
           transition={{ duration: 0.3 }}
         >
-          <h1 className="ml-4 md:ml-0 lg:text-5xl text-3xl font-semibold">
-            Library
-          </h1>
-          <div className="md:grid md:grid-cols-[repeat(auto-fill,minmax(24rem,1fr))] flex flex-col md: auto-rows-auto gap-4 mt-8">
-            {Object.entries(notes).map(([category, notes], i) => (
-              <Category
-                key={i}
-                title={category}
-                notes={notes}
-                categoryId={category}
-                generating={
-                  category === "Uncategorized" && generating ? (
-                    <GeneratingNote genStatus={genStatus} />
-                  ) : null
-                }
-              />
-            ))}
+          <div className="flex justify-between items-center">
+            <h1 className="ml-4 md:ml-0 lg:text-5xl text-3xl font-semibold">
+              Library
+            </h1>
+            <div className="flex gap-2 rounded-full bg-box border-2 border-bb p-1 items-center justify-between">
+              <button
+                className={`hover:bg-alt p-2 rounded-full duration-150 ${
+                  editMode ? "bg-alt" : ""
+                }`}
+                onClick={toggleEditMode}
+              >
+                <BiPencil className="text-2xl" />
+              </button>
+
+              <Link
+                href="/auth/logout"
+                className="bg-accent hover:px-3 text-bg p-2 rounded-full duration-150"
+              >
+                <GrPowerShutdown className="text-2xl" />
+              </Link>
+            </div>
           </div>
+          <Droppable droppableId="categories" type="CATEGORY">
+            {(provided) => (
+              <div
+                {...provided.droppableProps}
+                ref={provided.innerRef}
+                className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-4 auto-rows-auto mt-8"
+                style={{ gridAutoFlow: 'dense' }}
+              >
+                {categoryOrder.map((category, index) => (
+                  <Draggable
+                    key={category}
+                    draggableId={category}
+                    index={index}
+                    isDragDisabled={
+                      !editMode ||
+                      category === "Starred" ||
+                      category === "Uncategorized"
+                    }
+                  >
+                    {(provided) => (
+                      <div
+                        ref={provided.innerRef}
+                        {...provided.draggableProps}
+                        {...provided.dragHandleProps}
+                        className={`
+                          ${notes[category]?.length >= 4 ? "sm:col-span-2 sm:row-span-2" : ""}
+                          ${notes[category]?.length >= 8 ? "lg:col-span-2 lg:row-span-2" : ""}
+                          ${notes[category]?.length >= 12 ? "xl:col-span-2 xl:row-span-2" : ""}
+                        `}
+                      >
+                        <Category
+                          title={category}
+                          notes={notes[category] || []}
+                          categoryId={category}
+                          editMode={editMode}
+                          onDelete={() => handleDeleteCategory(category)}
+                          generating={
+                            category === "Uncategorized" && generating ? (
+                              <GeneratingNote genStatus={genStatus} />
+                            ) : null
+                          }
+                        />
+                      </div>
+                    )}
+                  </Draggable>
+                ))}
+                {editMode && (
+                  <AddCategory
+                    newCategory={newCategory}
+                    setNewCategory={setNewCategory}
+                    handleAddCategory={handleAddCategory}
+                  />
+                )}
+                {provided.placeholder}
+              </div>
+            )}
+          </Droppable>
         </motion.div>
       </DragDropContext>
 

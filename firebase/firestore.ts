@@ -7,6 +7,7 @@ import {
   query,
   QueryDocumentSnapshot,
   setDoc,
+  writeBatch,
 } from "firebase/firestore";
 import { db } from "./config";
 import { Note, NoteData } from "@/types/NoteData";
@@ -78,7 +79,7 @@ export const saveNote = async ({
   src,
   transcript,
   topics,
-  description
+  description,
 }: {
   user: User;
   title: string;
@@ -89,7 +90,6 @@ export const saveNote = async ({
 }): Promise<{
   [key: string]: Note[];
 }> => {
-
   const id = generateId(src[0].url);
   await setData(`${user.uid}`, id, {
     id,
@@ -101,15 +101,43 @@ export const saveNote = async ({
     topics: topics,
     category: "Uncategorized",
   });
-  const allNotes = await getAllNotes(`${user.uid}`);
-  const categorizedNotes = allNotes.reduce(
-    (acc: any, note: { id: string; data: NoteData }) => {
-      const category = note.data?.category || "computer";
+  return getCategorizedNotes(user.uid);
+};
+
+export async function getCategorizedNotes(userId: string) {
+  const allNotes = await getAllNotes(userId);
+  return allNotes.reduce(
+    (acc: { [key: string]: Note[] }, note: { id: string; data: NoteData }) => {
+      const category = note.data?.category || "Uncategorized";
       if (!acc[category]) acc[category] = [];
       acc[category].push(note);
       return acc;
     },
     { Starred: [], Uncategorized: [] }
   );
-  return categorizedNotes;
-};
+}
+
+export async function deleteCategory(userId: string, categoryToDelete: string) {
+  try {
+    const batch = writeBatch(db);
+    const userNotesRef = collection(db, "users", userId, "notes");
+    const q = query(userNotesRef);
+    const querySnapshot = await getDocs(q);
+
+    querySnapshot.forEach((docSnapshot) => {
+      const noteData = docSnapshot.data() as NoteData;
+      if (noteData.category === categoryToDelete) {
+        const noteRef = doc(db, "users", userId, "notes", docSnapshot.id);
+        batch.update(noteRef, { category: "Uncategorized" });
+      }
+    });
+
+    await batch.commit();
+    console.log(
+      `Category "${categoryToDelete}" successfully deleted and notes moved to Uncategorized.`
+    );
+  } catch (error) {
+    console.error("Error deleting category: ", error);
+    throw error;
+  }
+}

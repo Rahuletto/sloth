@@ -51,7 +51,7 @@ const AudioUploadArea: React.FC<FileUploadAreaProps> = ({
       >
         {generating ? <Gemini/> : <FaFire />}
       </span>
-      <p className="max-w-[350px] text-center">
+      <p className="font-mono max-w-[350px] text-center">
         {generating ? genStatus : "Let's listen to the audio, You can throw it to me like its a hot cake."}
       </p>
       <input

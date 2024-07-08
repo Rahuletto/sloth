@@ -21,12 +21,20 @@ const config: Config = {
       },
       animation: {
         fade: "fadein 0.7s ease-in-out",
+        shake: "shake 2s ease-in-out infinite",
       },
       keyframes: {
         fadein: {
           "0%": { opacity: "0" },
           "100%": { opacity: "1" },
         },
+        shake: {
+          "10%, 90%": { rotate: '-0.3deg' },
+          "20%, 80%": { rotate: '0.1deg' },
+          "30%, 50%, 70%": { rotate: '-0.5deg' },
+          "40%, 60%": { rotate: '0.2deg' },
+        },
+        
       },
       colors: {
         gemini: {

@@ -4,15 +4,45 @@ import { Draggable } from "react-beautiful-dnd";
 import React from "react";
 import { formatDate } from "@/utils/formatDate";
 import { useRouter } from "next/navigation";
+import { FaTrashCan } from "react-icons/fa6";
+import { deleteData } from "@/firebase/firestore";
+import { useAuth } from "@/provider/UserProvider";
 
-export const NoteCard = ({ note, index }: { note: Note; index: number }) => {
-    const router = useRouter()
+export const NoteCard = ({
+  note,
+  index,
+  isDragDisabled,
+  isDragging,
+}: {
+  note: Note;
+  index: number;
+  isDragDisabled: boolean;
+  isDragging: boolean;
+}) => {
+  const user = useAuth();
+  const router = useRouter();
+  function del() {
+    if (user) {
+      const p = confirm("Are you sure you want to delete this note?");
+      if (p) {
+        deleteData(user.uid, note.id);
+        router.push("/notes");
+      }
+    }
+  }
+
   return (
-    <Draggable draggableId={note.id} index={index}>
+    <Draggable
+      draggableId={note.id}
+      isDragDisabled={isDragDisabled}
+      index={index}
+    >
       {(provided) => (
         <div
-          onClick={() => router.push(`/notes/${note.id}`)}
-          className="md:w-fill m-1 md:w-auto cursor-grab bg-box border-2 border-bb rounded-xl md:py-5 md:px-8 py-4 px-5"
+          onClick={() => !isDragDisabled && router.push(`/notes/${note.id}`)}
+          className={`md:w-fill ${
+            !isDragDisabled && !isDragging ? `animate-shake` : ""
+          } relative max-w-[485px] transition-all duration-300 m-1 md:w-auto cursor-pointer bg-box border-2 border-bb rounded-xl md:py-5 md:px-8 py-4 px-5`}
           ref={provided.innerRef}
           {...provided.draggableProps}
           {...provided.dragHandleProps}
@@ -28,6 +58,13 @@ export const NoteCard = ({ note, index }: { note: Note; index: number }) => {
               {note.data.description?.split(" ")?.slice(0, 32)?.join(" ")}...
             </span>
           </p>
+          {!isDragDisabled && (
+            <div className="z-10 absolute bottom-2 right-2 transition-all duration-300 animate-fade">
+              <button onClick={del} className="text-accent p-3 bg-hue border-2 border-accent rounded-lg">
+                <FaTrashCan className="text-xl" />
+              </button>
+            </div>
+          )}
         </div>
       )}
     </Draggable>
