@@ -29,6 +29,10 @@ const config: Config = {
         },
       },
       colors: {
+        gemini: {
+          purple: "#9168C0",
+          blue: "#1AA1E3",
+        },
         bg: "var(--background)",
         alt: "var(--alt)",
         light: "var(--light-bg)",

@@ -7,12 +7,13 @@ import { DocumentData } from "firebase/firestore";
 import { useRouter } from "next/navigation";
 import NotFoundError from "@/app/not-found";
 import Loader from "@/components/ui/Loader";
-import { RiLoaderLine } from "react-icons/ri";
+
 import { FlashcardArray } from "react-quizlet-flashcard";
 import Back from "@/components/ui/Back";
 import { FlashCard } from "@/types/FlashCards";
 import Markdown from "react-markdown";
 import { IoCaretBack, IoCaretForward } from "react-icons/io5";
+import Gemini from "@/components/ui/Gemini";
 
 export default function Flashcards({ params }: { params: { id: string } }) {
   const id = params.id;
@@ -159,7 +160,7 @@ export default function Flashcards({ params }: { params: { id: string } }) {
           </>
         ) : (
           <div className="rounded-2xl bg-box border-2 border-bb px-4 py-3 h-72 flex gap-4 items-center justify-center mt-16 w-full mx-auto md:w-[60%]">
-            <RiLoaderLine className="animate-spin duration-1000 transition-all" />
+            <Gemini className="text-3xl" />
             <h1 className="text-xl font-semibold">Shuffling Flashcards..</h1>
           </div>
         )}

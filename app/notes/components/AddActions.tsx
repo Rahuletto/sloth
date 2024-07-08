@@ -2,9 +2,10 @@ import { useEffect, useState } from "react";
 import { AiFillAudio } from "react-icons/ai";
 import { MdFilePresent } from "react-icons/md";
 import { RiPresentationFill } from "react-icons/ri";
-import PdfToTextConverter from "./uploads/Pdf";
+import Pdf from "./uploads/Pdf";
 import { Note } from "@/types/NoteData";
 import YoutubeLecture from "./uploads/YoutubeLecture";
+import Audio from "./uploads/Audio";
 
 export function AddActions({
   restart,
@@ -25,7 +26,7 @@ export function AddActions({
 
   useEffect(() => {
     if (restart) {
-      setTimeout(() => setMode(""), 500);
+      setTimeout(() => setMode(""), 10);
     }
   }, [restart]);
 
@@ -33,7 +34,7 @@ export function AddActions({
     <div className="flex flex-col w-full justify-start items-start gap-2 transition-all duration-300">
       {mode == "pdf" ? (
         <div className="transition-all duration-300 animate-fade">
-          <PdfToTextConverter
+          <Pdf
             setGenStatus={setGenStatus}
             setGenerating={setGenerating}
             generating={generating}
@@ -42,7 +43,13 @@ export function AddActions({
           />
         </div>
       ) : mode == "audio" ? (
-        <></>
+        <Audio
+          setGenStatus={setGenStatus}
+          setGenerating={setGenerating}
+          generating={generating}
+          genStatus={genStatus}
+          setNotes={setNotes}
+        />
       ) : mode == "youtube" ? (
         <YoutubeLecture
           setGenStatus={setGenStatus}

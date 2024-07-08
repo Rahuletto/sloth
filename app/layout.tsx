@@ -3,9 +3,8 @@ import { GeistSans } from "geist/font/sans";
 import { GeistMono } from "geist/font/mono";
 import "katex/dist/katex.min.css";
 
-
 import "./globals.css";
-import { ViewTransitions } from 'next-view-transitions'
+import { ViewTransitions } from "next-view-transitions";
 import Providers from "./providers";
 
 export const metadata: Metadata = {
@@ -20,11 +19,11 @@ export default function RootLayout({
 }>) {
   return (
     <ViewTransitions>
-    <html lang="en">
-      <body className={`${GeistSans.variable} ${GeistMono.variable}`}>
-        <Providers>{children}</Providers>
-      </body>
-    </html>
+      <html lang="en">
+        <body className={`${GeistSans.variable} ${GeistMono.variable}`}>
+          <Providers>{children}</Providers>
+        </body>
+      </html>
     </ViewTransitions>
   );
 }

@@ -7,11 +7,12 @@ import { DocumentData } from "firebase/firestore";
 import { useRouter } from "next/navigation";
 import NotFoundError from "@/app/not-found";
 import Loader from "@/components/ui/Loader";
-import { RiLoaderLine } from "react-icons/ri";
+
 import { QuizData } from "@/types/Quiz";
 import QuizCard from "./components/QuizCard";
 import Back from "@/components/ui/Back";
 import { Link } from "next-view-transitions";
+import Gemini from "@/components/ui/Gemini";
 
 export default function Quiz({ params }: { params: { id: string } }) {
   const id = params.id;
@@ -128,7 +129,7 @@ export default function Quiz({ params }: { params: { id: string } }) {
           </>
         ) : (
           <div className="rounded-2xl bg-box border-2 border-bb px-4 py-3 h-72 flex gap-4 items-center justify-center mt-16 w-full mx-auto md:w-[60%]">
-            <RiLoaderLine className="animate-spin duration-1000 transition-all" />
+            <Gemini className="text-3xl "/>
             <h1 className="text-xl font-semibold">Curating questions..</h1>
           </div>
         )}

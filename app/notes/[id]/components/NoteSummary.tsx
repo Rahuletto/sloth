@@ -3,7 +3,8 @@ import rehypeKatex from "rehype-katex";
 import remarkMath from "remark-math";
 import remarkBreaks from 'remark-breaks'
 import Code from "./Code";
-import { RiLoaderLine } from "react-icons/ri";
+
+import Gemini from "@/components/ui/Gemini";
 
 export default function NoteSummary({
   note,
@@ -32,7 +33,7 @@ export default function NoteSummary({
     </>
   ) : (
     <div className="rounded-2xl bg-box border-2 border-bb px-4 py-3 h-72 flex gap-4 items-center justify-center w-full">
-      <RiLoaderLine className="animate-spin duration-1000 transition-all" />
+      <Gemini className="text-3xl "/>
       <h1 className="text-xl font-semibold">Generating Summary..</h1>
     </div>
   );

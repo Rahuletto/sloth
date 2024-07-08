@@ -5,8 +5,9 @@ import { useAuth } from "@/provider/UserProvider";
 import { saveNote } from "@/firebase/firestore";
 
 import { Input } from "@/components/ui/Input";
-import { RiLoader2Fill } from "react-icons/ri";
+
 import { IoMdArrowRoundForward } from "react-icons/io";
+import Gemini from "@/components/ui/Gemini";
 
 export default function YoutubeLecture({
   setGenerating,
@@ -66,17 +67,13 @@ export default function YoutubeLecture({
 
   return generating ? (
     <div className="my-2 font-medium font-mono cursor-pointer flex gap-4 rounded-2xl border-4 max-w-[450px] px-8 py-4 aspect-video border-alt text-light flex-col items-center justify-center border-dashed">
-      <span
-        className={`animate-spin transition-all duration-200 text-3xl text-light`}
-      >
-        <RiLoader2Fill />
-      </span>
+      <Gemini className="text-3xl " />
       <p className="max-w-[350px] text-center">{genStatus}</p>
     </div>
   ) : (
     <div className="flex gap-2 transition-all duration-200 animate-fade">
       <Input
-      pattern="/(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=))([^&?]+)/"
+        pattern="/(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=))([^&?]+)/"
         placeholder="Youtube URL"
         type="text"
         onChange={(e) => setUrl(e.target.value)}

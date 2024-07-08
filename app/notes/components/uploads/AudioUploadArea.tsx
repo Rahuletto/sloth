@@ -1,15 +1,11 @@
-import Gemini from "@/components/ui/Gemini";
 import React, { useRef, useState } from "react";
 import { FaFire } from "react-icons/fa6";
+import { FileUploadAreaProps } from "./FileUploadArea";
+
+import Gemini from "@/components/ui/Gemini";
 
 
-export interface FileUploadAreaProps {
-  onFilesReceived: (files: File[]) => void;
-  generating: boolean;
-  genStatus: string;
-}
-
-const FileUploadArea: React.FC<FileUploadAreaProps> = ({
+const AudioUploadArea: React.FC<FileUploadAreaProps> = ({
   onFilesReceived,
   generating,
   genStatus,
@@ -53,21 +49,20 @@ const FileUploadArea: React.FC<FileUploadAreaProps> = ({
           dragging ? "text-5xl text-accent" : "text-3xl text-light"
         }`}
       >
-        {generating ? <Gemini /> : <FaFire />}
+        {generating ? <Gemini/> : <FaFire />}
       </span>
       <p className="max-w-[350px] text-center">
-        {generating ? genStatus : "Let's see those PDF file(s). You can throw it to me like its a hot cake."}
+        {generating ? genStatus : "Let's listen to the audio, You can throw it to me like its a hot cake."}
       </p>
       <input
-        multiple
         ref={hiddenFileInput}
         className="hidden"
         type="file"
-        accept=".pdf"
+        accept="audio/*"
         onChange={onFileChange}
       />
     </div>
   );
 };
 
-export default FileUploadArea;
+export default AudioUploadArea;
