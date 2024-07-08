@@ -39,10 +39,10 @@ export const NoteCard = ({
     >
       {(provided) => (
         <div
-          onClick={() => !isDragDisabled && router.push(`/notes/${note.id}`)}
+          onClick={() => isDragDisabled && router.push(`/notes/${note.id}`)}
           className={`md:w-fill ${
-            !isDragDisabled && !isDragging ? `animate-shake` : ""
-          } relative max-w-[485px] transition-all duration-300 m-1 md:w-auto cursor-pointer bg-box border-2 border-bb rounded-xl md:py-5 md:px-8 py-4 px-5`}
+            !isDragDisabled && !isDragging ? `animate-shake cursor-grab` : "cursor-pointer"
+          } relative max-w-[485px] transition-all duration-300 m-1 md:w-auto bg-box border-2 border-bb rounded-xl md:py-5 md:px-8 py-4 px-5`}
           ref={provided.innerRef}
           {...provided.draggableProps}
           {...provided.dragHandleProps}

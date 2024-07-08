@@ -22,8 +22,12 @@ const config: Config = {
       animation: {
         fade: "fadein 0.7s ease-in-out",
         shake: "shake 2s ease-in-out infinite",
+        spin: "spin 1.5s linear infinite",
       },
       keyframes: {
+        spin: {
+          "to" :{rotate: "360deg"}
+        },
         fadein: {
           "0%": { opacity: "0" },
           "100%": { opacity: "1" },

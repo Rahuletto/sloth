@@ -33,6 +33,7 @@ export default function NotePage({ id }: { id: string }) {
   }, [user, id]);
 
   useEffect(() => {
+    console.log(note)
     if (note && note.transcript && user) {
       if (!note.summary) {
         const temp = { ...note, summary: "" };
@@ -114,7 +115,7 @@ export default function NotePage({ id }: { id: string }) {
               : "w-[500px] text-bg bg-accent border-transparent"
           } border-2 px-8 py-3 rounded-full transition-all duration-300`}
         >
-          {open ? "Close" : "Details"}
+          {open ? "Close" : "Overview"}
         </button>
       </div>
     </motion.main>

@@ -1,5 +1,8 @@
 import { TopicData } from "@/types/Topic";
 import { motion } from "framer-motion";
+import { useState } from "react";
+import { BiCaretRight } from "react-icons/bi";
+import { FaCaretRight } from "react-icons/fa";
 
 export default function NoteTopics({
   topics,
@@ -8,16 +11,20 @@ export default function NoteTopics({
   topics: TopicData;
   focus: boolean;
 }) {
+  const [open, setOpen] = useState(true);
   return (
     <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: focus ? 0 : 1 }}
-      transition={{ duration: 0.3 }}
-      className="bg-category rounded-2xl px-5 py-3 pb-5"
+      initial={{ opacity: 0, height: "50px" }}
+      animate={{ opacity: focus ? 0 : 1, height: !open ? "50px" : "100%"}}
+      transition={{ duration: 0.2 }}
+      className="bg-category rounded-2xl px-5 py-3 pb-5 overflow-hidden"
     >
-      <h2 className="text-xl mb-2 decoration-wavy underline decoration-accent font-semibold font-mono">
+      <div onClick={() => setOpen((prev) => !prev)} className="flex justify-between items-center mb-2">
+      <h2 className="text-xl decoration-wavy underline decoration-accent font-semibold font-mono">
         Topics
       </h2>
+      <FaCaretRight className={`transition-all duration-300 opacity-80 ${open && "rotate-90"}`} />
+      </div>
       <div className="flex flex-col gap-4 overflow-y-auto max-h-96">
         {topics.topics.map((t, i: number) => (
           <div key={i}>
