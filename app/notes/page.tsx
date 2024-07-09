@@ -7,7 +7,6 @@ import { getAllNotes, setData, deleteCategory } from "@/firebase/firestore";
 import { useAuth } from "@/provider/UserProvider";
 import { Note, NoteData } from "@/types/NoteData";
 import { motion } from "framer-motion";
-import { Link } from "next-view-transitions";
 import dynamic from "next/dynamic";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useRef, useState } from "react";
@@ -17,11 +16,8 @@ import {
   Draggable,
   DropResult,
 } from "react-beautiful-dnd";
-import { BiPencil } from "react-icons/bi";
-import { GrPowerShutdown } from "react-icons/gr";
-import { useTheme } from "@/provider/ThemeProvider";
-import { FaRegMoon, FaRegSun } from "react-icons/fa";
 import { AddCategory } from "./components/AddCategory";
+import AccountPill from "./components/AccountPill";
 
 const Recorder = dynamic(
   () => import("./components/Recorder").then((mod) => mod.default),
@@ -40,7 +36,6 @@ const GeneratingNote = dynamic(
 
 export default function Notes() {
   const user = useAuth();
-  const { isDark, toggleTheme } = useTheme();
   const router = useRouter();
   const [message, setMessage] = useState("");
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -180,40 +175,9 @@ export default function Notes() {
             <h1 className="ml-4 md:ml-0 lg:text-5xl text-3xl font-semibold">
               Library
             </h1>
-            <div className="flex gap-2 rounded-full bg-box border-2 border-bb p-1 items-center justify-between">
-              <button
-                aria-label="Edit library"
-                type="button"
-                className={`hover:bg-alt p-2 rounded-full duration-150 ${
-                  editMode ? "bg-alt" : ""
-                }`}
-                onClick={toggleTheme}
-              >
-                {isDark ? (
-                  <FaRegMoon className="text-2xl" />
-                ) : (
-                  <FaRegSun className="text-2xl" />
-                )}
-              </button>
-              <button
-                aria-label="Edit library"
-                type="button"
-                className={`hover:bg-alt p-2 rounded-full duration-150 ${
-                  editMode ? "bg-alt" : ""
-                }`}
-                onClick={toggleEditMode}
-              >
-                <BiPencil className="text-2xl" />
-              </button>
-
-              <Link
-                href="/auth/logout"
-                className="bg-accent hover:px-3 text-bg p-2 rounded-full duration-150"
-              >
-                <GrPowerShutdown className="text-2xl" />
-              </Link>
-            </div>
+            <AccountPill toggleEditMode={toggleEditMode} editMode={editMode} />
           </div>
+
           <Droppable droppableId="categories" type="CATEGORY">
             {(provided) => (
               <div
