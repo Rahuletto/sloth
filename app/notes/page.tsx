@@ -2,10 +2,6 @@
 
 "use client";
 
-import Loader from "@/components/ui/Loader";
-import { getAllNotes, setData, deleteCategory } from "@/firebase/firestore";
-import { useAuth } from "@/provider/UserProvider";
-import { Note, NoteData } from "@/types/NoteData";
 import { motion } from "framer-motion";
 import dynamic from "next/dynamic";
 import { useRouter } from "next/navigation";
@@ -16,21 +12,39 @@ import {
   Draggable,
   DropResult,
 } from "react-beautiful-dnd";
-import { AddCategory } from "./components/AddCategory";
-import AccountPill from "./components/AccountPill";
+
+import { getAllNotes, setData, deleteCategory } from "@/firebase/firestore";
+import { useAuth } from "@/provider/UserProvider";
+import { Note, NoteData } from "@/types/NoteData";
+
+const Loader = dynamic(
+  () => import("@/components/ui/Loader").then((mod) => mod.default),
+  { ssr: true },
+);
 
 const Recorder = dynamic(
   () => import("./components/Recorder").then((mod) => mod.default),
   { ssr: false },
 );
 
+const AccountPill = dynamic(
+  () => import("./components/AccountPill").then((mod) => mod.default),
+  { ssr: false },
+);
+
+const AddCategory = dynamic(
+  () => import("./components/AddCategory").then((mod) => mod.default),
+  { ssr: false },
+);
+
+
 const Category = dynamic(
-  () => import("./components/Category").then((mod) => mod.Category),
+  () => import("./components/Category").then((mod) => mod.default),
   { ssr: true },
 );
 
 const GeneratingNote = dynamic(
-  () => import("./components/GeneratingNote").then((mod) => mod.GeneratingNote),
+  () => import("./components/GeneratingNote").then((mod) => mod.default),
   { ssr: false },
 );
 

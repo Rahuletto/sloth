@@ -7,7 +7,7 @@ import Pdf from "./uploads/Pdf";
 import YoutubeLecture from "./uploads/YoutubeLecture";
 import Audio from "./uploads/Audio";
 
-export function AddActions({
+export default function AddActions({
   restart,
   setGenStatus,
   setGenerating,

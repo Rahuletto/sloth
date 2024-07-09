@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 
-export function RecordingStatus({ status }: { status: string }) {
+export default function RecordingStatus({ status }: { status: string }) {
   const [message, setMessage] = useState("");
 
   useEffect(() => {

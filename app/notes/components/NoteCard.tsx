@@ -1,16 +1,21 @@
 "use client";
 
-import { Note } from "@/types/NoteData";
-import { Draggable } from "react-beautiful-dnd";
-import React, { useState } from "react";
-import { formatDate } from "@/utils/formatDate";
-import { useRouter } from "next/navigation";
-import { FaTrashCan } from "react-icons/fa6";
 import { deleteData } from "@/firebase/firestore";
 import { useAuth } from "@/provider/UserProvider";
-import Dialog from "@/components/ui/Dialog";
+import { Note } from "@/types/NoteData";
+import { formatDate } from "@/utils/formatDate";
+import dynamic from "next/dynamic";
+import { useRouter } from "next/navigation";
+import React, { useState } from "react";
+import { Draggable } from "react-beautiful-dnd";
+import { FaTrashCan } from "react-icons/fa6";
 
-export function NoteCard({
+const Dialog = dynamic(
+  () => import("@/components/ui/Dialog").then((mod) => mod.default),
+  { ssr: false },
+);
+
+export default function NoteCard({
   note,
   index,
   isDragDisabled,

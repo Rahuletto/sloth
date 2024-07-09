@@ -2,7 +2,7 @@ import React, { Dispatch, SetStateAction } from "react";
 import { Input } from "@/components/ui/Input";
 import { FaPlus } from "react-icons/fa6";
 
-export function AddCategory({
+export default function AddCategory({
     newCategory,
     setNewCategory,
     handleAddCategory,
@@ -12,7 +12,7 @@ export function AddCategory({
     handleAddCategory: () => void;
   }) {
     return (
-      <div className="bg-category p-4 rounded-3xl h-full min-h-64 max-h-72">
+      <div className="bg-category p-4 rounded-3xl h-full min-h-64 max-h-72 transition-all duration-300 animate-fade">
         <div className="flex items-center flex-col justify-center gap-3 p-4 rounded-2xl border-4 border-alt border-dashed h-full">
           <div className="text-light flex items-center flex-col justify-center gap-4 my-6">
             <span className="duration-300 transition-all text-3xl text-light">

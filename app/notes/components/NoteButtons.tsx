@@ -1,8 +1,13 @@
 import React, { Dispatch, ReactNode, SetStateAction } from "react";
-import SlidingShelf from "@/components/ui/SlidingShelf";
 import { motion } from "framer-motion";
 import { FaPlus } from "react-icons/fa6";
+import dynamic from "next/dynamic";
 
+
+const SlidingShelf = dynamic(
+  () => import("@/components/ui/SlidingShelf").then((mod) => mod.default),
+  { ssr: false },
+);
 export function RecordButton({
   recording,
   onClick,

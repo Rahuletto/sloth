@@ -1,12 +1,21 @@
 "use client";
 
 import React, { ReactNode } from "react";
-import StrictModeDroppable from "@/components/dnd/Droppable";
 import { Note } from "@/types/NoteData";
 import { FaStar, FaTrashCan } from "react-icons/fa6";
-import { NoteCard } from "./NoteCard";
+import dynamic from "next/dynamic";
 
-export function Category({
+const NoteCard = dynamic(
+  () => import("./NoteCard").then((mod) => mod.default),
+  { ssr: false },
+);
+
+const StrictModeDroppable = dynamic(
+  () => import("@/components/dnd/Droppable").then((mod) => mod.default),
+  { ssr: true },
+);
+
+export default function Category({
   title,
   notes,
   editMode,

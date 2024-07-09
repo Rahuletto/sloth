@@ -4,7 +4,7 @@ import { generateId } from "@/utils/generateId";
 import { Draggable } from "react-beautiful-dnd";
 
 
-export function GeneratingNote({ genStatus }: { genStatus: string }) {
+export default function GeneratingNote({ genStatus }: { genStatus: string }) {
   return <Draggable draggableId={generateId("sloth.")} isDragDisabled index={0}>
       {(provided) => (
 <div

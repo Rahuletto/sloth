@@ -2,21 +2,25 @@
 import useVisualizer from "@/hooks/useVisualizer";
 import { blobToDataURL } from "@/utils/blobToData";
 import { motion } from "framer-motion";
+import dynamic from "next/dynamic";
 import React, {
   Dispatch,
+  RefObject,
   SetStateAction,
   useEffect,
-  RefObject,
   useState,
 } from "react";
 
-import { useAuth } from "@/provider/UserProvider";
-import dynamic from "next/dynamic";
-import { uploadAudioFromDataURL } from "@/firebase/storage";
-import { getAudioLength } from "@/utils/audioLength";
-import { Note } from "@/types/NoteData";
 import { saveNote } from "@/firebase/firestore";
-import { AddActions } from "./AddActions";
+import { uploadAudioFromDataURL } from "@/firebase/storage";
+import { useAuth } from "@/provider/UserProvider";
+import { Note } from "@/types/NoteData";
+import { getAudioLength } from "@/utils/audioLength";
+
+const AddActions = dynamic(
+  () => import("./AddActions").then((mod) => mod.default),
+  { ssr: false },
+);
 
 const ReactMediaRecorder = dynamic(
   () => import("react-media-recorder-2").then((mod) => mod.ReactMediaRecorder),
@@ -24,7 +28,7 @@ const ReactMediaRecorder = dynamic(
 );
 
 const RecordingStatus = dynamic(
-  () => import("./RecordingStatus").then((mod) => mod.RecordingStatus),
+  () => import("./RecordingStatus").then((mod) => mod.default),
   { ssr: false },
 );
 
