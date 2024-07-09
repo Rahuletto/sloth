@@ -10,6 +10,7 @@
   --box-border: #e4e4e7;
   --color: #000;
   --accent: #ff5858;
+  --warn: #f68645;
   --green: #0ec70e;
   --green-hue: #e8f9e8;
   --category: #f7f7f7;
@@ -25,6 +26,7 @@
     --box-border: #27272a;
     --color: #fff;
     --accent: #ff5858;
+    --warn: #ff9458;
     --green: #2ae12a;
     --green-hue: #09140a;
 
@@ -41,9 +43,9 @@ html.dark {
   --box-border: #27272a;
   --color: #fff;
   --accent: #ff5858;
+  --warn: #ff9458;
   --green: #2ae12a;
   --green-hue: #09140a;
-
   --category: #0e0e10;
   --hue: #110b0c;
 }
@@ -56,6 +58,8 @@ html.light {
   --box-border: #e4e4e7;
   --color: #000;
   --accent: #ff5858;
+  --warn: #f68645;
+
   --green: #0ec70e;
   --green-hue: #e8f9e8;
   --category: rgb(246, 244, 244);
@@ -104,7 +108,7 @@ h6 {
 }
 
 ::-webkit-scrollbar-track {
-  background-color: transparent
+  background-color: transparent;
 }
 
 ::-webkit-scrollbar-thumb {

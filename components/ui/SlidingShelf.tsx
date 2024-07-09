@@ -40,13 +40,12 @@ export default function SlidingShelf({
       </motion.div>
       {open && (
         <motion.div
-          initial={{ opacity: 0, filter: "blur(0px)" }}
-          animate={{ opacity: open ? 0.6 : 0, filter: "blur(10px)" }}
+          initial={{ opacity: 0, backdropFilter: "blur(0px)", WebkitBackdropFilter: "blur(0px)" }}
+          animate={{ opacity: open ? 1 : 0, backdropFilter: "blur(10px)", WebkitBackdropFilter: "blur(10px)" }}
           transition={{ duration: 0.3 }}
-          className="fixed cursor-pointer left-0 h-screen w-screen p-2 backdrop-blur-md dark:bg-bg bg-black"
+          className="fixed cursor-pointer left-0 h-screen w-screen p-2 backdrop-blur-md bg-[rgba(0,0,0,0.5)]"
           style={{
             top: 0,
-            backdropFilter: "blur(10px)",
           }}
           onClick={() => setOpen(false)}
         />

@@ -52,6 +52,7 @@ const config: Config = {
         green: "var(--green)",
         category: "var(--category)",
         hue: "var(--hue)",
+        warn: "var(--warn)",
         "green-hue": "var(--green-hue)",
       },
       boxShadow: {

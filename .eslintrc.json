@@ -3,6 +3,7 @@
   "rules": {
     "react/require-default-props": "off",
     "react/jsx-props-no-spreading": "off",
+    "react/jsx-no-bind": "off",
     "no-console":"off",
     "no-plusplus": "warn",
     "import/prefer-default-export": "off",
