@@ -122,7 +122,7 @@ export default function Features() {
                 <div
                   ref={provided.innerRef}
                   {...provided.droppableProps}
-                  className={`overflow-x-auto scrollbar-none min-h-32 flex flex-row transition-all duration-500 rounded-2xl max-h-[600px] border-2 ${
+                  className={`overflow-x-auto scrollbar-none min-h-32 flex flex-col transition-all duration-500 rounded-2xl border-2 ${
                     snapShot.isDraggingOver
                       ? "bg-hue border-accent"
                       : "border-transparent"
