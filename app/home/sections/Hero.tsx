@@ -17,7 +17,7 @@ export default function Hero() {
         </p>
         <div className="flex gap-3 mt-3">
           <Link
-            href="/auth/login"
+            href="/auth"
             className="px-6 py-4 text-lg font-semibold rounded-full bg-accent text-bg"
           >
             Get Started

@@ -57,7 +57,7 @@ function FeatureCard({ f }: { f: Feature }) {
           ref={drag.innerRef}
           {...drag.draggableProps}
           {...drag.dragHandleProps}
-          className="min-w-[300px] cursor-grab select-none relative w-[385px] m-1 bg-box border-2 border-bb rounded-xl md:py-5 md:px-8 py-4 px-5"
+          className="min-w-[250px] w-full cursor-grab select-none relative md:w-[385px] m-1 bg-box border-2 border-bb rounded-xl md:py-5 md:px-8 py-4 px-5"
         >
           <h1 className="flex gap-3 items-center select-none md:text-2xl text-xl font-semibold line-clamp-2 overflow-hidden text-ellipsis truncate">
             {f.icon} {f.title}
