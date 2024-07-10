@@ -33,7 +33,7 @@ export default function NotFoundError() {
           4
         </motion.div>
       </h1>
-      <h2 className="font-sans text-2xl font-semibold">
+      <h2 className="font-sans md:text-2xl text-lg font-semibold">
         You <span className="text-accent">lost</span> track.. You aren&apos;t supposed to be here
       </h2>
       <Link href="/" className="font-sans text-xl font-semibold bg-accent text-bg rounded-full px-8 py-4">Step back</Link>
