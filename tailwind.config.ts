@@ -49,6 +49,7 @@ const config: Config = {
         bb: "var(--box-border)",
         color: "var(--color)",
         accent: "var(--accent)",
+        "accent-dull": "#ff58580a",
         green: "var(--green)",
         category: "var(--category)",
         hue: "var(--hue)",
