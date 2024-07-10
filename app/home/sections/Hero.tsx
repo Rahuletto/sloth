@@ -8,10 +8,10 @@ export default function Hero() {
     <div className="flex gap-6 flex-col">
       <Image alt="sloth" src="/raw-smile.svg" width={44} height={44} />
       <div className="flex gap-3 flex-col max-w-[60%]">
-        <h1 className="font-bold lg:text-7xl md:text-5xl text-2xl">
+        <h1 className="font-bold lg:text-7xl md:text-5xl text-3xl">
           Study smart, effortlessly.
         </h1>
-        <p className="opacity-40 text-xl font-medium">
+        <p className="opacity-40 md:text-xl text-lg font-medium">
           I&apos;ll listen to your lectures and write detailed notes,
           flashcards, and quizzes.
         </p>
