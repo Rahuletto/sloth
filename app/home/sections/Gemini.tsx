@@ -13,7 +13,7 @@ export default function Gemini() {
           [157, 126, 203],
           [26, 161, 227],
         ]}
-        dotSize={4}
+        dotSize={3}
       />
       <div className="absolute inset-0 [mask-image:radial-gradient(500px_at_center,white,transparent)] bg-black/30 dark:bg-black/40" />
     </Card>
