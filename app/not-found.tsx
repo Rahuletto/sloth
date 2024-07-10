@@ -7,7 +7,7 @@ import React from "react";
 export default function NotFoundError() {
   return (
     <div
-      id="side"
+      id="home"
       className="bg-opacity-35 w-screen h-screen flex flex-col gap-6 justify-center items-center mx-auto duration-300 transition-all animate-fade"
     >
       <h1 style={{ fontFamily: 'var(--mono)'}} className="text-accent opacity-100 font-bold font-mono text-9xl flex">
