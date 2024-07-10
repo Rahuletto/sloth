@@ -1,25 +1,23 @@
 import { motion } from "framer-motion";
-import React, { ReactNode, useEffect } from "react";
-import { IoWarning } from "react-icons/io5";
+import { useRouter } from "next/navigation";
+import React, { useEffect } from "react";
+import { GrPowerShutdown } from "react-icons/gr";
 
-export default function Dialog({
+export default function LogoutDialog({
   setOpen,
-  children,
   open = false,
-  clickHandler,
 }: {
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  children: ReactNode;
   open?: boolean;
-  clickHandler?: () => void;
 }) {
+  const router = useRouter();
   useEffect(() => {
     if (open) {
       const handleKeyDown = (event: KeyboardEvent) => {
         if (event.key === "Escape") {
           setOpen(false);
-        } else if (event.key === "Enter" && clickHandler) {
-          clickHandler();
+        } else if (event.key === "Enter") {
+          router.push("/auth/logout");
         }
       };
 
@@ -57,30 +55,31 @@ export default function Dialog({
         }}
         onClick={() => setOpen(false)}
       >
-        <div className="cursor-default z-40 p-6 flex flex-col justify-between items-center aspect-square max-w-[350px] w-full rounded-3xl bg-category border-2 border-warn">
+        <div className="cursor-default z-40 p-6 flex flex-col justify-between items-center aspect-square max-w-[350px] w-full rounded-3xl bg-hue border-2 border-accent">
           <div className="flex flex-col gap-4 items-center justify-center">
-            <IoWarning className="text-warn text-6xl mb-2" />
-            <h1 className="text-xl font-medium text-center">{children}</h1>
+            <GrPowerShutdown className="text-accent text-6xl mb-2" />
+            <h1 className="text-xl font-medium text-center">
+              Are you sure you want to log out?
+            </h1>
           </div>
           <div className="flex gap-1 flex-col w-full">
-            {clickHandler && (
-              <button
-                onKeyDown={(event) => {
-                  if (event.key === "Enter") {
-                    clickHandler?.();
-                  }
-                }}
-                onClick={clickHandler}
-                type="button"
-                tabIndex={0}
-                className="relative w-full px-4 py-3 flex items-center justify-center rounded-lg bg-warn text-bg font-semibold transition-all duration-300"
-              >
-                Sure
-                <kbd className="opacity-50 absolute font-mono text-sm right-3 bg-[rgba(0,0,0,0.2)] text-bg rounded-lg px-2 h-fit hidden lg:block">
-                  ⮐
-                </kbd>
-              </button>
-            )}
+            <button
+              onKeyDown={(event) => {
+                if (event.key === "Enter") {
+                  router.push("/auth/logout");
+                }
+              }}
+              onClick={() => router.push("/auth/logout")}
+              type="button"
+              tabIndex={0}
+              className="relative w-full px-4 py-3 flex items-center justify-center rounded-lg bg-accent text-bg font-semibold transition-all duration-300"
+            >
+              Logout
+              <kbd className="opacity-50 absolute font-mono text-sm right-3 bg-[rgba(0,0,0,0.2)] text-bg rounded-lg px-2 h-fit hidden lg:block">
+                ⮐
+              </kbd>
+            </button>
+
             <button
               onClick={() => setOpen(false)}
               tabIndex={0}
