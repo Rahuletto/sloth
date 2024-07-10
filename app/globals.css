@@ -10,6 +10,7 @@
   --box-border: #e4e4e7;
   --color: #000;
   --accent: #ff5858;
+  --accent-dull: #ff58580a;
   --warn: #f68645;
   --green: #0ec70e;
   --green-hue: #e8f9e8;
@@ -26,6 +27,8 @@
     --box-border: #27272a;
     --color: #fff;
     --accent: #ff5858;
+  --accent-dull: #ff58580a;
+
     --warn: #ff9458;
     --green: #2ae12a;
     --green-hue: #09140a;
@@ -43,6 +46,8 @@ html.dark {
   --box-border: #27272a;
   --color: #fff;
   --accent: #ff5858;
+  --accent-dull: #ff58580a;
+
   --warn: #ff9458;
   --green: #2ae12a;
   --green-hue: #09140a;
@@ -58,6 +63,8 @@ html.light {
   --box-border: #e4e4e7;
   --color: #000;
   --accent: #ff5858;
+  --accent-dull: #ff58580a;
+
   --warn: #f68645;
 
   --green: #0ec70e;
@@ -122,6 +129,10 @@ code span {
 
 #side {
   background: linear-gradient(140deg, var(--box) 21%, var(--accent) 450%);
+}
+
+#home {
+  background: linear-gradient(140deg, var(--background) 21%, var(--accent) 750%);
 }
 
 #summary pre,

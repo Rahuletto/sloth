@@ -16,7 +16,7 @@ export default function NoteTopics({
       initial={{ opacity: 0, height: "50px" }}
       animate={{ opacity: focus ? 0 : 1, height: !open ? "50px" : "100%" }}
       transition={{ duration: 0.2 }}
-      className="bg-category rounded-2xl px-5 py-3 pb-5 overflow-hidden"
+      className="animate-fade bg-category rounded-2xl px-5 py-3 pb-5 overflow-hidden"
     >
       <div
         tabIndex={0}

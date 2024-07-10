@@ -11,6 +11,12 @@ import Providers from "./providers";
 export const metadata: Metadata = {
   title: "sloth.",
   description: "Make your studying interesting with sloth.",
+  icons: [
+    {
+      rel: "icon",
+      url: "/favicon.ico",
+    },
+  ]
 };
 
 export default function RootLayout({

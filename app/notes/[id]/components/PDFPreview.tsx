@@ -16,7 +16,7 @@ export default function PDFPreview({ src }: { src: string }) {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.2 }}
-        className="cursor-pointer overflow-hidden w-fit h-auto rounded-2xl flex flex-col justify-start items-start my-10"
+        className="animate-fade cursor-pointer overflow-hidden w-fit h-auto rounded-2xl flex flex-col justify-start items-start my-10"
       >
         <div className="items-center w-full flex justify-between">
           <iframe

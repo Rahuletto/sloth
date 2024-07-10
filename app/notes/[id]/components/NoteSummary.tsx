@@ -107,7 +107,7 @@ export default function NoteSummary({
   return note.summary ? (
     <>
       {!focus && (
-        <div className="flex justify-between items-center">
+        <div className="flex justify-between items-center animate-fade duration-200 transition-all">
           <h2 className="md:text-4xl text-3xl decoration-wavy underline decoration-accent font-semibold font-mono">
             Summary
           </h2>

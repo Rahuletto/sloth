@@ -1,7 +1,18 @@
-import React from 'react'
+'use client';
 
-export default function page() {
-  return (
-    <div>page</div>
-  )
+import { useRouter } from "next/navigation";
+import { useAuth } from "@/provider/UserProvider";
+import Loader from "@/components/ui/Loader";
+import React from "react";
+
+export default function Index() {
+  const router = useRouter();
+  const user = useAuth();
+
+  if (user) {
+    router.push("/notes");
+  } else if (user === false) {
+    router.push("/home");
+  }
+  return <Loader />;
 }

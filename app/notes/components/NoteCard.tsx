@@ -57,20 +57,20 @@ export default function NoteCard({
               !isDragDisabled && !isDragging
                 ? `animate-shake cursor-grab`
                 : "cursor-pointer"
-            } select-none relative max-w-[485px] transition-all duration-300 m-1 md:w-auto bg-box border-2 border-bb rounded-xl md:py-5 md:px-8 py-4 px-5`}
+            } select-none relative max-w-[485px] transition duration-300 m-1 md:w-auto bg-box border-2 border-bb rounded-xl md:py-5 md:px-8 py-4 px-5`}
             ref={provided.innerRef}
             {...provided.draggableProps}
             {...provided.dragHandleProps}
           >
-            <h1 className="select-none text-2xl font-semibold line-clamp-2 overflow-hidden text-ellipsis truncate">
+            <h1 className="select-none transition duration-300 text-2xl text-color font-semibold line-clamp-2 overflow-hidden text-ellipsis truncate">
               {note.data.title}
             </h1>
-            <h3 className="text-xs opacity-30 mb-3 select-none">
+            <h3 className="text-color transition duration-300 text-xs opacity-30 mb-3 select-none">
               Recorded at {formatDate(note.data.createdAt)}
             </h3>
-            <p className="text-sm select-none">
+            <p className="text-color transition duration-300 text-sm select-none">
               <span className="opacity-50">
-                {note.data.description?.split(" ")?.slice(0, 32)?.join(" ")}...
+                {note.data.description?.split(" ")?.slice(0, 26)?.join(" ")}...
               </span>
             </p>
             {!isDragDisabled && (

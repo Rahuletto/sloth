@@ -37,7 +37,6 @@ const AddCategory = dynamic(
   { ssr: false },
 );
 
-
 const Category = dynamic(
   () => import("./components/Category").then((mod) => mod.default),
   { ssr: true },
@@ -217,9 +216,10 @@ export default function Notes() {
                         {...dragProvider.draggableProps}
                         {...dragProvider.dragHandleProps}
                         className={`
+                          ${category === "Starred" ? "col-span-3" : ""}
                           ${notes[category]?.length >= 4 ? "sm:col-span-2 sm:row-span-2" : ""}
                           ${notes[category]?.length >= 8 ? "lg:col-span-2 lg:row-span-2" : ""}
-                          ${notes[category]?.length >= 12 ? "xl:col-span-2 xl:row-span-2" : ""}
+                          ${notes[category]?.length >= 12 ? "xl:col-span-3 xl:row-span-2" : ""}
                         `}
                       >
                         <Category

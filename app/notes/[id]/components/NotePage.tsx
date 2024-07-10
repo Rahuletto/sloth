@@ -8,13 +8,42 @@ import { useAuth } from "@/provider/UserProvider";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import { NoteData } from "@/types/NoteData";
-import AudioPlayer from "./AudioPlayer";
-import NoteHeader from "./NoteHeader";
-import NoteSummary from "./NoteSummary";
-import NoteActions from "./NoteActions";
-import FocusButton from "./FocusButton";
-import PDFPreview from "./PDFPreview";
-import YoutubePreview from "./YoutubePreview";
+import dynamic from "next/dynamic";
+
+const NoteHeader = dynamic(
+  () => import("./NoteHeader").then((mod) => mod.default),
+  { ssr: true },
+);
+
+const NoteSummary = dynamic(
+  () => import("./NoteSummary").then((mod) => mod.default),
+  { ssr: false },
+);
+
+const NoteActions = dynamic(
+  () => import("./NoteActions").then((mod) => mod.default),
+  { ssr: true },
+);
+
+const FocusButton = dynamic(
+  () => import("./FocusButton").then((mod) => mod.default),
+  { ssr: false },
+);
+
+const PDFPreview = dynamic(
+  () => import("./PDFPreview").then((mod) => mod.default),
+  { ssr: false },
+);
+
+const YoutubePreview = dynamic(
+  () => import("./YoutubePreview").then((mod) => mod.default),
+  { ssr: false },
+);
+
+const AudioPlayer = dynamic(
+  () => import("./AudioPlayer").then((mod) => mod.default),
+  { ssr: false },
+);
 
 export default function NotePage({ id }: { id: string }) {
   const user = useAuth();
@@ -35,7 +64,6 @@ export default function NotePage({ id }: { id: string }) {
   }, [user, id]);
 
   useEffect(() => {
-    console.log(note);
     if (note && note.transcript && user) {
       if (!note.summary) {
         const temp = { ...note, summary: "" };
@@ -69,10 +97,7 @@ export default function NotePage({ id }: { id: string }) {
       className="px-8 md:py-24 py-12 pb-32 min-h-screen flex gap-6 mx-auto transition-all duration-300 animate-fade"
     >
       <div className="overflow-auto scrollbar-none h-fit lg:min-w-[75%] w-full flex flex-col gap-6">
-        <NoteHeader
-          title={note.title}
-          createdAt={note.createdAt}
-        />
+        <NoteHeader title={note.title} createdAt={note.createdAt} />
         {note.src[0] && note.src[0].type === "audio" && (
           <AudioPlayer
             src={note.src[0].url}
@@ -80,7 +105,11 @@ export default function NotePage({ id }: { id: string }) {
           />
         )}
         {note.src[0] && note.src[0].type === "pdf" && (
-          <PDFPreview src={note.src[0].url} />
+          <div className="flex gap-2">
+            {note.src.map(({ url }) => (
+              <PDFPreview src={url} />
+            ))}
+          </div>
         )}
         {note.src[0] && note.src[0].type === "youtube" && (
           <YoutubePreview src={note.src[0].url} />
@@ -88,6 +117,7 @@ export default function NotePage({ id }: { id: string }) {
         <NoteSummary note={note} focus={focus} />
       </div>
       {!focus && (
+        <div className="lg:w-[35%]">
         <NoteActions
           note={note}
           id={id}
@@ -96,6 +126,7 @@ export default function NotePage({ id }: { id: string }) {
           open={open}
           setOpen={setOpen}
         />
+        </div>
       )}
       <FocusButton focus={focus} setFocus={setFocus} />
 

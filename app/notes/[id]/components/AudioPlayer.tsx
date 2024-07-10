@@ -7,6 +7,7 @@ import { TbRewindBackward15, TbRewindForward15 } from "react-icons/tb";
 import { CgTranscript } from "react-icons/cg";
 import { motion } from "framer-motion";
 import { formatText } from "@/utils/formatText";
+import { useAuth } from "@/provider/UserProvider";
 
 export default function AudioPlayer({
   src,
@@ -15,6 +16,7 @@ export default function AudioPlayer({
   src: string;
   transcript: string;
 }) {
+  const user = useAuth();
   const audioRef = useRef<HTMLAudioElement>(null);
   const [time, setTime] = useState("00:00");
   const [transcriptToggle, setTranscriptToggle] = useState(false);
@@ -50,15 +52,14 @@ export default function AudioPlayer({
   }, [audioRef]);
 
   return (
-    <motion.div
+    user && <motion.div
       initial={{ height: "80px" }}
       animate={{ height: transcriptToggle ? "100%" : "80px" }}
       transition={{ duration: 0.2 }}
-      className="overflow-hidden min-h-[78px] max-w-[700px] bg-box border-2 border-bb rounded-2xl flex flex-col justify-start items-start px-6 py-3 mb-10"
+      className="animate-fade transition-all overflow-hidden min-h-[78px] max-w-[700px] bg-box border-2 border-bb rounded-2xl flex flex-col justify-start items-start px-6 py-3 mb-10"
     >
       <div className="items-center w-full h-[50px] flex justify-between">
         <audio
-          preload="meta"
           ref={audioRef}
           src={src}
           controls

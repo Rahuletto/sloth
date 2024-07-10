@@ -6,8 +6,17 @@ import { FaTrashCan } from "react-icons/fa6";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/provider/UserProvider";
 import { deleteData } from "@/firebase/firestore";
-import Actions from "./subcomponents/Actions";
-import Dialog from "@/components/ui/Dialog";
+import dynamic from "next/dynamic";
+
+const Dialog = dynamic(
+  () => import("@/components/ui/Dialog").then((mod) => mod.default),
+  { ssr: false },
+);
+
+const Actions = dynamic(
+  () => import("./subcomponents/Actions").then((mod) => mod.default),
+  { ssr: false },
+);
 
 export default function NoteActions({
   note,
@@ -38,7 +47,7 @@ export default function NoteActions({
   return (
     <>
       <Dialog open={dialog} clickHandler={clickHandler} setOpen={setDialog}>
-       Are you sure you want to delete this note?
+        Are you sure you want to delete this note?
       </Dialog>
 
       {/* PC */}
@@ -46,7 +55,7 @@ export default function NoteActions({
         initial={{ x: 0 }}
         animate={{ x: focus ? 200 : 0 }}
         transition={{ duration: 0.3 }}
-        className="lg:flex w-[35%] flex-col gap-6 h-fit lg:sticky lg:top-12 hidden"
+        className="animate-fade lg:flex w-full flex-col gap-6 h-fit lg:sticky lg:top-12 hidden"
       >
         <Actions topics={note.topics} focus={focus} id={id} />
         <div className="flex gap-2 flex-col">

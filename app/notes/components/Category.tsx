@@ -34,7 +34,7 @@ export default function Category({
 
   return (
     <div
-      className={`transition-all duration-300 animate-fade scrollbar-none bg-category p-2 rounded-3xl h-full ${
+      className={`transition-all duration-300 animate-fade scrollbar-none dark:bg-category bg-transparent border-2 border-category p-2 rounded-3xl h-full ${
         isLarge ? "overflow-y-auto" : ""
       }`}
     >
@@ -57,7 +57,7 @@ export default function Category({
         )}
       </h2>
 
-      <StrictModeDroppable droppableId={categoryId}>
+      <StrictModeDroppable droppableId={categoryId} direction={title === "Starred" ? "horizontal" : "vertical"}>
         {(provided, snapShot) => (
           <div
             ref={provided.innerRef}
