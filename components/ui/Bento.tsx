@@ -34,11 +34,11 @@ export default function Bento() {
               </div>
             </div>
             <Image
-              className="saturate-150 aspect-square rounded-2xl object-cover mt-0"
+              className="saturate-150 aspect-square rounded-2xl lg:max-w-[40%] object-cover mt-0"
               src="/images/record.png"
               alt="record"
-              height={1000}
-              width={1000}
+              height={500}
+              width={500}
             />
           </div>
 

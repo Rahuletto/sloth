@@ -28,6 +28,11 @@ const Gemini = dynamic(
   { ssr: false },
 );
 
+const Footer = dynamic(
+  () => import("./sections/Footer").then((mod) => mod.default),
+  { ssr: false },
+);
+
 export default function Home() {
   useEffect(() => {
     const observer = new IntersectionObserver((entries) => {
@@ -66,11 +71,7 @@ export default function Home() {
       <Features />
       <Tablet />
       <ThingsDo />
-      <section id="more" className="lg:mt-32 mt-24 transition-all animate-fade duration-300">
-        <h2 className="lg:text-5xl md:text-3xl text-xl font-semibold lg:max-w-[50%]">
-          Never waste time reading through endless details again.
-        </h2>
-      </section>
+      <Footer />
       <Gemini />
     </main>
   );
