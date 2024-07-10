@@ -53,11 +53,11 @@ export default function NoteCard({
             onKeyDown={() => {}}
             role="button"
             tabIndex={0}
-            className={`md:w-fill ${
+            className={`${
               !isDragDisabled && !isDragging
                 ? `animate-shake cursor-grab`
                 : "cursor-pointer"
-            } select-none relative max-w-[485px] transition duration-300 m-1 md:w-auto bg-box border-2 border-bb rounded-xl md:py-5 md:px-8 py-4 px-5`}
+            } min-w-[250px] w-full cursor-grab select-none relative md:w-auto max-w-[480px] max-h-[165px] m-1 bg-box border-2 border-bb rounded-xl md:py-5 md:px-8 py-4 px-5`}
             ref={provided.innerRef}
             {...provided.draggableProps}
             {...provided.dragHandleProps}
@@ -70,11 +70,11 @@ export default function NoteCard({
             </h3>
             <p className="text-color transition duration-300 text-sm select-none">
               <span className="opacity-50">
-                {note.data.description?.split(" ")?.slice(0, 26)?.join(" ")}...
+                {note.data.description?.split(" ")?.slice(0, 25)?.join(" ")}...
               </span>
             </p>
             {!isDragDisabled && (
-              <div className="z-10 absolute bottom-2 right-2 transition-all duration-300 animate-fade">
+              <div className="z-10 absolute bottom-2 right-2 transition duration-300 animate-fade">
                 <button
                   type="button"
                   title="Delete note"

@@ -24,9 +24,9 @@ export default function AccountPill({
         onClick={toggleTheme}
       >
         {isDark ? (
-          <FaRegMoon className="text-2xl" />
+          <FaRegMoon className="md:text-2xl text-lg" />
         ) : (
-          <FaRegSun className="text-2xl" />
+          <FaRegSun className="md:text-2xl text-lg" />
         )}
       </button>
       <button
@@ -37,7 +37,7 @@ export default function AccountPill({
         }`}
         onClick={toggleEditMode}
       >
-        <BiPencil className="text-2xl" />
+        <BiPencil className="md:text-2xl text-lg" />
       </button>
 
       <button
@@ -47,7 +47,7 @@ export default function AccountPill({
         onClick={() => setLogoutPanel(true)}
         className="bg-accent hover:px-3 text-bg p-2 rounded-full duration-150"
       >
-        <GrPowerShutdown className="text-2xl" />
+        <GrPowerShutdown className="md:text-2xl text-lg" />
       </button>
     </div>
   );

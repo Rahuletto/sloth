@@ -108,7 +108,7 @@ export default function NoteSummary({
     <>
       {!focus && (
         <div className="flex justify-between items-center animate-fade duration-200 transition-all">
-          <h2 className="md:text-4xl text-3xl decoration-wavy underline decoration-accent font-semibold font-mono">
+          <h2 className="md:text-4xl text-3xl decoration-wavy underline decoration-accent font-semibold font-mono" style={{ textDecorationSkipInk: "all" }}>
             Summary
           </h2>
           <button

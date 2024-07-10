@@ -1,6 +1,6 @@
 "use client";
 
-import React, { ReactNode } from "react";
+import React, { ReactNode, useEffect, useState } from "react";
 import { Note } from "@/types/NoteData";
 import { FaStar, FaTrashCan } from "react-icons/fa6";
 import dynamic from "next/dynamic";
@@ -32,9 +32,23 @@ export default function Category({
 }) {
   const isLarge = notes.length >= 4;
 
+  const [isLargeScreen, setIsLargeScreen] = useState(window.innerWidth >= 1130);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsLargeScreen(window.innerWidth >= 1130);
+    };
+
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
+
   return (
     <div
-      className={`transition-all duration-300 animate-fade scrollbar-none dark:bg-category bg-transparent border-2 border-category p-2 rounded-3xl h-full ${
+      className={`relative transition duration-300 animate-fade scrollbar-none dark:bg-category bg-transparent border-2 border-category p-2 rounded-3xl h-full ${
         isLarge ? "overflow-y-auto" : ""
       }`}
     >
@@ -57,12 +71,12 @@ export default function Category({
         )}
       </h2>
 
-      <StrictModeDroppable droppableId={categoryId} direction={title === "Starred" ? "horizontal" : "vertical"}>
+      <StrictModeDroppable droppableId={categoryId} direction={isLargeScreen && title === "Starred" ? "horizontal" : "vertical"}>
         {(provided, snapShot) => (
           <div
             ref={provided.innerRef}
             {...provided.droppableProps}
-            className={`scrollbar-none min-h-12 flex flex-row flex-wrap transition-all duration-500 rounded-2xl max-h-[600px] border-2 ${
+            className={`flex flex-wrap relative scrollbar-none min-h-46 transition duration-500 rounded-2xl max-h-[600px] border-2 ${
               snapShot.isDraggingOver
                 ? "bg-hue border-accent"
                 : "border-transparent"

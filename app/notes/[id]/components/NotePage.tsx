@@ -96,7 +96,7 @@ export default function NotePage({ id }: { id: string }) {
       animate={{ maxWidth: focus ? "1300px" : "1200px" }}
       className="px-8 md:py-24 py-12 pb-32 min-h-screen flex gap-6 mx-auto transition-all duration-300 animate-fade"
     >
-      <div className="overflow-auto scrollbar-none h-fit lg:min-w-[75%] w-full flex flex-col gap-6">
+      <div className="overflow-auto scrollbar-none h-fit min-w-[100%] lg:min-w-[75%] w-full flex flex-col gap-6">
         <NoteHeader title={note.title} createdAt={note.createdAt} />
         {note.src[0] && note.src[0].type === "audio" && (
           <AudioPlayer

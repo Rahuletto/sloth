@@ -196,7 +196,7 @@ export default function Notes() {
               <div
                 {...provided.droppableProps}
                 ref={provided.innerRef}
-                className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-4 auto-rows-auto mt-8"
+                className="md:grid flex flex-col grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-4 auto-rows-auto mt-8"
                 style={{ gridAutoFlow: "dense" }}
               >
                 {categoryOrder.map((category, index) => (

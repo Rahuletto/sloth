@@ -29,7 +29,7 @@ export default function NoteTopics({
         onClick={() => setOpen((prev) => !prev)}
         className="flex justify-between items-center mb-4"
       >
-        <h2 className="text-xl decoration-wavy underline decoration-accent font-semibold font-mono">
+        <h2 style={{ textDecorationSkipInk: "all" }} className="text-xl decoration-wavy underline decoration-accent font-semibold font-mono">
           Topics
         </h2>
         <FaCaretRight
