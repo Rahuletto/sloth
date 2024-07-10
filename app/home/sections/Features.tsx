@@ -48,6 +48,30 @@ const featureList = [
   },
 ];
 
+
+function FeatureCard({ f }: { f: Feature }) {
+  return (
+    <Draggable draggableId={f.i.toString()} index={f.i}>
+      {(drag) => (
+        <div
+          ref={drag.innerRef}
+          {...drag.draggableProps}
+          {...drag.dragHandleProps}
+          className="min-w-[300px] cursor-grab select-none relative w-[385px] m-1 bg-box border-2 border-bb rounded-xl md:py-5 md:px-8 py-4 px-5"
+        >
+          <h1 className="flex gap-3 items-center select-none md:text-2xl text-xl font-semibold line-clamp-2 overflow-hidden text-ellipsis truncate">
+            {f.icon} {f.title}
+          </h1>
+          <p className="mt-3 text-sm select-none">
+            <span className="opacity-70">{f.description}</span>
+          </p>
+        </div>
+      )}
+    </Draggable>
+  );
+}
+
+
 export default function Features() {
   const [features, setFeatures] = useState<Feature[]>(featureList);
 
@@ -83,23 +107,7 @@ export default function Features() {
                   }`}
                 >
                   {features.map((f) => (
-                    <Draggable draggableId={f.i.toString()} index={f.i}>
-                      {(drag) => (
-                        <div
-                          ref={drag.innerRef}
-                          {...drag.draggableProps}
-                          {...drag.dragHandleProps}
-                          className="min-w-[300px] cursor-grab select-none relative w-[385px] m-1 bg-box border-2 border-bb rounded-xl md:py-5 md:px-8 py-4 px-5"
-                        >
-                          <h1 className="flex gap-3 items-center select-none text-2xl font-semibold line-clamp-2 overflow-hidden text-ellipsis truncate">
-                            {f.icon} {f.title}
-                          </h1>
-                          <p className="mt-3 text-sm select-none">
-                            <span className="opacity-70">{f.description}</span>
-                          </p>
-                        </div>
-                      )}
-                    </Draggable>
+                    <FeatureCard f={f} />
                   ))}
 
                   {provided.placeholder}
@@ -109,43 +117,26 @@ export default function Features() {
           </div>
 
           <div className="md:hidden block">
-          <StrictModeDroppable droppableId="features" direction="vertical">
-            {(provided, snapShot) => (
-              <div
-                ref={provided.innerRef}
-                {...provided.droppableProps}
-                className={`overflow-x-auto scrollbar-none min-h-32 flex flex-row transition-all duration-500 rounded-2xl max-h-[600px] border-2 ${
-                  snapShot.isDraggingOver
-                    ? "bg-hue border-accent"
-                    : "border-transparent"
-                }`}
-              >
-                {features.map((f) => (
-                  <Draggable draggableId={f.i.toString()} index={f.i}>
-                    {(drag) => (
-                      <div
-                        ref={drag.innerRef}
-                        {...drag.draggableProps}
-                        {...drag.dragHandleProps}
-                        className="min-w-[300px] cursor-grab select-none relative w-[385px] m-1 bg-box border-2 border-bb rounded-xl md:py-5 md:px-8 py-4 px-5"
-                      >
-                        <h1 className="flex gap-3 items-center select-none text-2xl font-semibold line-clamp-2 overflow-hidden text-ellipsis truncate">
-                          {f.icon} {f.title}
-                        </h1>
-                        <p className="mt-3 text-sm select-none">
-                          <span className="opacity-70">{f.description}</span>
-                        </p>
-                      </div>
-                    )}
-                  </Draggable>
-                ))}
+            <StrictModeDroppable droppableId="features" direction="vertical">
+              {(provided, snapShot) => (
+                <div
+                  ref={provided.innerRef}
+                  {...provided.droppableProps}
+                  className={`overflow-x-auto scrollbar-none min-h-32 flex flex-row transition-all duration-500 rounded-2xl max-h-[600px] border-2 ${
+                    snapShot.isDraggingOver
+                      ? "bg-hue border-accent"
+                      : "border-transparent"
+                  }`}
+                >
+                  {features.map((f) => (
+                    <FeatureCard f={f} />
+                  ))}
 
-                {provided.placeholder}
-              </div>
-            )}
-          </StrictModeDroppable>
+                  {provided.placeholder}
+                </div>
+              )}
+            </StrictModeDroppable>
           </div>
-
         </div>
       </DragDropContext>
     </section>
