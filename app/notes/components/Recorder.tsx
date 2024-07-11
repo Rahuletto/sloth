@@ -78,7 +78,7 @@ export default function Recorder({
   const handleRecordingStop = async (dataUrl: string) => {
     if (!user) return;
     const length = await getAudioLength(dataUrl);
-    if (length <= 120) {
+    if (length <= 300) {
       setMessage(
         "Audio is less than 5 minutes. Lectures typically goes more than that right?",
       );

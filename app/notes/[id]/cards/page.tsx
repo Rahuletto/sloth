@@ -91,7 +91,7 @@ export default function Flashcards({ params }: { params: { id: string } }) {
         </div>
         {cards && cards.length > 0 ? (
           <>
-            <div className="flex items-center justify-center lg:h-[55%] md:h-[70%] h-[80%] gap-6">
+            <div className="flex items-center justify-center lg:h-[55%] md:h-[70%] h-[70%] gap-6">
               <div className="w-16 justify-center md:flex hidden">
                 <button
                   type="button"
@@ -138,7 +138,7 @@ export default function Flashcards({ params }: { params: { id: string } }) {
               </div>
             </div>
 
-            <div className="z-10 md:hidden absolute bottom-16 left-0 w-full flex items-center justify-center gap-16">
+            <div className="z-10 md:hidden absolute bottom-8 left-0 w-full flex items-center justify-center gap-16">
               <div className="w-[90px] flex justify-center">
                 <button
                   type="button"
