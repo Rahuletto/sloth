@@ -16,6 +16,6 @@
     "no-restricted-globals": "warn"
   },
   "parserOptions": {
-    "project": "./tsconfig.json"
+    "project": ["./tsconfig.json", "next.config.mjs", "next-sitemap.config.js"]
   }
 }

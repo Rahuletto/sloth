@@ -1,0 +1,12 @@
+# *
+User-agent: *
+Allow: /
+Allow: /home
+Allow: /notes
+Allow: /auth
+
+# Host
+Host: https://academia-pro.vercel.app
+
+# Sitemaps
+Sitemap: https://academia-pro.vercel.app/sitemap.xml
