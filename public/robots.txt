@@ -6,7 +6,7 @@ Allow: /notes
 Allow: /auth
 
 # Host
-Host: https://academia-pro.vercel.app
+Host: https://ecne.vercel.app
 
 # Sitemaps
-Sitemap: https://academia-pro.vercel.app/sitemap.xml
+Sitemap: https://ecne.vercel.app/sitemap.xml

@@ -8,7 +8,7 @@ import React, {
 } from "react";
 
 const initialTheme = {
-  isDark: false,
+  isDark: true,
   toggleTheme: () => {},
 };
 

@@ -4,7 +4,7 @@ import { Link } from 'next-view-transitions'
 
 export default function Hero() {
   return (
-    <section id="hero" className="relative flex justify-between transition-all animate-fade duration-300">
+    <section id="hero" className="z-10 relative flex justify-between transition-all animate-fade duration-300">
     <div className="flex gap-6 flex-col">
       <Image alt="sloth" src="/raw-smile.svg" width={44} height={44} />
       <div className="flex gap-3 flex-col max-w-[60%]">

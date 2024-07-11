@@ -1,7 +1,7 @@
 "use client";
 
 import dynamic from "next/dynamic";
-import React, { useEffect } from "react";
+import React from "react";
 
 const Hero = dynamic(
   () => import("./sections/Hero").then((mod) => mod.default),
@@ -34,39 +34,10 @@ const Footer = dynamic(
 );
 
 export default function Home() {
-  useEffect(() => {
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          (entry.target as HTMLElement).style.opacity = "1";
-        } else {
-          (entry.target as HTMLElement).style.opacity = "0";
-        }
-      });
-    });
-
-    const sections = document.getElementsByTagName("section");
-
-    if (sections) {
-      Array.from(sections).forEach((section) => {
-        observer.observe(section);
-      });
-    }
-
-    return () => {
-      if (sections) {
-        Array.from(sections).forEach((section) => {
-          observer.unobserve(section);
-        });
-      }
-    };
-  }, []);
-
   return (
-    <main
-      className="min-h-screen lg:px-32 lg:py-48 md:px-28 md:py-32 px-12 py-20 pb-48"
-      id="home"
-    >
+    <>
+    <div id="home" className="fixed top-0 left-0 h-screen w-screen z-0" />
+    <main className="z-10 bg-transparent min-h-screen lg:px-32 lg:py-48 md:px-28 md:py-32 px-12 py-20 pb-48">
       <Hero />
       <Features />
       <Tablet />
@@ -74,5 +45,6 @@ export default function Home() {
       <Footer />
       <Gemini />
     </main>
+    </>
   );
 }

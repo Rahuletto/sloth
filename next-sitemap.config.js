@@ -1,5 +1,5 @@
 module.exports = {
-    siteUrl: process.env.SITE_URL || 'https://academia-pro.vercel.app',
+    siteUrl: process.env.SITE_URL || 'https://ecne.vercel.app',
     generateRobotsTxt: true,
     priority: 0.8,
     sitemapSize: 7000,

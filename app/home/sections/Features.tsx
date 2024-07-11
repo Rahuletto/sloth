@@ -1,22 +1,11 @@
-import dynamic from "next/dynamic";
-
-import React, { ReactNode, useState } from "react";
-import { DragDropContext, Draggable, DropResult } from "react-beautiful-dnd";
+import React, { useState } from "react";
+import { DragDropContext, DropResult } from "react-beautiful-dnd";
 import { PiVinylRecordBold, PiCardsThreeDuotone } from "react-icons/pi";
 import { RiScissorsCutFill } from "react-icons/ri";
 import { TbMessageQuestion } from "react-icons/tb";
+import { Feature } from "@/types/Features";
+import { FeatureDropper } from "./components/FeatureDropper";
 
-const StrictModeDroppable = dynamic(
-  () => import("@/components/dnd/Droppable").then((mod) => mod.default),
-  { ssr: true },
-);
-
-interface Feature {
-  i: number;
-  icon: ReactNode;
-  title: string;
-  description: string;
-}
 const featureList = [
   {
     i: 0,
@@ -48,30 +37,6 @@ const featureList = [
   },
 ];
 
-
-function FeatureCard({ f }: { f: Feature }) {
-  return (
-    <Draggable draggableId={f.i.toString()} index={f.i}>
-      {(drag) => (
-        <div
-          ref={drag.innerRef}
-          {...drag.draggableProps}
-          {...drag.dragHandleProps}
-          className="min-w-[250px] w-full cursor-grab select-none relative md:w-[385px] m-1 bg-box border-2 border-bb rounded-xl md:py-5 md:px-8 py-4 px-5"
-        >
-          <h1 className="flex gap-3 items-center select-none md:text-2xl text-xl font-semibold line-clamp-2 overflow-hidden text-ellipsis truncate">
-            {f.icon} {f.title}
-          </h1>
-          <p className="mt-3 text-sm select-none">
-            <span className="opacity-70">{f.description}</span>
-          </p>
-        </div>
-      )}
-    </Draggable>
-  );
-}
-
-
 export default function Features() {
   const [features, setFeatures] = useState<Feature[]>(featureList);
 
@@ -86,58 +51,10 @@ export default function Features() {
   return (
     <section
       id="features"
-      className="lg:mt-32 mt-24 transition-all animate-fade duration-300"
+      className="z-10 lg:mt-32 mt-24 transition-all animate-fade duration-300"
     >
       <DragDropContext onDragEnd={onDragEnd}>
-        <div className="animate-fade scrollbar-none bg-category p-2 rounded-3xl min-h-32">
-          <h2 className="p-2 mx-2 flex text-accent justify-between items-center font-semibold text-md">
-            Features
-          </h2>
-
-          <div className="hidden md:block">
-            <StrictModeDroppable droppableId="features" direction="horizontal">
-              {(provided, snapShot) => (
-                <div
-                  ref={provided.innerRef}
-                  {...provided.droppableProps}
-                  className={`overflow-x-auto scrollbar-none min-h-32 flex flex-row transition-all duration-500 rounded-2xl max-h-[600px] border-2 ${
-                    snapShot.isDraggingOver
-                      ? "bg-hue border-accent"
-                      : "border-transparent"
-                  }`}
-                >
-                  {features.map((f) => (
-                    <FeatureCard f={f} />
-                  ))}
-
-                  {provided.placeholder}
-                </div>
-              )}
-            </StrictModeDroppable>
-          </div>
-
-          <div className="md:hidden block">
-            <StrictModeDroppable droppableId="features" direction="vertical">
-              {(provided, snapShot) => (
-                <div
-                  ref={provided.innerRef}
-                  {...provided.droppableProps}
-                  className={`overflow-x-auto scrollbar-none min-h-32 flex flex-col transition-all duration-500 rounded-2xl border-2 ${
-                    snapShot.isDraggingOver
-                      ? "bg-hue border-accent"
-                      : "border-transparent"
-                  }`}
-                >
-                  {features.map((f) => (
-                    <FeatureCard f={f} />
-                  ))}
-
-                  {provided.placeholder}
-                </div>
-              )}
-            </StrictModeDroppable>
-          </div>
-        </div>
+          <FeatureDropper features={features} />
       </DragDropContext>
     </section>
   );

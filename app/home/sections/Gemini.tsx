@@ -4,7 +4,7 @@ import React from 'react'
 
 export default function Gemini() {
   return (
-    <section id="gemini" className="mt-12 transition-all animate-fade duration-300">
+    <section id="gemini" className="z-20 mt-12 transition-all animate-fade duration-300">
     <Card title="Powered by Gemini">
       <CanvasRevealEffect
         animationSpeed={12}

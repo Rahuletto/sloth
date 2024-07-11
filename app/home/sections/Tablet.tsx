@@ -14,7 +14,7 @@ const ContainerScroll = dynamic(
 
 export default function Tablet() {
   return (
-    <section id="tablet" className="transition-all animate-fade duration-300">
+    <section id="tablet" className="z-10 transition-all animate-fade duration-300">
       <ContainerScroll
         titleComponent={
           <h1 className="md:text-7xl text-5xl font-semibold text-center">
