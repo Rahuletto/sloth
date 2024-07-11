@@ -30,8 +30,9 @@ export default function NoteTopics({
         className="flex justify-between items-center mb-4"
       >
         <h2
-          style={{ textDecorationSkipInk: "all" }}
-          className="text-xl decoration-wavy underline decoration-accent font-semibold font-mono"
+          style={{ textDecorationSkipInk: "none" }}
+          className="text-xl underline decoration-accent font-semibold font-mono"
+          
         >
           Topics
         </h2>

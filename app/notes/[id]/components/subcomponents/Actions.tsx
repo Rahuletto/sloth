@@ -1,9 +1,9 @@
+import type { TopicData } from "@/types/Topic";
+import { motion } from "framer-motion";
+import { Link } from "next-view-transitions";
 import React from "react";
 import { PiCardsThreeDuotone } from "react-icons/pi";
 import { TbMessageQuestion } from "react-icons/tb";
-import { TopicData } from "@/types/Topic";
-import { Link } from "next-view-transitions";
-import { motion } from "framer-motion";
 import NoteTopics from "../NoteTopics";
 
 export default function Actions({
@@ -28,17 +28,17 @@ export default function Actions({
           role="button"
           tabIndex={0}
           href={`/notes/${id}/cards`}
-          className="w-full opacity-60 hover:opacity-95 text-left px-3 py-2 rounded-xl hover:bg-accent hover:text-bg font-semibold flex gap-2 items-center justify-start transition-all duration-300 font-mono"
+          className="w-full opacity-60 hover:opacity-95 text-left px-3 py-2 rounded-xl hover:bg-accent hover:text-bg font-semibold flex gap-2 items-center justify-start transition duration-300 font-mono"
         >
-          <PiCardsThreeDuotone /> Flash cards
+          <PiCardsThreeDuotone className="duration-0 transition-none" /> Flash cards
         </Link>
         <Link
           role="button"
           tabIndex={0}
           href={`/notes/${id}/quiz`}
-          className="w-full text-left opacity-60 hover:opacity-95 px-3 py-2 rounded-xl hover:bg-accent hover:text-bg font-semibold flex gap-2 items-center justify-start transition-all duration-300 font-mono"
+          className="w-full text-left opacity-60 hover:opacity-95 px-3 py-2 rounded-xl hover:bg-accent hover:text-bg font-semibold flex gap-2 items-center justify-start transition duration-300 font-mono"
         >
-          <TbMessageQuestion /> Quiz
+          <TbMessageQuestion className="duration-0 transition-none"/> Quiz
         </Link>
       </motion.div>
     </>

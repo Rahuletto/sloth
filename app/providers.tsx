@@ -2,7 +2,7 @@
 
 import { ThemeProvider } from "@/provider/ThemeProvider";
 import { UserProvider } from "@/provider/UserProvider";
-import React, { ReactNode } from "react";
+import React, { type ReactNode } from "react";
 // eslint-disable-next-line import/no-extraneous-dependencies
 import "regenerator-runtime/runtime";
 
