@@ -25,7 +25,7 @@ export default function Card({
         <div className="text-center -translate-y-6 w-full mx-auto flex items-center justify-center text-5xl">
           <Gemini />
         </div>
-        <h2 className="dark:text-white text-xl opacity-0 relative z-10 mt-4  font-bold text-white-translate-y-4 transition duration-200">
+        <h2 className="dark:text-white text-xl opacity-100 relative z-10 mt-4  font-bold text-white -translate-y-4 transition duration-200">
           {title}
         </h2>
       </div>
