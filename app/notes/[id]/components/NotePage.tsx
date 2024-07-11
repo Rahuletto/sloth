@@ -1,14 +1,16 @@
+/** eslint-disable react-hooks/exhaustive-deps */
+
 "use client";
 
-import React, { useState, useEffect } from "react";
 import NotFoundError from "@/app/not-found";
 import Loader from "@/components/ui/Loader";
 import { getData, setData } from "@/firebase/firestore";
 import { useAuth } from "@/provider/UserProvider";
-import { useRouter } from "next/navigation";
+import type { NoteData } from "@/types/NoteData";
 import { motion } from "framer-motion";
-import { NoteData } from "@/types/NoteData";
 import dynamic from "next/dynamic";
+import { useRouter } from "next/navigation";
+import React, { useState, useEffect } from "react";
 
 const NoteHeader = dynamic(
   () => import("./NoteHeader").then((mod) => mod.default),
@@ -61,7 +63,8 @@ export default function NotePage({ id }: { id: string }) {
         return null;
       });
     }
-  }, [user, id]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user, id, router]);
 
   useEffect(() => {
     if (note && note.transcript && user) {
@@ -118,31 +121,29 @@ export default function NotePage({ id }: { id: string }) {
       </div>
       {!focus && (
         <div className="lg:w-[35%]">
-        <NoteActions
-          note={note}
-          id={id}
-          focus={focus}
-          setFocus={setFocus}
-          open={open}
-          setOpen={setOpen}
-        />
+          <NoteActions
+            note={note}
+            id={id}
+            focus={focus}
+            setFocus={setFocus}
+            open={open}
+            setOpen={setOpen}
+          />
         </div>
       )}
       <FocusButton focus={focus} setFocus={setFocus} />
 
       <div
-        className={`z-20 fixed shadow-[${
-          open ? "none" : "0px_40px_60px_90px_var(--background)"
-        }] flex left-0 bottom-6 items-center justify-center w-full`}
+        className={`z-20 fixed shadow-[${open ? "none" : "0px_40px_60px_90px_var(--background)"
+          }] flex left-0 bottom-6 items-center justify-center w-full`}
       >
         <button
           type="button"
           onClick={() => setOpen((prev) => !prev)}
-          className={`lg:hidden mx-4 text-center text-xl font-semibold ${
-            open
-              ? "w-[320px] text-accent bg-hue border-accent"
-              : "w-[500px] text-bg bg-accent border-transparent"
-          } border-2 px-8 py-3 rounded-full transition-all duration-300`}
+          className={`lg:hidden mx-4 text-center text-xl font-semibold ${open
+            ? "w-[320px] text-accent bg-hue border-accent"
+            : "w-[500px] text-bg bg-accent border-transparent"
+            } border-2 px-8 py-3 rounded-full transition-all duration-300`}
         >
           {open ? "Close" : "Overview"}
         </button>

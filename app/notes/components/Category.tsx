@@ -1,9 +1,14 @@
+/** eslint-disable lines-around-directive */
+/** eslint-disable @typescript-eslint/no-unused-vars */
+/** eslint-disable react/jsx-curly-brace-presence */
+
+// eslint-disable-next-line lines-around-directive
 "use client";
 
-import React, { ReactNode, useEffect, useState } from "react";
-import { Note } from "@/types/NoteData";
-import { FaStar, FaTrashCan } from "react-icons/fa6";
+import type { Note } from "@/types/NoteData";
 import dynamic from "next/dynamic";
+import React, { type ReactNode, useEffect, useState } from "react";
+import { FaStar, FaTrashCan } from "react-icons/fa6";
 
 const NoteCard = dynamic(
   () => import("./NoteCard").then((mod) => mod.default),
@@ -30,8 +35,7 @@ export default function Category({
   generating?: ReactNode;
   onDelete: () => void;
 }) {
-  const isLarge = notes.length >= 4;
-
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [isLargeScreen, setIsLargeScreen] = useState(window.innerWidth >= 1130);
 
   useEffect(() => {
@@ -48,14 +52,11 @@ export default function Category({
 
   return (
     <div
-      className={`relative transition duration-300 animate-fade scrollbar-none dark:bg-category bg-transparent border-2 border-category p-2 rounded-3xl h-full ${
-        isLarge ? "overflow-y-auto" : ""
-      }`}
+      className="relative transition duration-300 animate-fade scrollbar-none dark:bg-category bg-transparent border-2 border-category p-2 rounded-3xl h-full"
     >
       <h2
-        className={`p-2 mx-2 flex text-accent justify-between items-center font-semibold ${
-          isLarge ? "text-md" : "text-md"
-        }`}
+        // eslint-disable-next-line react/jsx-curly-brace-presence
+        className="p-2 mx-2 flex text-accent justify-between items-center font-semibold"
       >
         {title}
         {title === "Starred" ? <FaStar /> : ""}
@@ -71,16 +72,20 @@ export default function Category({
         )}
       </h2>
 
-      <StrictModeDroppable droppableId={categoryId} direction={isLargeScreen && title === "Starred" ? "horizontal" : "vertical"}>
+      <StrictModeDroppable
+        droppableId={categoryId}
+        direction=
+        "vertical"
+
+      >
         {(provided, snapShot) => (
           <div
             ref={provided.innerRef}
             {...provided.droppableProps}
-            className={`flex flex-wrap relative scrollbar-none min-h-46 transition duration-500 rounded-2xl max-h-[600px] border-2 ${
-              snapShot.isDraggingOver
-                ? "bg-hue border-accent"
-                : "border-transparent"
-            }`}
+            className={`flex flex-col relative scrollbar-none min-h-46 h-full min-w-[500px] overflow-x-auto transition duration-500 rounded-2xl max-h-[600px] border-2 ${snapShot.isDraggingOver
+              ? "bg-hue border-accent"
+              : "border-transparent"
+              }`}
           >
             {notes.map((note, index) => (
               <NoteCard

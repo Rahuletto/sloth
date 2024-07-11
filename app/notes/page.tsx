@@ -1,3 +1,4 @@
+/** eslint-disable no-restricted-syntax */
 /* eslint-disable react-hooks/rules-of-hooks */
 
 "use client";
@@ -8,14 +9,14 @@ import { useRouter } from "next/navigation";
 import React, { useEffect, useRef, useState } from "react";
 import {
   DragDropContext,
-  Droppable,
   Draggable,
-  DropResult,
+  type DropResult,
+  Droppable,
 } from "react-beautiful-dnd";
 
-import { getAllNotes, setData, deleteCategory } from "@/firebase/firestore";
+import { deleteCategory, getAllNotes, setData } from "@/firebase/firestore";
 import { useAuth } from "@/provider/UserProvider";
-import { Note, NoteData } from "@/types/NoteData";
+import type { Note, NoteData } from "@/types/NoteData";
 
 const Loader = dynamic(
   () => import("@/components/ui/Loader").then((mod) => mod.default),
@@ -56,7 +57,6 @@ export default function Notes() {
   const [generating, setGenerating] = useState(false);
   const [genStatus, setGenStatus] = useState("Generating notes..");
   const [notes, setNotes] = useState<{ [key: string]: Note[] }>({
-    Starred: [],
     Uncategorized: [],
   });
   const [categoryOrder, setCategoryOrder] = useState<string[]>([]);
@@ -71,23 +71,22 @@ export default function Notes() {
     if (user === false) router.push("/auth");
     else if (user !== null)
       setTimeout(() => {
-        navigator.permissions.query({ name: "microphone" as any });
+        navigator.permissions.query({ name: "microphone" as PermissionName });
         getAllNotes(`${user.uid}`).then((allNotes) => {
           const categorizedNotes = allNotes.reduce(
-            (acc: any, note: { id: string; data: NoteData }) => {
+            (acc: { [key: string]: Note[] }, note: { id: string; data: NoteData }) => {
               const category = note.data?.category || "Uncategorized";
               if (!acc[category]) acc[category] = [];
               acc[category].push(note);
               return acc;
             },
-            { Starred: [], Uncategorized: [] },
+            { Uncategorized: [] },
           );
           setNotes(categorizedNotes);
           setCategoryOrder([
-            "Starred",
             "Uncategorized",
             ...Object.keys(categorizedNotes).filter(
-              (cat) => cat !== "Starred" && cat !== "Uncategorized",
+              (cat) => cat !== "Uncategorized",
             ),
           ]);
         });
@@ -145,7 +144,7 @@ export default function Notes() {
   };
 
   const handleDeleteCategory = async (categoryToDelete: string) => {
-    if (categoryToDelete === "Starred" || categoryToDelete === "Uncategorized")
+    if (categoryToDelete === "Uncategorized")
       return;
 
     const newNotes = { ...notes };
@@ -160,6 +159,7 @@ export default function Notes() {
     );
 
     if (user) {
+      // eslint-disable-next-line no-restricted-syntax
       for (const note of notesToMove) {
         note.data.category = "Uncategorized";
         await setData(user.uid, note.data.id, note.data);
@@ -196,8 +196,7 @@ export default function Notes() {
               <div
                 {...provided.droppableProps}
                 ref={provided.innerRef}
-                className="md:grid flex flex-col grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-4 auto-rows-auto mt-8"
-                style={{ gridAutoFlow: "dense" }}
+                className="flex flex-col flex-wrap md:flex-row gap-4 mt-8"
               >
                 {categoryOrder.map((category, index) => (
                   <Draggable
@@ -206,7 +205,6 @@ export default function Notes() {
                     index={index}
                     isDragDisabled={
                       !editMode ||
-                      category === "Starred" ||
                       category === "Uncategorized"
                     }
                   >
@@ -215,12 +213,6 @@ export default function Notes() {
                         ref={dragProvider.innerRef}
                         {...dragProvider.draggableProps}
                         {...dragProvider.dragHandleProps}
-                        className={`
-                          ${category === "Starred" ? "col-span-3" : ""}
-                          ${notes[category]?.length >= 4 ? "sm:col-span-2 sm:row-span-2" : ""}
-                          ${notes[category]?.length >= 8 ? "lg:col-span-2 lg:row-span-2" : ""}
-                          ${notes[category]?.length >= 12 ? "xl:col-span-3 xl:row-span-2" : ""}
-                        `}
                       >
                         <Category
                           title={category}

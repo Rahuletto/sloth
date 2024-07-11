@@ -27,7 +27,7 @@
     --box-border: #27272a;
     --color: #fff;
     --accent: #ff5858;
-  --accent-dull: #ff58580a;
+    --accent-dull: #ff58580a;
 
     --warn: #ff9458;
     --green: #2ae12a;
@@ -93,13 +93,14 @@ h6 {
     Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
   --mono: var(--font-geist-mono), SFMono-Regular, Menlo, Monaco, Consolas,
     "Liberation Mono", "Courier New", monospace;
+
   box-sizing: border-box;
   font-family: var(--root);
-  transition: 0s 0.2s background color border transform;
-  -moz-transition: 0s 0.2s background color border transform;
-  -ms-transition: 0s 0.2s background color border transform;
-  -o-transition: 0s 0.2s background color border transform;
-  -webkit-transition: 0s 0.2s background color border transform;
+  transition: 0.2s all;
+  -moz-transition: 0.2s all;
+  -ms-transition: 0.2s all;
+  -o-transition: 0.2s all;
+  -webkit-transition: 0.2s all;
 }
 
 .FlashcardArrayWrapper__CardHolder {
@@ -149,14 +150,17 @@ code span {
   color: var(--color);
   font-weight: 500;
 }
+
 #quiz pre {
   margin-top: 8px;
 }
+
 #quiz pre code {
   margin: 0px 12px;
   font-size: 0.95rem;
   display: block;
 }
+
 #summary pre code {
   margin: 6px 12px;
   display: block;
@@ -227,6 +231,7 @@ code span {
   padding: 8px 14px;
   background-color: var(--box);
 }
+
 #summary li strong,
 #flash strong,
 #summary p code,

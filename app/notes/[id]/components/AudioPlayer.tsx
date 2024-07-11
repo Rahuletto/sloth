@@ -1,13 +1,13 @@
 "use client";
 
+import { useAuth } from "@/provider/UserProvider";
 import { convertTime } from "@/utils/convertTime";
+import { formatText } from "@/utils/formatText";
+import { motion } from "framer-motion";
 import React, { useEffect, useRef, useState } from "react";
+import { CgTranscript } from "react-icons/cg";
 import { FaPause, FaPlay, FaXmark } from "react-icons/fa6";
 import { TbRewindBackward15, TbRewindForward15 } from "react-icons/tb";
-import { CgTranscript } from "react-icons/cg";
-import { motion } from "framer-motion";
-import { formatText } from "@/utils/formatText";
-import { useAuth } from "@/provider/UserProvider";
 
 export default function AudioPlayer({
   src,
@@ -54,10 +54,10 @@ export default function AudioPlayer({
   return (
     user && (
       <motion.div
-        initial={{ height: "80px" }}
-        animate={{ height: transcriptToggle ? "100%" : "80px" }}
+        initial={{ maxHeight: "80px" }}
+        animate={{ maxHeight: transcriptToggle ? "2000px" : "80px" }}
         transition={{ duration: 0.3 }}
-        className="animate-fade transition-all overflow-hidden min-h-[78px] max-w-[700px] bg-box border-2 border-bb rounded-2xl flex flex-col justify-start items-start px-6 py-3 mb-10"
+        className="animate-fade overflow-hidden min-h-[78px] max-w-[700px] bg-box border-2 border-bb rounded-2xl flex flex-col justify-start items-start px-6 py-3 mb-10"
       >
         <div className="items-center w-full h-[50px] flex justify-between">
           <audio ref={audioRef} src={src} controls className="hidden">
@@ -106,7 +106,7 @@ export default function AudioPlayer({
               type="button"
               aria-label="transcript"
               onClick={() => setTranscriptToggle((prev) => !prev)}
-              className="font-mono px-4 py-2 rounded-lg dark:bg-[rgba(255,255,255,0.1)] font-medium bg-[rgba(0,0,0,0.1)] opacity-90 flex gap-3 h-min items-center"
+              className="px-4 py-2 rounded-lg dark:bg-[rgba(255,255,255,0.1)] font-medium bg-[rgba(0,0,0,0.1)] opacity-90 flex gap-3 h-min items-center"
             >
               {transcriptToggle ? <FaXmark /> : <CgTranscript />}
             </button>

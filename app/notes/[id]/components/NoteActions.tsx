@@ -1,12 +1,13 @@
-import React, { Dispatch, SetStateAction, useState } from "react";
-import { motion } from "framer-motion";
 import SlidingShelf from "@/components/ui/SlidingShelf";
-import { IoSparkles } from "react-icons/io5";
-import { FaTrashCan } from "react-icons/fa6";
-import { useRouter } from "next/navigation";
-import { useAuth } from "@/provider/UserProvider";
 import { deleteData } from "@/firebase/firestore";
+import { useAuth } from "@/provider/UserProvider";
+import type { NoteData } from "@/types/NoteData";
+import { motion } from "framer-motion";
 import dynamic from "next/dynamic";
+import { useRouter } from "next/navigation";
+import React, { type Dispatch, type SetStateAction, useState } from "react";
+import { FaTrashCan } from "react-icons/fa6";
+import { IoSparkles } from "react-icons/io5";
 
 const Dialog = dynamic(
   () => import("@/components/ui/Dialog").then((mod) => mod.default),
@@ -27,7 +28,7 @@ export default function NoteActions({
   setOpen,
 }: {
   id: string;
-  note: any;
+  note: NoteData;
   focus: boolean;
   setFocus: Dispatch<SetStateAction<boolean>>;
   open?: boolean;

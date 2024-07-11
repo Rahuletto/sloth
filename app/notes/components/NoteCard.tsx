@@ -2,7 +2,7 @@
 
 import { deleteData } from "@/firebase/firestore";
 import { useAuth } from "@/provider/UserProvider";
-import { Note } from "@/types/NoteData";
+import type { Note } from "@/types/NoteData";
 import { formatDate } from "@/utils/formatDate";
 import dynamic from "next/dynamic";
 import { useRouter } from "next/navigation";
@@ -50,14 +50,13 @@ export default function NoteCard({
         {(provided) => (
           <div
             onClick={() => isDragDisabled && router.push(`/notes/${note.id}`)}
-            onKeyDown={() => {}}
+            onKeyDown={() => { }}
             role="button"
             tabIndex={0}
-            className={`${
-              !isDragDisabled && !isDragging
-                ? `animate-shake cursor-grab`
-                : "cursor-pointer"
-            } min-w-[250px] w-full cursor-grab select-none relative md:w-auto max-w-[480px] max-h-[165px] m-1 bg-box border-2 border-bb rounded-xl md:py-5 md:px-8 py-4 px-5`}
+            className={`${!isDragDisabled && !isDragging
+              ? "animate-shake cursor-grab"
+              : "cursor-pointer"
+              } min-w-[250px] w-full cursor-grab select-none relative md:w-auto max-w-[480px] max-h-[165px] m-1 bg-box border-2 border-bb rounded-xl md:py-5 md:px-8 py-4 px-5`}
             ref={provided.innerRef}
             {...provided.draggableProps}
             {...provided.dragHandleProps}
@@ -65,10 +64,10 @@ export default function NoteCard({
             <h1 className="select-none transition duration-300 text-2xl text-color font-semibold line-clamp-2 overflow-hidden text-ellipsis truncate">
               {note.data.title}
             </h1>
-            <h3 className="text-color transition duration-300 text-xs opacity-30 mb-3 select-none">
+            <h3 className="text-color transition duration-300 text-xs opacity-30 select-none">
               Recorded at {formatDate(note.data.createdAt)}
             </h3>
-            <p className="text-color transition duration-300 text-sm select-none">
+            <p className="text-color transition duration-300 hidden md:block mt-3 text-sm select-none">
               <span className="opacity-50">
                 {note.data.description?.split(" ")?.slice(0, 25)?.join(" ")}...
               </span>

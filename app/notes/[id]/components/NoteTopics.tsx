@@ -1,6 +1,6 @@
-import React, { useState } from "react";
-import { TopicData } from "@/types/Topic";
+import type { TopicData } from "@/types/Topic";
 import { motion } from "framer-motion";
+import React, { useState } from "react";
 import { FaCaretRight } from "react-icons/fa";
 
 export default function NoteTopics({
@@ -14,7 +14,7 @@ export default function NoteTopics({
   return (
     <motion.div
       initial={{ opacity: 0, height: "50px" }}
-      animate={{ opacity: focus ? 0 : 1, height: !open ? "50px" : "100%" }}
+      animate={{ opacity: focus ? 0 : 1, height: !open ? "50px" : "25rem" }}
       transition={{ duration: 0.2 }}
       className="animate-fade bg-category rounded-2xl px-5 py-3 pb-5 overflow-hidden"
     >
@@ -29,14 +29,17 @@ export default function NoteTopics({
         onClick={() => setOpen((prev) => !prev)}
         className="flex justify-between items-center mb-4"
       >
-        <h2 style={{ textDecorationSkipInk: "all" }} className="text-xl decoration-wavy underline decoration-accent font-semibold font-mono">
+        <h2
+          style={{ textDecorationSkipInk: "all" }}
+          className="text-xl decoration-wavy underline decoration-accent font-semibold font-mono"
+        >
           Topics
         </h2>
         <FaCaretRight
           className={`transition-all duration-300 opacity-80 ${open && "rotate-90"}`}
         />
       </div>
-      <div className="flex flex-col gap-4 overflow-y-auto max-h-96">
+      <div className="flex flex-col gap-4 overflow-y-auto h-full pb-12">
         {topics.topics.map((t, i: number) => (
           <div key={i}>
             <p className="opacity-80">{t.topic}</p>

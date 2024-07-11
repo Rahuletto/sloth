@@ -1,22 +1,22 @@
 "use client";
 
-import React, { useEffect, useRef, useState } from "react";
-import { getData } from "@/firebase/firestore";
-import { useAuth } from "@/provider/UserProvider";
-import { NoteData } from "@/types/NoteData";
-import { DocumentData } from "firebase/firestore";
-import { useRouter } from "next/navigation";
 import NotFoundError from "@/app/not-found";
 import Loader from "@/components/ui/Loader";
+import { getData } from "@/firebase/firestore";
+import { useAuth } from "@/provider/UserProvider";
+import type { NoteData } from "@/types/NoteData";
+import type { DocumentData } from "firebase/firestore";
+import { useRouter } from "next/navigation";
+import React, { useEffect, useRef, useState } from "react";
 
-import { QuizData } from "@/types/Quiz";
 import Back from "@/components/ui/Back";
-import { Link } from "next-view-transitions";
 import Gemini from "@/components/ui/Gemini";
+import type { QuizData } from "@/types/Quiz";
+import { Link } from "next-view-transitions";
 import QuizCard from "./components/QuizCard";
 
 export default function Quiz({ params }: { params: { id: string } }) {
-  const {id} = params;
+  const { id } = params;
   const user = useAuth();
   const router = useRouter();
   const [note, setNote] = useState<DocumentData | null>(null);
@@ -56,8 +56,8 @@ export default function Quiz({ params }: { params: { id: string } }) {
   useEffect(() => {
     setPercent(
       Math.floor(
-        (grade.filter((g) => g === "correct").length / grade.length) * 100
-      )
+        (grade.filter((g) => g === "correct").length / grade.length) * 100,
+      ),
     );
   }, [grade]);
 
@@ -97,18 +97,17 @@ export default function Quiz({ params }: { params: { id: string } }) {
               <div className="md:min-w-[20vw] md:p-10 md:block hidden" />
             </div>
             <h2
-              className={`${
-                grade.filter((g) => g === null).length <= 0
-                  ? "text-7xl scale-110"
-                  : "text-5xl scale-100"
-              } mx-auto lg:mt-12 mt-4 ${
+              className={`${grade.filter((g) => g === null).length <= 0
+                ? "text-7xl scale-110"
+                : "text-5xl scale-100"
+                } mx-auto lg:mt-12 mt-4 ${
                 // eslint-disable-next-line no-nested-ternary
                 grade.filter((g) => g === null).length <= 0
                   ? percent >= 50
                     ? "text-green"
                     : "text-accent"
                   : "text-color"
-              } font-mono font-bold transition-all duration-300`}
+                } font-mono font-bold transition-all duration-300`}
             >
               {percent}
               <span className="text-color text-2xl opacity-60 font-sans">
@@ -131,7 +130,7 @@ export default function Quiz({ params }: { params: { id: string } }) {
           </>
         ) : (
           <div className="rounded-2xl bg-box border-2 border-bb px-4 py-3 h-72 flex gap-4 items-center justify-center mt-16 w-full mx-auto md:w-[60%]">
-            <Gemini className="text-3xl "/>
+            <Gemini className="text-3xl " />
             <h1 className="text-xl font-semibold">Curating questions..</h1>
           </div>
         )}

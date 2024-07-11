@@ -1,11 +1,11 @@
+import { generateId } from "@/utils/generateId";
 import React, {
-  Dispatch,
-  RefObject,
-  SetStateAction,
+  type Dispatch,
+  type RefObject,
+  type SetStateAction,
   useEffect,
   useRef,
 } from "react";
-import { generateId } from "@/utils/generateId";
 import Markdown from "react-markdown";
 import Code from "../../components/Code";
 
@@ -29,7 +29,7 @@ export default function QuizCard({
   const card = useRef<HTMLDivElement>(null);
 
   const handleIntersection = (entries: IntersectionObserverEntry[]) => {
-    entries.forEach((entry) => {
+    for (const entry of entries) {
       if (!card.current) return;
       if (entry.isIntersecting && entry.intersectionRatio >= 0.8) {
         card.current.style.opacity = "1";
@@ -38,7 +38,7 @@ export default function QuizCard({
         card.current.style.opacity = "0.3";
         card.current.style.transform = "scale(0.9)";
       }
-    });
+    };
   };
 
   function evaluateAns(e: MouseEvent | any, option: string) {
@@ -71,7 +71,7 @@ export default function QuizCard({
         observer.unobserve(card.current);
       }
     };
-  }, [card]);
+  }, [card, container]);
 
   return (
     <div

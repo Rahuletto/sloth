@@ -1,10 +1,10 @@
 {
-  "name": "studybud",
-  "version": "0.1.0",
+  "name": "sloth.",
+  "version": "1.0.1",
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "postbuild": "next-sitemap",
+    "postbuild": "next-sitemap --config next-sitemap.config.mjs",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"

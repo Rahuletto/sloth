@@ -1,11 +1,12 @@
-import React, { useEffect, useState } from "react";
+import type { Note } from "@/types/NoteData";
+import type React from "react";
+import { useEffect, useState } from "react";
 import { AiFillAudio } from "react-icons/ai";
 import { MdFilePresent } from "react-icons/md";
 import { RiPresentationFill } from "react-icons/ri";
-import { Note } from "@/types/NoteData";
+import Audio from "./uploads/Audio";
 import Pdf from "./uploads/Pdf";
 import YoutubeLecture from "./uploads/YoutubeLecture";
-import Audio from "./uploads/Audio";
 
 export default function AddActions({
   restart,
