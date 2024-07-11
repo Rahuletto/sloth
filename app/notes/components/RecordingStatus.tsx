@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
+import { statusMessages } from "@/types/Recorder";
 
 export default function RecordingStatus({ status }: { status: string }) {
   const [message, setMessage] = useState("");
@@ -12,7 +13,7 @@ export default function RecordingStatus({ status }: { status: string }) {
         "Whoops. You threw away my mic. Grant me permission to record the lecture. (and reload)",
       );
     } else {
-      setMessage(status);
+      setMessage(statusMessages[status]);
     }
   }, [status]);
 
