@@ -12,8 +12,6 @@ export default function YoutubePreview({ src }: { src: string }) {
   );
   const videoId = videoIdMatch ? videoIdMatch[1] : null;
 
-
-
   return (
     user && (
       <motion.div
@@ -22,7 +20,7 @@ export default function YoutubePreview({ src }: { src: string }) {
         transition={{ duration: 0.2 }}
         className="animate-fade block cursor-pointer w-fill md:w-fit overflow-hidden h-auto rounded-2xl my-10 bg-box"
       >
-        <iframe name="youtube" title="Youtube Lecture" src={`http://www.youtube.com/embed/${videoId}`} className="md:w-auto md:min-h-72 aspect-video rounded-2xl w-full" />
+        <iframe name="youtube" title="Youtube Lecture" src={`https://www.youtube.com/embed/${videoId}`} className="md:w-auto md:min-h-72 aspect-video rounded-2xl w-full" />
       </motion.div>
     )
   );
