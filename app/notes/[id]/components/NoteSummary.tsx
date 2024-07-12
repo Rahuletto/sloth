@@ -1,14 +1,15 @@
+/** eslint-disable no-plusplus */
 import React, { useEffect, useRef, useState } from "react";
 
 import Markdown from "react-markdown";
 import rehypeKatex from "rehype-katex";
-import remarkMath from "remark-math";
 import remarkBreaks from "remark-breaks";
+import remarkMath from "remark-math";
 
 import Gemini from "@/components/ui/Gemini";
-import { RiSpeakFill } from "react-icons/ri";
-import { NoteData } from "@/types/NoteData";
+import type { NoteData } from "@/types/NoteData";
 import { FaPause, FaPlay } from "react-icons/fa6";
+import { RiSpeakFill } from "react-icons/ri";
 import Code from "./Code";
 
 export default function NoteSummary({
@@ -23,73 +24,17 @@ export default function NoteSummary({
   const synthesisRef = useRef<SpeechSynthesis | null>(null);
 
   useEffect(() => {
-    const addSpansToWords = () => {
-      const summaryElement = summaryRef.current;
-      if (summaryElement) {
-        const textNodes: Node[] = [];
-
-        const getTextNodes = (node: Node) => {
-          if (
-            node.nodeType === Node.TEXT_NODE &&
-            node.textContent?.trim() !== ""
-          ) {
-            textNodes.push(node);
-          } else {
-            node.childNodes.forEach(getTextNodes);
-          }
-        };
-
-        getTextNodes(summaryElement);
-
-        textNodes.forEach((textNode) => {
-          const parentElement = textNode.parentNode;
-          if (parentElement && parentElement.nodeName !== "SPAN") {
-            const wordsAndSpaces = textNode.textContent?.split(/(\s+)/) || [];
-            const fragment = document.createDocumentFragment();
-
-            wordsAndSpaces.forEach((part) => {
-              if (part.trim() !== "") {
-                const wordSpan = document.createElement("span");
-                wordSpan.className = "word";
-                wordSpan.textContent = part;
-                fragment.appendChild(wordSpan);
-              } else {
-                const spaceNode = document.createTextNode(part);
-                fragment.appendChild(spaceNode);
-              }
-            });
-
-            parentElement.replaceChild(fragment, textNode);
-          }
-        });
-      }
-    };
-
-    addSpansToWords();
-  }, [note.summary]);
-
-  useEffect(() => {
-    let i = -1;
-    const words = document.querySelectorAll<HTMLSpanElement>("#summary .word");
-
-    function onboundaryHandler() {
-      if (words[i - 1]) {
-        words[i - 1].classList.remove("highlight");
-      }
-      if (words[i]) {
-        words[i].classList.add("highlight");
-        i++;
-      } else if (i === -1) {
-        i++;
-      }
+    if (speaking) {
+      summaryRef.current?.scrollIntoView({
+        behavior: "smooth",
+        block: "center",
+      });
     }
-
     if (note.summary && speaking) {
       const synth = window.speechSynthesis;
       const utterThis = new SpeechSynthesisUtterance(note.summary);
       utterThis.rate = 1.02;
       synthesisRef.current = synth;
-      utterThis.onboundary = onboundaryHandler;
       synth.speak(utterThis);
     }
   }, [speaking, note]);
@@ -108,7 +53,10 @@ export default function NoteSummary({
     <>
       {!focus && (
         <div className="flex justify-between items-center animate-fade duration-200 transition-all">
-          <h2 className="md:text-4xl text-3xl underline decoration-accent font-semibold font-mono" style={{ textDecorationSkipInk: "none" }}>
+          <h2
+            className="md:text-4xl text-3xl underline decoration-accent font-semibold font-mono"
+            style={{ textDecorationSkipInk: "none" }}
+          >
             Summary
           </h2>
           <button

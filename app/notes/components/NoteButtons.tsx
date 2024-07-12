@@ -31,10 +31,10 @@ export function RecordButton({
         borderWidth: 2,
         borderColor: "var(--accent)",
       }}
-      animate={{ opacity: 1 }}
+      animate={{ opacity: disabled ? 0.5 : 1 }}
       whileHover={{ paddingLeft: "3.5rem", paddingRight: "3.5rem" }}
       whileTap={{
-        scale: 0.9,
+        scale: disabled ? 1 : 0.9,
         borderColor: "var(--accent)",
         backgroundColor: recording ? "var(--accent)" : "#00000000",
         color: recording ? "var(--background)" : "var(--accent)",

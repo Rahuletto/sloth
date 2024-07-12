@@ -56,7 +56,7 @@ export default function NoteCard({
             className={`${!isDragDisabled && !isDragging
               ? "animate-shake cursor-grab"
               : "cursor-pointer"
-              } md:min-w-[250px] w-full cursor-grab select-none relative md:w-auto max-w-[480px] max-h-[165px] m-1 bg-box border-2 border-bb rounded-xl md:py-5 md:px-8 py-4 px-5`}
+              } md:min-w-[250px] w-full cursor-grab select-none relative md:w-auto max-w-[480px] max-h-[165px] md:m-1 bg-box border-2 border-bb rounded-xl md:py-5 md:px-8 py-4 px-5`}
             ref={provided.innerRef}
             {...provided.draggableProps}
             {...provided.dragHandleProps}

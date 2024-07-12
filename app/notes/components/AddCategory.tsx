@@ -32,7 +32,7 @@ export default function AddCategory({
           <button
             type="button"
             onClick={handleAddCategory}
-            className="bg-accent text-semibold rounded-md text-bg py-3 px-5"
+            className="bg-accent text-semibold rounded-full text-bg py-3 px-5"
           >
             Add
           </button>

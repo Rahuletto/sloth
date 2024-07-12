@@ -219,7 +219,7 @@ export default function Recorder({
               <RecordButton
                 recording={recording}
                 onClick={() => startRecord()}
-                disabled={!!message}
+                disabled={!!message || open}
               />
               {!recording && (
                 <AddButton open={open} setOpen={setOpen}>

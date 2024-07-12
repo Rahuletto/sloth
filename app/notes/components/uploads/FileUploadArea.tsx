@@ -35,7 +35,7 @@ export default function FileUploadArea({
 
   return (
     <div
-      onClick={() => hiddenFileInput.current?.click()}
+      onClick={() => !generating && hiddenFileInput.current?.click()}
       onKeyDown={() => {}}
       onDrop={onDrop}
       onDragLeave={(e) => {

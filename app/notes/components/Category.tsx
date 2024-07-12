@@ -82,7 +82,7 @@ export default function Category({
           <div
             ref={provided.innerRef}
             {...provided.droppableProps}
-            className={`flex flex-col relative scrollbar-none min-h-46 h-full md:min-w-[500px] max-w-full md:max-w-fit pr-1 md:pr-0 overflow-x-auto transition duration-500 rounded-2xl max-h-[600px] border-2 ${snapShot.isDraggingOver
+            className={`flex flex-col gap-1 md:gap-0 relative scrollbar-none min-h-46 h-full md:min-w-[500px] max-w-full md:max-w-fit overflow-x-auto transition duration-500 rounded-2xl max-h-[600px] border-2 ${snapShot.isDraggingOver
               ? "bg-hue border-accent"
               : "border-transparent"
               }`}

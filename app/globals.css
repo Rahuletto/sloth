@@ -96,11 +96,10 @@ h6 {
 
   box-sizing: border-box;
   font-family: var(--root);
-  transition: 0.2s all;
-  -moz-transition: 0.2s all;
-  -ms-transition: 0.2s all;
-  -o-transition: 0.2s all;
-  -webkit-transition: 0.2s all;
+}
+
+div {
+  transition: 0.1s all;
 }
 
 .FlashcardArrayWrapper__CardHolder {

@@ -30,7 +30,7 @@ export default function AudioUploadArea({
 
   return (
     <div
-      onClick={() => hiddenFileInput.current?.click()}
+      onClick={() => !generating && hiddenFileInput.current?.click()}
       onDrop={onDrop}
       onDragLeave={(e) => {
         e.preventDefault();
