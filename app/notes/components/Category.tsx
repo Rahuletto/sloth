@@ -52,7 +52,7 @@ export default function Category({
 
   return (
     <div
-      className="relative transition duration-300 max-w-[90vw] w-fit min-w-[90vw] md:min-w-auto md:max-w-auto animate-fade scrollbar-none dark:bg-category bg-transparent border-2 border-category p-2 rounded-3xl h-full"
+      className="relative transition duration-300 max-w-[90vw] w-fit min-w-[90vw] md:min-w-fit md:max-w-auto animate-fade scrollbar-none dark:bg-category bg-transparent border-2 border-category p-2 rounded-3xl h-full"
     >
       <h2
         // eslint-disable-next-line react/jsx-curly-brace-presence
