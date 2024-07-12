@@ -4,9 +4,9 @@ import { blobToDataURL } from "@/utils/blobToData";
 import { motion } from "framer-motion";
 import dynamic from "next/dynamic";
 import React, {
-  Dispatch,
-  RefObject,
-  SetStateAction,
+  type Dispatch,
+  type RefObject,
+  type SetStateAction,
   useEffect,
   useState,
 } from "react";
@@ -14,7 +14,7 @@ import React, {
 import { saveNote } from "@/firebase/firestore";
 import { uploadAudioFromDataURL } from "@/firebase/storage";
 import { useAuth } from "@/provider/UserProvider";
-import { Note } from "@/types/NoteData";
+import type { Note } from "@/types/NoteData";
 import { getAudioLength } from "@/utils/audioLength";
 
 const AddActions = dynamic(
@@ -213,9 +213,8 @@ export default function Recorder({
             )}
 
             <div
-              className={`duration-300 transition-all max-h-[60px] fixed ${
-                recording ? "bottom-16" : "lg:bottom-12 bottom-8"
-              } z-20 left-0 w-full flex justify-center items-center gap-6`}
+              className={`duration-300 transition-all max-h-[60px] fixed ${recording ? "bottom-16" : "lg:bottom-12 bottom-8"
+                } z-20 left-0 w-full flex justify-center items-center gap-6`}
             >
               <RecordButton
                 recording={recording}

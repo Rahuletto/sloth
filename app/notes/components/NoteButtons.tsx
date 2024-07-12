@@ -1,8 +1,11 @@
-import React, { Dispatch, ReactNode, SetStateAction } from "react";
 import { motion } from "framer-motion";
-import { FaPlus } from "react-icons/fa6";
 import dynamic from "next/dynamic";
-
+import React, {
+  type Dispatch,
+  type ReactNode,
+  type SetStateAction,
+} from "react";
+import { FaPlus } from "react-icons/fa6";
 
 const SlidingShelf = dynamic(
   () => import("@/components/ui/SlidingShelf").then((mod) => mod.default),
@@ -17,43 +20,44 @@ export function RecordButton({
   onClick: () => void;
   disabled: boolean;
 }) {
-  return <motion.button
-    initial={{
-      opacity: 0,
-      paddingLeft: "3rem",
-      paddingRight: "3rem",
-      backgroundColor: "var(--accent)",
-      color: "var(--background)",
-      borderWidth: 2,
-      borderColor: "var(--accent)",
-    }}
-    animate={{ opacity: 1 }}
-    whileHover={{ paddingLeft: "3.5rem", paddingRight: "3.5rem" }}
-    whileTap={{
-      scale: 0.9,
-      borderColor: "var(--accent)",
-      backgroundColor: recording ? "var(--accent)" : "#00000000",
-      color: recording ? "var(--background)" : "var(--accent)",
-    }}
-    transition={{ duration: 0.3 }}
-    disabled={disabled}
-    onClick={onClick}
-    className={`py-4 text-xl rounded-full text-bg ${
-      recording ? "" : "active:bg-transparent active:text-accent"
-    } z-20 font-semibold`}
-  >
-    {recording ? "Stop" : "Record"}
-  </motion.button>
+  return (
+    <motion.button
+      initial={{
+        opacity: 0,
+        paddingLeft: "3rem",
+        paddingRight: "3rem",
+        backgroundColor: "var(--accent)",
+        color: "var(--background)",
+        borderWidth: 2,
+        borderColor: "var(--accent)",
+      }}
+      animate={{ opacity: 1 }}
+      whileHover={{ paddingLeft: "3.5rem", paddingRight: "3.5rem" }}
+      whileTap={{
+        scale: 0.9,
+        borderColor: "var(--accent)",
+        backgroundColor: recording ? "var(--accent)" : "#00000000",
+        color: recording ? "var(--background)" : "var(--accent)",
+      }}
+      transition={{ duration: 0.3 }}
+      disabled={disabled}
+      onClick={onClick}
+      className={`py-4 text-xl rounded-full text-bg ${recording ? "" : "active:bg-transparent active:text-accent"
+        } z-20 font-semibold`}
+    >
+      {recording ? "Stop" : "Record"}
+    </motion.button>
+  );
 }
 
 export function AddButton({
   open,
   setOpen,
-  children
+  children,
 }: {
   open: boolean;
   setOpen: Dispatch<SetStateAction<boolean>>;
-  children: ReactNode
+  children: ReactNode;
 }) {
   return (
     <>

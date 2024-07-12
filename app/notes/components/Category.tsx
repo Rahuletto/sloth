@@ -52,7 +52,7 @@ export default function Category({
 
   return (
     <div
-      className="relative transition duration-300 animate-fade scrollbar-none dark:bg-category bg-transparent border-2 border-category p-2 rounded-3xl h-full"
+      className="relative transition duration-300 max-w-[90vw] w-fit min-w-[90vw] md:min-w-auto md:max-w-auto animate-fade scrollbar-none dark:bg-category bg-transparent border-2 border-category p-2 rounded-3xl h-full"
     >
       <h2
         // eslint-disable-next-line react/jsx-curly-brace-presence
@@ -82,7 +82,7 @@ export default function Category({
           <div
             ref={provided.innerRef}
             {...provided.droppableProps}
-            className={`flex flex-col relative scrollbar-none min-h-46 h-full min-w-[500px] overflow-x-auto transition duration-500 rounded-2xl max-h-[600px] border-2 ${snapShot.isDraggingOver
+            className={`flex flex-col relative scrollbar-none min-h-46 h-full md:min-w-[500px] max-w-full md:max-w-fit pr-1 md:pr-0 overflow-x-auto transition duration-500 rounded-2xl max-h-[600px] border-2 ${snapShot.isDraggingOver
               ? "bg-hue border-accent"
               : "border-transparent"
               }`}

@@ -84,10 +84,13 @@ export default function Notes() {
           );
           setNotes(categorizedNotes);
           setCategoryOrder([
-            "Uncategorized",
             ...Object.keys(categorizedNotes).filter(
-              (cat) => cat !== "Uncategorized",
+              (cat) => cat === "Starred"
             ),
+            ...Object.keys(categorizedNotes).filter(
+              (cat) => cat !== "Starred" && cat !== "Uncategorized",
+            ),
+            "Uncategorized",
           ]);
         });
       }, 200);
@@ -98,7 +101,6 @@ export default function Notes() {
     if (!user || !destination) return;
 
     if (type === "CATEGORY") {
-      if (source.index === 0 || destination.index === 0) return; // Prevent moving Starred
       const newCategoryOrder = Array.from(categoryOrder);
       const [reorderedItem] = newCategoryOrder.splice(source.index, 1);
       newCategoryOrder.splice(destination.index, 0, reorderedItem);
@@ -196,7 +198,7 @@ export default function Notes() {
               <div
                 {...provided.droppableProps}
                 ref={provided.innerRef}
-                className="flex flex-col flex-wrap md:flex-row gap-4 mt-8"
+                className="flex flex-col flex-wrap md:flex-row items-center md:items-start md:justify-center lg:justify-start gap-4 mt-8"
               >
                 {categoryOrder.map((category, index) => (
                   <Draggable
