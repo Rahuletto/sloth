@@ -68,7 +68,7 @@ export default function NoteCard({
               Recorded at {formatDate(note.data.createdAt)}
             </h3>
             <p className="text-color transition duration-300 hidden md:block mt-3 text-sm select-none">
-              <span className="opacity-50">
+              <span className="opacity-50 line-clamp-3 text-ellipsis">
                 {note.data.description?.split(" ")?.slice(0, 25)?.join(" ")}...
               </span>
             </p>
