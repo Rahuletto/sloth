@@ -13,7 +13,8 @@ export async function POST(request: Request) {
     });
 
     try {
-      return new Response(JSON.stringify({ result: JSON.parse(text) }), {
+      const result = JSON.parse(text)
+      return new Response(JSON.stringify({ result }), {
         status: 200,
         headers: {
           'Content-Type': 'application/json',
@@ -21,7 +22,13 @@ export async function POST(request: Request) {
         },
       });
     } catch (e) {
-      return new Response(JSON.stringify({ result: text }), {
+      const result = JSON.parse(text
+        .replace(/\\n/g, ' ')
+        .replace(/\\"/g, '"')
+        .replace(/\\'/g, "'")
+        .replace(/\\\\/g, '\\')
+      )
+      return new Response(JSON.stringify({ result }), {
         status: 200,
         headers: {
           'Content-Type': 'application/json',

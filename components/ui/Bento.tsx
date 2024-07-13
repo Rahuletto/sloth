@@ -10,8 +10,8 @@ export default function Bento() {
                 Organised notes
               </div>
               <div className="font-sans lg:text-lg text-md font-normal opacity-60 text-color">
-                Never deal with messy chapters, just drag-and-drop them into
-                notes (categories) and keep em&apos; organized.
+                Never deal with messy notes, just drag-and-drop them into
+                shelves and keep em&apos; organized.
               </div>
             </div>
             <Image
