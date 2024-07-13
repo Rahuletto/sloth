@@ -22,19 +22,29 @@ export async function POST(request: Request) {
         },
       });
     } catch (e) {
-      const result = JSON.parse(text
-        .replace(/\\n/g, ' ')
-        .replace(/\\"/g, '"')
-        .replace(/\\'/g, "'")
-        .replace(/\\\\/g, '\\') ?? text
-      )
-      return new Response(JSON.stringify({ result }), {
-        status: 200,
-        headers: {
-          'Content-Type': 'application/json',
-          'Cache-Control': 'private, max-age=86400',
-        },
-      });
+      try {
+        const result = JSON.parse(text
+          .replace(/\\n/g, ' ')
+          .replace(/\\"/g, '"')
+          .replace(/\\'/g, "'")
+          .replace(/\\\\/g, '\\')
+        )
+        return new Response(JSON.stringify({ result }), {
+          status: 200,
+          headers: {
+            'Content-Type': 'application/json',
+            'Cache-Control': 'private, max-age=86400',
+          },
+        });
+      } catch {
+        return new Response(JSON.stringify({ result: text }), {
+          status: 200,
+          headers: {
+            'Content-Type': 'application/json',
+            'Cache-Control': 'private, max-age=86400',
+          },
+        });
+      }
     }
   } else {
     return new Response('Method not allowed. Expected POST.', { status: 405 });
