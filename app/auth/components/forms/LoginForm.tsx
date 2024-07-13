@@ -1,9 +1,9 @@
-import React from 'react';
-import { Input } from '@/components/ui/Input';
-import { FaArrowRight, FaGoogle } from 'react-icons/fa6';
-import { LuShieldQuestion } from 'react-icons/lu';
-import Link from 'next/link';
-import { FormProps } from './Props';
+import { Input } from "@/components/ui/Input";
+import Link from "next/link";
+import React from "react";
+import { FaArrowRight, FaGoogle } from "react-icons/fa6";
+import { LuShieldQuestion } from "react-icons/lu";
+import type { FormProps } from "./Props";
 
 export default function LoginForm({
   email,
@@ -47,16 +47,13 @@ export default function LoginForm({
             title="Login"
             type="submit"
             disabled={!email || !password}
-            className={`${
-              password && email
-                ? 'opacity-100 active:gap-24 active:scale-95 cursor-pointer'
-                : 'opacity-60 cursor-not-allowed'
-            } w-[80%] bg-accent rounded-full text-lg hover:gap-6 transition-all duration-300 text-bg font-semibold py-4 flex items-center gap-3 px-6`}
+            className={`${password && email
+              ? "opacity-100 active:gap-24 active:scale-95 cursor-pointer"
+              : "opacity-60 cursor-not-allowed"
+              } w-[80%] bg-accent rounded-full text-lg hover:gap-6 transition-all duration-300 text-bg font-semibold py-4 flex items-center gap-3 px-6`}
             tabIndex={0}
           >
-            Log in
-            {' '}
-            <FaArrowRight />
+            Log in <FaArrowRight />
           </button>
           <Link
             href="/auth/forgot"
@@ -83,16 +80,16 @@ export default function LoginForm({
         </button>
       </div>
       <p className="text-color font-regular text-lg mt-3">
-        <span className="opacity-70">New to sloth?</span>
-        {' '}
+        <span className="opacity-70">New to sloth?</span>{" "}
         <button
           type="button"
-          onClick={() => toggleMode('signup')}
+          onClick={() => toggleMode("signup")}
           className="text-accent py-2 hover:opacity-100 hover:mx-6 transition-all duration-300 hover:px-8 hover:bg-accent hover:text-bg hover:font-semibold rounded-full "
         >
           Sign up
         </button>
       </p>
+      <p className="opacity-30 text-xs text-color text-center mt-8">By using sloth, you agree to our <Link href="/privacy">Privacy Policy</Link>.</p>
     </>
   );
 }

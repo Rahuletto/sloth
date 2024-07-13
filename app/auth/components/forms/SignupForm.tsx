@@ -1,7 +1,8 @@
 import React from "react";
 import { Input } from "@/components/ui/Input";
 import { FaArrowRight, FaGoogle } from "react-icons/fa6";
-import { FormProps } from "./Props";
+import { Link } from "next-view-transitions";
+import type { FormProps } from "./Props";
 
 export default function SignupForm({
   email,
@@ -45,11 +46,10 @@ export default function SignupForm({
             title="Signup"
             type="submit"
             disabled={!email || !password}
-            className={`${
-              password && email
+            className={`${password && email
                 ? "opacity-100 active:gap-24 active:scale-95 cursor-pointer"
                 : "opacity-60 cursor-not-allowed"
-            } w-[100%] bg-accent rounded-full text-lg hover:gap-6 transition-all duration-300 text-bg font-semibold py-4 flex items-center gap-3 px-6`}
+              } w-[100%] bg-accent rounded-full text-lg hover:gap-6 transition-all duration-300 text-bg font-semibold py-4 flex items-center gap-3 px-6`}
             tabIndex={0}
           >
             Sign up <FaArrowRight />
@@ -79,6 +79,10 @@ export default function SignupForm({
         >
           Log in
         </button>
+      </p>
+      <p className="opacity-30 text-xs text-color text-center mt-8">
+        By using sloth, you agree to our{" "}
+        <Link href="/privacy">Privacy Policy</Link>.
       </p>
     </>
   );

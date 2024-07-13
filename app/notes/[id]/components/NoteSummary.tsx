@@ -97,6 +97,7 @@ export default function NoteSummary({
           {note.summary}
         </Markdown>
       </div>
+      <p className="opacity-40 text-xs text-color text-center flex w-full">sloth. uses Gemini, Gemini may display inaccurate info. So double-check its summary.</p>
     </>
   ) : (
     <div className="rounded-2xl bg-box border-2 border-bb px-4 py-3 h-72 flex gap-4 items-center justify-center w-full">
