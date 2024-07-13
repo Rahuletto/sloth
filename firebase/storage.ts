@@ -1,5 +1,6 @@
-import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { generateId } from "@/utils/generateId";
+import { deleteObject, getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
 import { storage } from "./config";
 
 export async function uploadAudioFromDataURL(
@@ -30,12 +31,12 @@ export async function uploadAudioFromDataURL(
   }
 }
 
-export async function uploadFile(userId: string, file: File) {
+export async function uploadFile(format: 'audios' | 'pdf', userId: string, file: File) {
   try {
     const id = generateId(file.name);
 
     const fileName = `${id}_${file.name}`;
-    const filePath = `pdf/${userId}/${fileName}`;
+    const filePath = `${format || "pdf"}/${userId}/${fileName}`;
 
     const fileRef = ref(storage, filePath);
     const snapshot = await uploadBytesResumable(fileRef, file);
@@ -45,6 +46,25 @@ export async function uploadFile(userId: string, file: File) {
     return downloadURL;
   } catch (error) {
     console.error("Error uploading file:", error);
+    throw error;
+  }
+}
+
+function getFilePathFromUrl(url: string): string {
+  const decodedUrl = decodeURIComponent(url);
+  const startIndex = decodedUrl.indexOf('/o/') + 3;
+  const endIndex = decodedUrl.indexOf('?');
+  return decodedUrl.substring(startIndex, endIndex);
+}
+
+export async function deleteFile(url: string) {
+  try {
+    const filePath = getFilePathFromUrl(url);
+    const fileRef = ref(storage, filePath);
+    await deleteObject(fileRef)
+    console.log("File successfully deleted!");
+  } catch (error) {
+    console.error("Error deleting file:", error);
     throw error;
   }
 }

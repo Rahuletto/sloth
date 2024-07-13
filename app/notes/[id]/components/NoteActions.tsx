@@ -1,5 +1,6 @@
 import SlidingShelf from "@/components/ui/SlidingShelf";
 import { deleteData } from "@/firebase/firestore";
+import { deleteFile } from "@/firebase/storage";
 import { useAuth } from "@/provider/UserProvider";
 import type { NoteData } from "@/types/NoteData";
 import { motion } from "framer-motion";
@@ -40,8 +41,14 @@ export default function NoteActions({
 
   function clickHandler() {
     if (!user) return setDialog(false);
-    deleteData(user.uid, id);
-    router.push("/notes");
+    for (const file of note.src) {
+      if (file.type !== "youtube")
+        deleteFile(file.url)
+    };
+    deleteData(user.uid, id).then(() => {
+      router.push("/notes");
+    })
+
     return 0;
   }
 

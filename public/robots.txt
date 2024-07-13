@@ -6,7 +6,7 @@ Allow: /notes
 Allow: /auth
 
 # Host
-Host: https://ecne.vercel.app
+Host: https://studysloth.vercel.app
 
 # Sitemaps
-Sitemap: https://ecne.vercel.app/sitemap.xml
+Sitemap: https://studysloth.vercel.app/sitemap.xml

@@ -1,19 +1,20 @@
+import type { Note, NoteData } from "@/types/NoteData";
+import type { TopicData } from "@/types/Topic";
+import { generateId } from "@/utils/generateId";
+import type { User } from "firebase/auth";
+/* eslint-disable @typescript-eslint/no-shadow */
 import {
+  type QueryDocumentSnapshot,
   collection,
   deleteDoc,
   doc,
   getDoc,
   getDocs,
   query,
-  QueryDocumentSnapshot,
   setDoc,
   writeBatch,
 } from "firebase/firestore";
 import { db } from "./config";
-import { Note, NoteData } from "@/types/NoteData";
-import { TopicData } from "@/types/Topic";
-import { User } from "firebase/auth";
-import { generateId } from "@/utils/generateId";
 
 export async function setData(userId: string, noteId: string, data: any) {
   try {
@@ -46,9 +47,8 @@ export async function getData(userId: string, noteId: string) {
 
     if (docSnap.exists()) {
       return docSnap.data();
-    } else {
-      return null;
     }
+    return null;
   } catch (error) {
     console.error("Error getting document: ", error);
     throw error;
@@ -62,6 +62,7 @@ export async function getAllNotes(userId: string) {
     const querySnapshot = await getDocs(q);
 
     const notes: { id: string; data: any }[] = [];
+    // eslint-disable-next-line @typescript-eslint/no-shadow
     querySnapshot.forEach((doc: QueryDocumentSnapshot) => {
       notes.push({ id: doc.id, data: doc.data() });
     });
@@ -71,6 +72,19 @@ export async function getAllNotes(userId: string) {
     console.error("Error getting notes: ", error);
     throw error;
   }
+}
+
+export async function getCategorizedNotes(userId: string) {
+  const allNotes = await getAllNotes(userId);
+  return allNotes.reduce(
+    (acc: { [key: string]: Note[] }, note: { id: string; data: NoteData }) => {
+      const category = note.data?.category || "Uncategorized";
+      if (!acc[category]) acc[category] = [];
+      acc[category].push(note);
+      return acc;
+    },
+    { Starred: [], Uncategorized: [] },
+  );
 }
 
 export const saveNote = async ({
@@ -96,26 +110,15 @@ export const saveNote = async ({
     createdAt: Date.now(),
     src,
     transcript,
-    title: title,
-    description: description,
-    topics: topics,
+    title,
+    description,
+    topics,
     category: "Uncategorized",
   });
   return getCategorizedNotes(user.uid);
 };
 
-export async function getCategorizedNotes(userId: string) {
-  const allNotes = await getAllNotes(userId);
-  return allNotes.reduce(
-    (acc: { [key: string]: Note[] }, note: { id: string; data: NoteData }) => {
-      const category = note.data?.category || "Uncategorized";
-      if (!acc[category]) acc[category] = [];
-      acc[category].push(note);
-      return acc;
-    },
-    { Starred: [], Uncategorized: [] }
-  );
-}
+
 
 export async function deleteCategory(userId: string, categoryToDelete: string) {
   try {
@@ -133,9 +136,6 @@ export async function deleteCategory(userId: string, categoryToDelete: string) {
     });
 
     await batch.commit();
-    console.log(
-      `Category "${categoryToDelete}" successfully deleted and notes moved to Uncategorized.`
-    );
   } catch (error) {
     console.error("Error deleting category: ", error);
     throw error;

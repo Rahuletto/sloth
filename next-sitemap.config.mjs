@@ -1,5 +1,5 @@
 export default {
-  siteUrl: process.env.SITE_URL || 'https://slothe.vercel.app',
+  siteUrl: process.env.SITE_URL || 'https://studysloth.vercel.app',
   generateRobotsTxt: true,
   priority: 0.8,
   sitemapSize: 7000,

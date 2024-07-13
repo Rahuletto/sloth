@@ -1,7 +1,8 @@
 "use client";
 
-import React, { useState, useCallback } from "react";
-import { Note } from "@/types/NoteData";
+import type React from "react";
+import { useState, useCallback } from "react";
+import type { Note } from "@/types/NoteData";
 import { useAuth } from "@/provider/UserProvider";
 import { saveNote } from "@/firebase/firestore";
 import { uploadFile } from "@/firebase/storage";
@@ -35,8 +36,8 @@ export default function Pdf({
         body: JSON.stringify({ prompt: saveText.trim() }),
       });
       const topics = await topicsRes.json();
-      const {title} = topics.result;
-      const {description} = topics.result
+      const { title } = topics.result;
+      const { description } = topics.result;
 
       const newNotes = await saveNote({
         user,
@@ -53,7 +54,7 @@ export default function Pdf({
       setSrc([]);
       setNotes(newNotes);
     },
-    [user, setGenerating, setGenStatus, setNotes]
+    [user, setGenerating, setGenStatus, setNotes],
   );
 
   const handleFiles = async (files: File[]) => {
@@ -70,7 +71,7 @@ export default function Pdf({
         const fileText = await readFile(file);
         newText += fileText;
 
-        const uploadUrl = await uploadFile(user.uid, file);
+        const uploadUrl = await uploadFile("pdf", user.uid, file);
         newSrc.push({ url: uploadUrl, type: "pdf" });
       }
     }
