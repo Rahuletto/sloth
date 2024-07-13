@@ -26,7 +26,7 @@ export async function POST(request: Request) {
         .replace(/\\n/g, ' ')
         .replace(/\\"/g, '"')
         .replace(/\\'/g, "'")
-        .replace(/\\\\/g, '\\')
+        .replace(/\\\\/g, '\\') ?? text
       )
       return new Response(JSON.stringify({ result }), {
         status: 200,
