@@ -33,3 +33,8 @@ export async function POST(request: Request) {
     return new Response(JSON.stringify({ error: 'Transcription failed' }), { status: 500 });
   }
 }
+export const config = {
+  api: {
+    bodyParser: false,
+  },
+}
