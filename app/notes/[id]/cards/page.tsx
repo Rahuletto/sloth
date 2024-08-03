@@ -14,6 +14,7 @@ import Back from "@/components/ui/Back";
 import { FlashCard } from "@/types/FlashCards";
 import Markdown from "react-markdown";
 import { IoCaretBack, IoCaretForward } from "react-icons/io5";
+import { PiWarning } from "react-icons/pi";
 import Gemini from "@/components/ui/Gemini";
 
 export default function Flashcards({ params }: { params: { id: string } }) {
@@ -22,6 +23,7 @@ export default function Flashcards({ params }: { params: { id: string } }) {
   const router = useRouter();
   const [currentCard, setCurrentCard] = useState<number>(0);
   const [note, setNote] = useState<DocumentData | null>(null);
+  const [error, setError] = useState<boolean>(false);
   const [cards, setCards] = useState<
     { id: number; frontHTML: ReactElement; backHTML: ReactElement }[] | null
   >(null);
@@ -49,6 +51,7 @@ export default function Flashcards({ params }: { params: { id: string } }) {
       })
         .then((res) => res.json())
         .then((data) => {
+          setError(false);
           const arr: {
             id: number;
             frontHTML: ReactElement;
@@ -73,6 +76,10 @@ export default function Flashcards({ params }: { params: { id: string } }) {
             });
           });
           setCards(arr);
+        })
+        .catch((e) => {
+          console.warn(e);
+          setError(true);
         });
   }, [note]);
 
@@ -89,7 +96,7 @@ export default function Flashcards({ params }: { params: { id: string } }) {
             {note.title}
           </h1>
         </div>
-        {cards && cards.length > 0 ? (
+        {cards && cards.length > 0 && (
           <>
             <div className="flex items-center justify-center lg:h-[55%] md:h-[70%] h-[70%] gap-6">
               <div className="w-16 justify-center md:flex hidden">
@@ -167,7 +174,14 @@ export default function Flashcards({ params }: { params: { id: string } }) {
               </div>
             </div>
           </>
-        ) : (
+        )}
+        {!cards && error && (
+          <div className="rounded-2xl bg-accent-dull border-2 text-accent border-bb px-4 py-3 h-72 flex gap-4 items-center justify-center mt-16 w-full mx-auto md:w-[60%]">
+            <PiWarning className="text-3xl" />
+            <h1 className="text-xl font-semibold">Error!</h1>
+          </div>
+        )}
+        {!cards && !error && (
           <div className="rounded-2xl bg-box border-2 border-bb px-4 py-3 h-72 flex gap-4 items-center justify-center mt-16 w-full mx-auto md:w-[60%]">
             <Gemini className="text-3xl" />
             <h1 className="text-xl font-semibold">Shuffling Flashcards..</h1>

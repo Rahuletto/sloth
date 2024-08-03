@@ -53,8 +53,14 @@ export default function NoteCard({
             onKeyDown={() => { }}
             role="button"
             tabIndex={0}
+            style={{
+              zIndex: isDragging ? 2 : 0,
+              boxShadow: isDragging
+                ? "0 0 0 4px rgba(0, 0, 0, 0.2)"
+                : "0 0 0 0 rgba(0, 0, 0, 0)",
+            }}
             className={`${!isDragDisabled && !isDragging
-              ? "animate-shake cursor-grab"
+              ? "animate-shake cursor-grab z-10"
               : "cursor-pointer"
               } md:min-w-[250px] w-full cursor-grab select-none relative md:w-auto max-w-[480px] max-h-[165px] md:m-1 bg-box border-2 border-bb rounded-xl md:py-5 md:px-8 py-4 px-5`}
             ref={provided.innerRef}

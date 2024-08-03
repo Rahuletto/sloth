@@ -13,6 +13,7 @@ import Back from "@/components/ui/Back";
 import Gemini from "@/components/ui/Gemini";
 import type { QuizData } from "@/types/Quiz";
 import { Link } from "next-view-transitions";
+import { PiWarning } from "react-icons/pi";
 import QuizCard from "./components/QuizCard";
 
 export default function Quiz({ params }: { params: { id: string } }) {
@@ -21,6 +22,7 @@ export default function Quiz({ params }: { params: { id: string } }) {
   const router = useRouter();
   const [note, setNote] = useState<DocumentData | null>(null);
   const [quiz, setQuiz] = useState<QuizData[] | null>(null);
+  const [error, setError] = useState<boolean>(false);
   const [grade, setGrade] = useState<(null | "correct" | "wrong")[]>([]);
   const [percent, setPercent] = useState(0);
 
@@ -48,9 +50,11 @@ export default function Quiz({ params }: { params: { id: string } }) {
       })
         .then((res) => res.json())
         .then((data) => {
+          setError(false)
           setQuiz(data.result);
           setGrade(new Array(data.result.length).fill(null));
-        });
+        })
+        .catch(() => setError(true));
   }, [note]);
 
   useEffect(() => {
@@ -74,7 +78,7 @@ export default function Quiz({ params }: { params: { id: string } }) {
             {note.title}
           </h1>
         </div>
-        {quiz && quiz.length > 0 ? (
+        {quiz && quiz.length > 0 && (
           <>
             <div
               ref={container}
@@ -97,17 +101,18 @@ export default function Quiz({ params }: { params: { id: string } }) {
               <div className="md:min-w-[20vw] md:p-10 md:block hidden" />
             </div>
             <h2
-              className={`${grade.filter((g) => g === null).length <= 0
-                ? "text-7xl scale-110"
-                : "text-5xl scale-100"
-                } mx-auto lg:mt-12 mt-4 ${
+              className={`${
+                grade.filter((g) => g === null).length <= 0
+                  ? "text-7xl scale-110"
+                  : "text-5xl scale-100"
+              } mx-auto lg:mt-12 mt-4 ${
                 // eslint-disable-next-line no-nested-ternary
                 grade.filter((g) => g === null).length <= 0
                   ? percent >= 50
                     ? "text-green"
                     : "text-accent"
                   : "text-color"
-                } font-mono font-bold transition-all duration-300`}
+              } font-mono font-bold transition-all duration-300`}
             >
               {percent}
               <span className="text-color text-2xl opacity-60 font-sans">
@@ -128,10 +133,17 @@ export default function Quiz({ params }: { params: { id: string } }) {
               </>
             )}
           </>
-        ) : (
+        )}
+        {!quiz && error && (
+          <div className="rounded-2xl bg-accent-dull border-2 text-accent border-bb px-4 py-3 h-72 flex gap-4 items-center justify-center mt-16 w-full mx-auto md:w-[60%]">
+            <PiWarning className="text-3xl" />
+            <h1 className="text-xl font-semibold">Error!</h1>
+          </div>
+        )}
+        {!quiz && !error && (
           <div className="rounded-2xl bg-box border-2 border-bb px-4 py-3 h-72 flex gap-4 items-center justify-center mt-16 w-full mx-auto md:w-[60%]">
-            <Gemini className="text-3xl " />
-            <h1 className="text-xl font-semibold">Curating questions..</h1>
+            <Gemini className="text-3xl" />
+            <h1 className="text-xl font-semibold">Curating Quiz..</h1>
           </div>
         )}
       </div>

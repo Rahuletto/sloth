@@ -126,7 +126,7 @@ export default function Recorder({
               "This is a new note with some errors? Can we try this again??",
             src: [{ type: "audio", url }],
             transcript: transcribe.data,
-            topics: [],
+            topics: { title: "New Note", description: "This is a new note", topics: [] }
           }),
         );
       }

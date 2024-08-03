@@ -99,7 +99,7 @@ export const saveNote = async ({
   title: string;
   src: { type: string; url: string }[];
   transcript: string;
-  topics: TopicData[];
+  topics: TopicData;
   description: string;
 }): Promise<{
   [key: string]: Note[];

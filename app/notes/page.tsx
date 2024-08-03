@@ -18,6 +18,7 @@ import { deleteCategory, getAllNotes, setData } from "@/firebase/firestore";
 import { useAuth } from "@/provider/UserProvider";
 import type { Note, NoteData } from "@/types/NoteData";
 
+
 const Loader = dynamic(
   () => import("@/components/ui/Loader").then((mod) => mod.default),
   { ssr: true },
@@ -181,7 +182,7 @@ export default function Notes() {
     <main className="overflow-hidden duration-300 transition-all animate-fade h-screen w-screen p-6">
       <DragDropContext onDragEnd={onDragEnd}>
         <motion.div
-          className="scrollbar-none w-[92vw] md:w-[97vw] overflow-hidden px-0 py-4 md:px-12 md:py-8 overflow-y-auto fixed h-[85dvh] rounded-3xl"
+          className="scrollbar-none z-[2] w-[92vw] md:w-[97vw] overflow-hidden px-0 py-4 md:px-12 md:py-8 overflow-y-auto fixed h-[85dvh] rounded-3xl"
           initial={{ opacity: 1 }}
           animate={{ opacity: recording || message ? 0 : 1 }}
           transition={{ duration: 0.3 }}
@@ -258,7 +259,9 @@ export default function Notes() {
           </motion.h1>
         </div>
       )}
-      <Recorder
+      {editMode ? (
+        <> </>
+      ) : <Recorder
         generating={generating}
         genStatus={genStatus}
         message={message}
@@ -269,7 +272,7 @@ export default function Notes() {
         setGenStatus={setGenStatus}
         setMessage={setMessage}
         setNotes={setNotes}
-      />
+      />}
     </main>
   );
 }
